@@ -22,7 +22,9 @@ public abstract class Event {
     private LocalDateTime dateTime;
     private Category category;
     private Integer duration;
-    private String author;
+
+    @ManyToOne
+    private User author;
 
     @ManyToOne
     private Bubble bubble;

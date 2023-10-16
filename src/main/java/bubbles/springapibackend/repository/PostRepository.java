@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PostRepository extends JpaRepository<Post, UUID> {
-    List<Post> findByAuthor(String author);
+    List<Post> findByAuthor_Name(String author);
 
-    List<Post> findByBubble(String bubble);
+    List<Post> findByBubble_Name(String bubble);
 }

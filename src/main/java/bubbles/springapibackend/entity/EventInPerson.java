@@ -1,6 +1,8 @@
 package bubbles.springapibackend.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,8 @@ import lombok.Setter;
 public class EventInPerson extends Event {
     private boolean publicPlace;
     private Integer peopleCapacity;
+
+    @OneToOne
     private Address address;
 
     @Override

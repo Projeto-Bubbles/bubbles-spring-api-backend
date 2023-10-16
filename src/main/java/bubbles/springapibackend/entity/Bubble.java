@@ -16,11 +16,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Bubble {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String description;
     private LocalDate creationDate;
+
     private Category category;
 
     @ManyToOne

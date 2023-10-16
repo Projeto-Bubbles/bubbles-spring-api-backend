@@ -19,6 +19,7 @@ import java.util.UUID;
 public class PostController {
 
     private final PostRepository postRepository;
+    @GetMapping
     public ResponseEntity<List<Post>> getPosts() {
         List<Post> posts = this.postRepository.findAll();
 
@@ -37,7 +38,7 @@ public class PostController {
 
     @GetMapping("/author")
     public ResponseEntity<List<Post>> getByAuthor(@RequestParam String author) {
-        List<Post> posts = this.postRepository.findByAuthor(author);
+        List<Post> posts = this.postRepository.findByAuthor_Name(author);
 
         if(posts.isEmpty()){
             return  ResponseEntity.noContent().build();
@@ -48,7 +49,7 @@ public class PostController {
 
     @GetMapping("/bubble")
     public ResponseEntity<List<Post>> getByBubble(@RequestParam String bubble) {
-        List<Post> posts = this.postRepository.findByBubble(bubble);
+        List<Post> posts = this.postRepository.findByBubble_Name(bubble);
 
         if(posts.isEmpty()){
             return  ResponseEntity.noContent().build();
