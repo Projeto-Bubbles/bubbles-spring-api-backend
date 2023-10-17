@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "tb_event")
 @Getter
 @Setter
 @NoArgsConstructor
