@@ -30,5 +30,6 @@ public abstract class Event {
     @ManyToOne
     private Bubble bubble;
 
+//  o que é isso aqui ?
     public abstract String sendConfirmationCode();
 }

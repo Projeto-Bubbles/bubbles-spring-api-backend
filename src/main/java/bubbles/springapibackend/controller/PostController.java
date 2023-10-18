@@ -31,9 +31,9 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getById(@PathVariable UUID id) {
+    public ResponseEntity<Optional<Post>> getById(@PathVariable Integer id) {
         Optional<Post> postOpt = this.postRepository.findById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(postOpt);
     }
 
     @GetMapping("/author")
@@ -65,7 +65,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> editPost(@PathVariable UUID id, @Validated @RequestBody Post updatedPost) {
+    public ResponseEntity<Post> editPost(@PathVariable Integer id, @Validated @RequestBody Post updatedPost) {
         Optional<Post> existingPostOpt = postRepository.findById(id);
 
         if (existingPostOpt.isPresent()) {
@@ -83,7 +83,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable UUID id) {
+    public ResponseEntity<Void> deletePost(@PathVariable Integer id) {
         Optional<Post> existingPostOpt = postRepository.findById(id);
 
         if (existingPostOpt.isPresent()) {
