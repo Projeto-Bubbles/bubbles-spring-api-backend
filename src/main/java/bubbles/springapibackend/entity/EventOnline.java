@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_eventOnline")
 @Getter
 @Setter
 @NoArgsConstructor

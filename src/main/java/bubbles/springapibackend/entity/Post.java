@@ -22,10 +22,8 @@ public class Post {
     private LocalDateTime dateTime;
     private String content;
 
-    @ManyToOne
-    private User author;
-    @ManyToOne
-    private Bubble bubble;
+    private String author;
+    private String bubble;
     @OneToMany
     private List<Comment> comments;
 }
