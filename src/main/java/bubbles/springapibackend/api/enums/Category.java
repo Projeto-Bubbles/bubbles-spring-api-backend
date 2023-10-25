@@ -3,7 +3,7 @@ package bubbles.springapibackend.api.enums;
 public enum Category {
     SPORTS("sports"),
     MUSIC("music"),
-    FASHION("fashion"),
+    GAME("game"),
     ART("art"),
     TECHNOLOGY("technology"),
     SCIENCE("science"),

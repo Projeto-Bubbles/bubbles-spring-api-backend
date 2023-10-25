@@ -1,4 +1,4 @@
-package bubbles.springapibackend.api.security;
+package bubbles.springapibackend.api.configuration.security;
 
 import bubbles.springapibackend.domain.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;

@@ -22,18 +22,15 @@ public class EventController {
     private final EventRepository eventRepository;
 
     @GetMapping()
-    @Operation(summary = "Get Available Events",
-            description = "Returns all events for the current date or in the future.")
+    @Operation(summary = "Get Available Events", description = "Returns all events for the current date or in the future.")
     public ResponseEntity<List<Event>> getAvailableEvents() {
-        LocalDateTime currentDate = LocalDateTime.now();
-        List<Event> events = eventRepository.findAvailableEvents(currentDate);
+        List<Event> events = eventRepository.findAll();
 
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
 
-    @Operation(summary = "Get Event by ID",
-            description = "Returns an event by its unique ID.")
+    @Operation(summary = "Get Event by ID", description = "Returns an event by its unique ID.")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Event>> getEventById(
             @Parameter(description = "Unique event ID") @PathVariable Integer id) {
@@ -41,8 +38,7 @@ public class EventController {
         return ResponseEntity.of(Optional.ofNullable(eventOpt));
     }
 
-    @Operation(summary = "Get Events by Author",
-            description = "Returns events authored by a specific user.")
+    @Operation(summary = "Get Events by Author", description = "Returns events authored by a specific user.")
     @GetMapping("/author")
     public ResponseEntity<List<Event>> getEventsByAuthor(
             @Parameter(description = "Author's name") @RequestParam String author) {

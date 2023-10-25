@@ -1,4 +1,4 @@
-package bubbles.springapibackend.api.security;
+package bubbles.springapibackend.api.configuration.security;
 
 import bubbles.springapibackend.domain.user.model.UserModel;
 import com.auth0.jwt.JWT;

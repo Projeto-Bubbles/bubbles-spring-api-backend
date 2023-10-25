@@ -1,6 +1,6 @@
 package bubbles.springapibackend.service.authorization;
 
-import bubbles.springapibackend.api.security.TokenService;
+import bubbles.springapibackend.api.configuration.security.TokenService;
 import bubbles.springapibackend.service.user.dto.AuthetinticationDto;
 import bubbles.springapibackend.service.user.dto.LoginResponseDto;
 import bubbles.springapibackend.service.user.dto.RegisterDto;
