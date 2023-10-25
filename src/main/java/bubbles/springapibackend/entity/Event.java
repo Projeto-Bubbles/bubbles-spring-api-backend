@@ -1,6 +1,5 @@
 package bubbles.springapibackend.entity;
 
-import bubbles.springapibackend.enums.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

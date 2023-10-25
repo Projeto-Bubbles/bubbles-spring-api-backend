@@ -1,6 +1,6 @@
 package bubbles.springapibackend.user.repository;
 
-import com.example.bubblesspringjwtbackend.user.model.UserModel;
+import bubbles.springapibackend.user.model.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 

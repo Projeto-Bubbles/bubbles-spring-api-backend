@@ -1,11 +1,11 @@
 package bubbles.springapibackend.auth.service;
 
-import com.example.bubblesspringjwtbackend.security.TokenService;
-import com.example.bubblesspringjwtbackend.user.dto.AuthetinticationDto;
-import com.example.bubblesspringjwtbackend.user.dto.LoginResponseDto;
-import com.example.bubblesspringjwtbackend.user.dto.RegisterDto;
-import com.example.bubblesspringjwtbackend.user.model.UserModel;
-import com.example.bubblesspringjwtbackend.user.repository.UserRepository;
+import bubbles.springapibackend.security.TokenService;
+import bubbles.springapibackend.user.dto.AuthetinticationDto;
+import bubbles.springapibackend.user.dto.LoginResponseDto;
+import bubbles.springapibackend.user.dto.RegisterDto;
+import bubbles.springapibackend.user.model.UserModel;
+import bubbles.springapibackend.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

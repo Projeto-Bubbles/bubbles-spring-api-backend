@@ -1,6 +1,6 @@
 package bubbles.springapibackend.security;
 
-import com.example.bubblesspringjwtbackend.user.repository.UserRepository;
+import bubbles.springapibackend.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
