@@ -1,7 +1,7 @@
-package bubbles.springapibackend.controller;
+package bubbles.springapibackend.api.controller.post;
 
-import bubbles.springapibackend.entity.Post;
-import bubbles.springapibackend.repository.PostRepository;
+import bubbles.springapibackend.domain.post.Post;
+import bubbles.springapibackend.domain.post.repository.PostRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
-package bubbles.springapibackend.entity;
+package bubbles.springapibackend.domain.post;
 
-import bubbles.springapibackend.enums.Category;
+import bubbles.springapibackend.domain.comment.Comment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,26 +8,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "tb_event")
+@Table(name = "tb_post")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Event {
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String title;
-    private LocalDateTime date;
-    private String category;
-    private Integer duration;
+    private LocalDateTime dateTime;
+    private String content;
 
     private String author;
-
     private String bubble;
-
-//  o que é isso aqui ?
-    public abstract String sendConfirmationCode();
+    @OneToMany
+    private List<Comment> comments;
 }

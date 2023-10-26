@@ -1,26 +1,27 @@
-package bubbles.springapibackend.entity;
+package bubbles.springapibackend.domain.comment;
 
+import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "tb_address")
+@Table(name = "tb_comment")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Address {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String cep;
-    private String country;
-    private String state;
-    private String city;
-    private String neighborhood;
-    private String street;
-    private Integer number;
+
+    @ManyToOne
+    private User author;
+    private LocalDateTime dateTime;
+    private String content;
 }

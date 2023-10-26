@@ -1,13 +1,12 @@
-package bubbles.springapibackend.controller;
+package bubbles.springapibackend.api.controller.event;
 
-import bubbles.springapibackend.entity.Event;
-import bubbles.springapibackend.entity.EventInPerson;
-import bubbles.springapibackend.entity.EventOnline;
-import bubbles.springapibackend.repository.EventRepository;
+import bubbles.springapibackend.domain.event.Event;
+import bubbles.springapibackend.domain.event.EventInPerson;
+import bubbles.springapibackend.domain.event.EventOnline;
+import bubbles.springapibackend.domain.event.repository.EventRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +22,15 @@ public class EventController {
     private final EventRepository eventRepository;
 
     @GetMapping()
-    @Operation(summary = "Get Available Events",
-            description = "Returns all events for the current date or in the future.")
+    @Operation(summary = "Get Available Events", description = "Returns all events for the current date or in the future.")
     public ResponseEntity<List<Event>> getAvailableEvents() {
-        LocalDateTime currentDate = LocalDateTime.now();
-        List<Event> events = eventRepository.findAvailableEvents(currentDate);
+        List<Event> events = eventRepository.findAll();
 
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
 
-    @Operation(summary = "Get Event by ID",
-            description = "Returns an event by its unique ID.")
+    @Operation(summary = "Get Event by ID", description = "Returns an event by its unique ID.")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Event>> getEventById(
             @Parameter(description = "Unique event ID") @PathVariable Integer id) {
@@ -42,8 +38,7 @@ public class EventController {
         return ResponseEntity.of(Optional.ofNullable(eventOpt));
     }
 
-    @Operation(summary = "Get Events by Author",
-            description = "Returns events authored by a specific user.")
+    @Operation(summary = "Get Events by Author", description = "Returns events authored by a specific user.")
     @GetMapping("/author")
     public ResponseEntity<List<Event>> getEventsByAuthor(
             @Parameter(description = "Author's name") @RequestParam String author) {

@@ -1,4 +1,4 @@
-package bubbles.springapibackend.entity;
+package bubbles.springapibackend.domain.address;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,21 +7,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_address")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String username;
-    private String email;
-    private String password;
-    private String cpf;
-
-    @OneToOne
-    private Address address;
+    private String cep;
+    private String country;
+    private String state;
+    private String city;
+    private String neighborhood;
+    private String street;
+    private Integer number;
 }

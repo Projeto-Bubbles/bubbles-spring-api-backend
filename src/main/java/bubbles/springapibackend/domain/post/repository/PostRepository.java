@@ -1,6 +1,6 @@
-package bubbles.springapibackend.repository;
+package bubbles.springapibackend.domain.post.repository;
 
-import bubbles.springapibackend.entity.Post;
+import bubbles.springapibackend.domain.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package bubbles.springapibackend.entity;
+package bubbles.springapibackend.domain.event;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,23 +7,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "tb_post")
+@Table(name = "tb_event")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public abstract class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private LocalDateTime dateTime;
-    private String content;
+    private String title;
+    private LocalDateTime date;
+    private String category;
+    private Integer duration;
 
     private String author;
+
     private String bubble;
-    @OneToMany
-    private List<Comment> comments;
+
+//  o que é isso aqui ?
+    public abstract String sendConfirmationCode();
 }
