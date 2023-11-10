@@ -1,7 +1,7 @@
 package bubbles.springapibackend.api.controller.post;
 
-import bubbles.springapibackend.domain.post.Post;
-import bubbles.springapibackend.domain.post.repository.PostRepository;
+import bubbles.springapibackend.entity.Post;
+import bubbles.springapibackend.repository.PostRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +48,7 @@ public class PostController {
     @GetMapping("/author")
     public ResponseEntity<List<Post>> getByAuthor(
             @Parameter(description = "Author's name") @RequestParam String author) {
-        List<Post> posts = this.postRepository.findByAuthor(author);
+        List<Post> posts = this.postRepository.findByAuthor_Name(author.);
 
         if (posts.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -62,7 +62,7 @@ public class PostController {
     @GetMapping("/bubble")
     public ResponseEntity<List<Post>> getByBubble(
             @Parameter(description = "Bubble (group) name") @RequestParam String bubble) {
-        List<Post> posts = this.postRepository.findByBubble(bubble);
+        List<Post> posts = this.postRepository.findByBubble_Name(bubble);
 
         if (posts.isEmpty()) {
             return ResponseEntity.noContent().build();
