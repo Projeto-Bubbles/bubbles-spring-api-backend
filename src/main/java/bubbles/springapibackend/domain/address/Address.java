@@ -1,4 +1,4 @@
-package bubbles.springapibackend.entity;
+package bubbles.springapibackend.domain.address;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

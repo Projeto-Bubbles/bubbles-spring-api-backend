@@ -1,14 +1,12 @@
-package bubbles.springapibackend.entity;
+package bubbles.springapibackend.domain.event;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_eventOnline")
 @Getter
 @Setter
 @NoArgsConstructor

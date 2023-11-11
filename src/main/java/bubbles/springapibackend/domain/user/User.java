@@ -1,30 +1,28 @@
-package bubbles.springapibackend.entity;
+package bubbles.springapibackend.domain.user;
 
-import bubbles.springapibackend.enuns.Category;
+import bubbles.springapibackend.domain.address.Address;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name = "tb_bubble")
+@Table(name = "tb_user")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Bubble {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private String description;
-    private LocalDate creationDate;
+    private String username;
+    private String email;
+    private String password;
+    private String cpf;
 
-    private Category category;
-
-    @ManyToOne
-    private User creator;
+    @OneToOne
+    private Address address;
 }

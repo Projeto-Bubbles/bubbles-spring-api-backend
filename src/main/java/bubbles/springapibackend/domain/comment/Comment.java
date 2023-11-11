@@ -1,5 +1,6 @@
-package bubbles.springapibackend.entity;
+package bubbles.springapibackend.domain.comment;
 
+import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,25 +8,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "tb_post")
+@Table(name = "tb_comment")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private LocalDateTime dateTime;
     private String content;
 
     @ManyToOne
     private User author;
     @ManyToOne
-    private Bubble bubble;
-    @OneToMany
-    private List<Comment> comments;
+    private Post post;
+
+    private LocalDateTime dateTime;
 }
