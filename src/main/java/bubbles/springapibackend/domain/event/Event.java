@@ -22,9 +22,7 @@ public abstract class Event {
     private LocalDateTime date;
     private String category;
     private Integer duration;
-
     private String author;
-
     private String bubble;
 
 //  o que é isso aqui ?
