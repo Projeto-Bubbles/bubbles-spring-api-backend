@@ -1,5 +1,6 @@
 package bubbles.springapibackend.domain.comment;
 
+import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,8 @@ public class Comment {
 
     @ManyToOne
     private User author;
+    @ManyToOne
+    private Post post;
     private LocalDateTime dateTime;
     private String content;
 }

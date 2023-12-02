@@ -25,6 +25,7 @@ public class Post {
 
     private String author;
     private String bubble;
+
     @OneToMany
     private List<Comment> comments;
 }

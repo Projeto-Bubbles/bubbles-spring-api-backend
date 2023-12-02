@@ -26,6 +26,6 @@ public class Bubble {
 
     private Category category;
 
-    @ManyToOne
+    @OneToOne
     private User creator;
 }
