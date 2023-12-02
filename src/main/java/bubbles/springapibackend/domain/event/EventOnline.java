@@ -1,22 +1,24 @@
 package bubbles.springapibackend.domain.event;
 
+import bubbles.springapibackend.domain.bubble.Bubble;
+import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class EventOnline extends Event{
     private String platform;
     private String url;
 
-    @Override
-    public String sendConfirmationCode() {
-        return null;
+    public EventOnline(Integer id, String title, LocalDateTime date, Integer duration, User author,
+                       Bubble bubble, String platform, String url) {
+        super(id, title, date, duration, author, bubble);
+        this.platform = platform;
+        this.url = url;
     }
 }
