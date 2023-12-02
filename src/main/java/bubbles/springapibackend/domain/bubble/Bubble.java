@@ -24,7 +24,7 @@ public class Bubble {
     private String description;
     private LocalDate creationDate;
 
-    private Category category;
+    private String category;
 
     @ManyToOne
     private User creator;

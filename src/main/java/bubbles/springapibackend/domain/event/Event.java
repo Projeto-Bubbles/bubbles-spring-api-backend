@@ -1,5 +1,7 @@
 package bubbles.springapibackend.domain.event;
 
+import bubbles.springapibackend.domain.bubble.Bubble;
+import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,11 +22,11 @@ public abstract class Event {
     private Integer id;
     private String title;
     private LocalDateTime date;
-    private String category;
     private Integer duration;
-    private String author;
-    private String bubble;
 
-//  o que é isso aqui ?
-    public abstract String sendConfirmationCode();
+    @ManyToOne
+    private User author;
+
+    @ManyToOne
+    private Bubble bubble;
 }

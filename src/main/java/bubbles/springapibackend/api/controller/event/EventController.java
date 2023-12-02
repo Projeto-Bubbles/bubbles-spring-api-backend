@@ -1,9 +1,11 @@
 package bubbles.springapibackend.api.controller.event;
 
+import bubbles.springapibackend.api.enums.Category;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.event.EventInPerson;
 import bubbles.springapibackend.domain.event.EventOnline;
 import bubbles.springapibackend.domain.event.repository.EventRepository;
+import bubbles.springapibackend.service.event.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EventController {
     private final EventRepository eventRepository;
+    private final EventService eventService;
 
     @GetMapping()
     @Operation(summary = "Get Available Events", description = "Returns all events for the current date or in the future.")
@@ -41,7 +45,7 @@ public class EventController {
     @GetMapping("/author")
     public ResponseEntity<List<Event>> getEventsByAuthor(
             @Parameter(description = "Author's name") @RequestParam String author) {
-        List<Event> events = eventRepository.findByAuthor(author);
+        List<Event> events = eventRepository.findByAuthor_Name(author);
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
@@ -51,7 +55,18 @@ public class EventController {
     @GetMapping("/bubble")
     public ResponseEntity<List<Event>> getEventsByBubble(
             @Parameter(description = "Bubble (group) name") @RequestParam String bubble) {
-        List<Event> events = eventRepository.findByBubble(bubble);
+        List<Event> events = eventRepository.findByBubble_Name(bubble);
+        if (events.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(events);
+    }
+
+    @GetMapping("/filtered")
+    @Operation(summary = "Get Events by Category",
+            description = "Returns events associated with a specific category.")
+    public ResponseEntity<List<Event>> getEventsByCategory(
+            @Parameter(description = "Event category") @RequestParam List<String> categories) {
+        List<Event> events = eventService.getFilteredEvents(categories);
+
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
@@ -87,7 +102,6 @@ public class EventController {
                     (EventInPerson) existingEventOpt.get();
             existingEvent.setTitle(updatedEvent.getTitle());
             existingEvent.setDate(updatedEvent.getDate());
-            existingEvent.setCategory(updatedEvent.getCategory());
             existingEvent.setDuration(updatedEvent.getDuration());
             updatedEvent = eventRepository.save(existingEvent);
             return ResponseEntity.ok(updatedEvent);
@@ -107,7 +121,6 @@ public class EventController {
             EventOnline existingEvent = (EventOnline) existingEventOpt.get();
             existingEvent.setTitle(updatedEvent.getTitle());
             existingEvent.setDate(updatedEvent.getDate());
-            existingEvent.setCategory(updatedEvent.getCategory());
             existingEvent.setDuration(updatedEvent.getDuration());
             updatedEvent = eventRepository.save(existingEvent);
             return ResponseEntity.ok(updatedEvent);
