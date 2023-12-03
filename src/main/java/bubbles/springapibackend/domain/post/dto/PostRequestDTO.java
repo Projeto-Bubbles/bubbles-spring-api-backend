@@ -1,11 +1,12 @@
 package bubbles.springapibackend.domain.post.dto;
 
+import bubbles.springapibackend.domain.user.User;
 import lombok.Data;
 
 @Data
 public class PostRequestDTO {
     private String content;
-    private String author;
+    private Integer authorId;
     private String bubble;
 }
 

@@ -8,7 +8,6 @@ import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.post.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,14 +24,12 @@ public class CommentService {
         return commentRepository.findByPostId(postId);
     }
 
-    public Comment createComment(CommentRequestDTO commentRequestDTO) {
-        Comment comment = commentMapper.toEntity(commentRequestDTO);
-        comment.setDateTime(LocalDateTime.now());
-
-        // Verifique se está associando corretamente ao post
-        Post post = postRepository.findById(commentRequestDTO.getPostId())
+    public Comment createComment(CommentRequestDTO commentRequestDTO, Integer postId) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
 
+        Comment comment = commentMapper.toEntity(commentRequestDTO);
+        comment.setDateTime(LocalDateTime.now());
         comment.setPost(post);
 
         return commentRepository.save(comment);

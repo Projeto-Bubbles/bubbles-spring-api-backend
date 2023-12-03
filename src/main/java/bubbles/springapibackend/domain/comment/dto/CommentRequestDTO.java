@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Data
 public class CommentRequestDTO {
     private Integer authorId;
-    private Integer postId;
     private LocalDateTime dateTime;
     private String content;
 }
