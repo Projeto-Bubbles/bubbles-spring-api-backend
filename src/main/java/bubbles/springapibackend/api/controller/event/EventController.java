@@ -90,17 +90,14 @@ public class EventController {
         return ResponseEntity.ok().body(savedEvent);
     }
 
-    @Operation(summary = "Edit In-Person Event",
-            description = "Edit an existing in-person event.")
+    @Operation(summary = "Edit In-Person Event", description = "Edit an existing in-person event.")
     @PatchMapping("/edit/inPerson/{id}")
     public ResponseEntity<Event> editInPersonEvent(
             @Parameter(description = "Event ID") @PathVariable Integer id,
             @Parameter(description = "Patched in-person event JSON") @Validated @RequestBody EventInPerson updatedEvent) {
         Optional<Event> existingEventOpt = eventRepository.findById(id);
-
         if (existingEventOpt.isPresent()) {
-            EventInPerson existingEvent =
-                    (EventInPerson) existingEventOpt.get();
+            EventInPerson existingEvent = (EventInPerson) existingEventOpt.get();
             existingEvent.setTitle(updatedEvent.getTitle());
             existingEvent.setDate(updatedEvent.getDate());
             existingEvent.setDuration(updatedEvent.getDuration());
@@ -111,8 +108,7 @@ public class EventController {
         }
     }
 
-    @Operation(summary = "Edit Online Event",
-            description = "Edit an existing online event.")
+    @Operation(summary = "Edit Online Event", description = "Edit an existing online event.")
     @PatchMapping("/edit/online/{id}")
     public ResponseEntity<Event> editOnlineEvent(
             @Parameter(description = "Event ID") @PathVariable Integer id,
