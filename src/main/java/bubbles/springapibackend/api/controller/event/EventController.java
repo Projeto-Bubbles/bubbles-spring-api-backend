@@ -13,9 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/events")
@@ -64,8 +64,9 @@ public class EventController {
     @Operation(summary = "Get Events by Category",
             description = "Returns events associated with a specific category.")
     public ResponseEntity<List<Event>> getEventsByCategory(
-            @Parameter(description = "Event category") @RequestParam List<String> categories) {
-        List<Event> events = eventService.getFilteredEvents(categories);
+            @Parameter(description = "Event categories") @RequestParam List<String> categories) {
+        List<Category> categoryEnums = categories.stream().map(Category::valueOf).collect(Collectors.toList());
+        List<Event> events = eventService.getFilteredEvents(categoryEnums);
 
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
@@ -143,7 +144,4 @@ public class EventController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    // Exportação e Importação de Arquivos
-
 }
