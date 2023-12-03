@@ -1,9 +1,11 @@
 package bubbles.springapibackend.api.controller.event;
 
+import bubbles.springapibackend.api.enums.Category;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.event.EventInPerson;
 import bubbles.springapibackend.domain.event.EventOnline;
 import bubbles.springapibackend.domain.event.repository.EventRepository;
+import bubbles.springapibackend.service.event.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -11,29 +13,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/events")
 @RequiredArgsConstructor
 public class EventController {
     private final EventRepository eventRepository;
+    private final EventService eventService;
 
     @GetMapping()
-    @Operation(summary = "Get Available Events",
-            description = "Returns all events for the current date or in the future.")
+    @Operation(summary = "Get Available Events", description = "Returns all events for the current date or in the future.")
     public ResponseEntity<List<Event>> getAvailableEvents() {
-        LocalDateTime currentDate = LocalDateTime.now();
-        List<Event> events = eventRepository.findAvailableEvents(currentDate);
+        List<Event> events = eventRepository.findAll();
 
         if (events.isEmpty()) return ResponseEntity.noContent().build();
+
+        Collections.sort(events, Comparator.comparing(Event::getId));
+
         return ResponseEntity.ok(events);
     }
 
-    @Operation(summary = "Get Event by ID",
-            description = "Returns an event by its unique ID.")
+    @Operation(summary = "Get Event by ID", description = "Returns an event by its unique ID.")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Event>> getEventById(
             @Parameter(description = "Unique event ID") @PathVariable Integer id) {
@@ -41,12 +46,11 @@ public class EventController {
         return ResponseEntity.of(Optional.ofNullable(eventOpt));
     }
 
-    @Operation(summary = "Get Events by Author",
-            description = "Returns events authored by a specific user.")
+    @Operation(summary = "Get Events by Author", description = "Returns events authored by a specific user.")
     @GetMapping("/author")
     public ResponseEntity<List<Event>> getEventsByAuthor(
             @Parameter(description = "Author's name") @RequestParam String author) {
-        List<Event> events = eventRepository.findByAuthor(author);
+        List<Event> events = eventRepository.findByAuthor_Name(author);
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
@@ -56,7 +60,19 @@ public class EventController {
     @GetMapping("/bubble")
     public ResponseEntity<List<Event>> getEventsByBubble(
             @Parameter(description = "Bubble (group) name") @RequestParam String bubble) {
-        List<Event> events = eventRepository.findByBubble(bubble);
+        List<Event> events = eventRepository.findByBubble_Name(bubble);
+        if (events.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(events);
+    }
+
+    @GetMapping("/filtered")
+    @Operation(summary = "Get Events by Category",
+            description = "Returns events associated with a specific category.")
+    public ResponseEntity<List<Event>> getEventsByCategory(
+            @Parameter(description = "Event categories") @RequestParam List<String> categories) {
+        List<Category> categoryEnums = categories.stream().map(Category::valueOf).collect(Collectors.toList());
+        List<Event> events = eventService.getFilteredEvents(categoryEnums);
+
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
@@ -79,20 +95,16 @@ public class EventController {
         return ResponseEntity.ok().body(savedEvent);
     }
 
-    @Operation(summary = "Edit In-Person Event",
-            description = "Edit an existing in-person event.")
+    @Operation(summary = "Edit In-Person Event", description = "Edit an existing in-person event.")
     @PatchMapping("/edit/inPerson/{id}")
     public ResponseEntity<Event> editInPersonEvent(
             @Parameter(description = "Event ID") @PathVariable Integer id,
             @Parameter(description = "Patched in-person event JSON") @Validated @RequestBody EventInPerson updatedEvent) {
         Optional<Event> existingEventOpt = eventRepository.findById(id);
-
         if (existingEventOpt.isPresent()) {
-            EventInPerson existingEvent =
-                    (EventInPerson) existingEventOpt.get();
+            EventInPerson existingEvent = (EventInPerson) existingEventOpt.get();
             existingEvent.setTitle(updatedEvent.getTitle());
             existingEvent.setDate(updatedEvent.getDate());
-            existingEvent.setCategory(updatedEvent.getCategory());
             existingEvent.setDuration(updatedEvent.getDuration());
             updatedEvent = eventRepository.save(existingEvent);
             return ResponseEntity.ok(updatedEvent);
@@ -101,8 +113,7 @@ public class EventController {
         }
     }
 
-    @Operation(summary = "Edit Online Event",
-            description = "Edit an existing online event.")
+    @Operation(summary = "Edit Online Event", description = "Edit an existing online event.")
     @PatchMapping("/edit/online/{id}")
     public ResponseEntity<Event> editOnlineEvent(
             @Parameter(description = "Event ID") @PathVariable Integer id,
@@ -112,7 +123,6 @@ public class EventController {
             EventOnline existingEvent = (EventOnline) existingEventOpt.get();
             existingEvent.setTitle(updatedEvent.getTitle());
             existingEvent.setDate(updatedEvent.getDate());
-            existingEvent.setCategory(updatedEvent.getCategory());
             existingEvent.setDuration(updatedEvent.getDuration());
             updatedEvent = eventRepository.save(existingEvent);
             return ResponseEntity.ok(updatedEvent);
@@ -135,5 +145,4 @@ public class EventController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }
