@@ -6,22 +6,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
     List<Event> findByAuthor_Name(String author);
 
-    @Query("SELECT e FROM Event e WHERE e.date >= :currentDate")
-    List<Event> findAvailableEvents(LocalDateTime currentDate);
-
     List<Event> findByBubble_Name(String bubble);
 
     Optional<Event> findById(Integer id);
 
     @Query("SELECT e FROM Event e WHERE (:categories IS NULL OR e.bubble.category IN :categories)")
-    List<Event> findFilteredEvents(@Param("categories") List<String> categories);
+    List<Event> findFilteredEvents(@Param("categories") List<Category> categories);
 }
 
 

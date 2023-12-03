@@ -14,8 +14,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/events")
@@ -30,6 +32,9 @@ public class EventController {
         List<Event> events = eventRepository.findAll();
 
         if (events.isEmpty()) return ResponseEntity.noContent().build();
+
+        Collections.sort(events, Comparator.comparing(Event::getId));
+
         return ResponseEntity.ok(events);
     }
 
@@ -64,8 +69,9 @@ public class EventController {
     @Operation(summary = "Get Events by Category",
             description = "Returns events associated with a specific category.")
     public ResponseEntity<List<Event>> getEventsByCategory(
-            @Parameter(description = "Event category") @RequestParam List<String> categories) {
-        List<Event> events = eventService.getFilteredEvents(categories);
+            @Parameter(description = "Event categories") @RequestParam List<String> categories) {
+        List<Category> categoryEnums = categories.stream().map(Category::valueOf).collect(Collectors.toList());
+        List<Event> events = eventService.getFilteredEvents(categoryEnums);
 
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
@@ -89,17 +95,14 @@ public class EventController {
         return ResponseEntity.ok().body(savedEvent);
     }
 
-    @Operation(summary = "Edit In-Person Event",
-            description = "Edit an existing in-person event.")
+    @Operation(summary = "Edit In-Person Event", description = "Edit an existing in-person event.")
     @PatchMapping("/edit/inPerson/{id}")
     public ResponseEntity<Event> editInPersonEvent(
             @Parameter(description = "Event ID") @PathVariable Integer id,
             @Parameter(description = "Patched in-person event JSON") @Validated @RequestBody EventInPerson updatedEvent) {
         Optional<Event> existingEventOpt = eventRepository.findById(id);
-
         if (existingEventOpt.isPresent()) {
-            EventInPerson existingEvent =
-                    (EventInPerson) existingEventOpt.get();
+            EventInPerson existingEvent = (EventInPerson) existingEventOpt.get();
             existingEvent.setTitle(updatedEvent.getTitle());
             existingEvent.setDate(updatedEvent.getDate());
             existingEvent.setDuration(updatedEvent.getDuration());
@@ -110,8 +113,7 @@ public class EventController {
         }
     }
 
-    @Operation(summary = "Edit Online Event",
-            description = "Edit an existing online event.")
+    @Operation(summary = "Edit Online Event", description = "Edit an existing online event.")
     @PatchMapping("/edit/online/{id}")
     public ResponseEntity<Event> editOnlineEvent(
             @Parameter(description = "Event ID") @PathVariable Integer id,
@@ -143,7 +145,4 @@ public class EventController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    // Exportação e Importação de Arquivos
-
 }
