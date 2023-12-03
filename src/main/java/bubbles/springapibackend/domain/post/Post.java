@@ -22,7 +22,6 @@ public class Post {
     private Integer id;
     private LocalDateTime dateTime;
     private String content;
-
     private String author;
     private String bubble;
     @OneToMany
