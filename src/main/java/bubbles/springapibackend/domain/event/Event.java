@@ -1,5 +1,7 @@
 package bubbles.springapibackend.domain.event;
 
+import bubbles.springapibackend.domain.bubble.Bubble;
+import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +11,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
+@DiscriminatorColumn(name = "event_type")
 @Table(name = "tb_event")
 @Getter
 @Setter
@@ -20,13 +23,11 @@ public abstract class Event {
     private Integer id;
     private String title;
     private LocalDateTime date;
-    private String category;
     private Integer duration;
 
-    private String author;
+    @ManyToOne
+    private User author;
 
-    private String bubble;
-
-//  o que é isso aqui ?
-    public abstract String sendConfirmationCode();
+    @ManyToOne
+    private Bubble bubble;
 }

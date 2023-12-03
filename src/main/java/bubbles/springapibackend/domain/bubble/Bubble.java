@@ -24,8 +24,10 @@ public class Bubble {
     private String description;
     private LocalDate creationDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category")
     private Category category;
 
-    @ManyToOne
+    @OneToOne
     private User creator;
 }

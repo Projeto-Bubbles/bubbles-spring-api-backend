@@ -1,15 +1,13 @@
 package bubbles.springapibackend.api.enums;
 
 public enum Category {
-    SPORTS("sports"),
-    MUSIC("music"),
-    GAME("game"),
-    ART("art"),
-    TECHNOLOGY("technology"),
-    SCIENCE("science"),
-    CULINARY("culinary"),
-    READING("reading");
+    SPORTS,
+    MUSIC,
+    GAME,
+    ART,
+    TECHNOLOGY,
+    SCIENCE,
+    CULINARY,
+    READING
 
-    Category(String value) {
-    }
 }

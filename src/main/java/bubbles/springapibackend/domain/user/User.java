@@ -1,11 +1,14 @@
 package bubbles.springapibackend.domain.user;
 
 import bubbles.springapibackend.domain.address.Address;
+import bubbles.springapibackend.domain.post.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
@@ -18,11 +21,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private String username;
     private String email;
-    private String password;
     private String cpf;
+    private String username;
+    private String password;
 
     @OneToOne
     private Address address;
+
+    @OneToMany
+    private List<Post> posts;
 }
