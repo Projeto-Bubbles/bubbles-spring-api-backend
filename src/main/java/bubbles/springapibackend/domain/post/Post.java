@@ -26,6 +26,6 @@ public class Post {
     private String author;
     private String bubble;
 
-    @OneToMany
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 }

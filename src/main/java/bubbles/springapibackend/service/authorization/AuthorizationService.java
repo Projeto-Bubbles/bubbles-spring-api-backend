@@ -1,6 +1,7 @@
 package bubbles.springapibackend.service.authorization;
 
 import bubbles.springapibackend.api.configuration.security.TokenService;
+import bubbles.springapibackend.domain.user.repository.UserModelRepository;
 import bubbles.springapibackend.service.user.dto.AuthetinticationDto;
 import bubbles.springapibackend.service.user.dto.LoginResponseDto;
 import bubbles.springapibackend.service.user.dto.RegisterDto;
@@ -29,7 +30,7 @@ public class AuthorizationService implements UserDetailsService {
     private ApplicationContext context;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserModelRepository userRepository;
 
     @Autowired
     private TokenService tokenService;
