@@ -11,9 +11,9 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class EventService {
-        private final EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
-        public List<Event> getFilteredEvents(List<Category> categories) {
-            return eventRepository.findFilteredEvents(categories);
-        }
+    public List<Event> getFilteredEvents(List<Category> categories) {
+        return eventRepository.findFilteredEvents(categories);
+    }
 }
