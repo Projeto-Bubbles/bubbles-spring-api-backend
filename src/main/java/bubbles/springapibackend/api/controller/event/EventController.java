@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +32,9 @@ public class EventController {
         List<Event> events = eventRepository.findAll();
 
         if (events.isEmpty()) return ResponseEntity.noContent().build();
+
+        Collections.sort(events, Comparator.comparing(Event::getId));
+
         return ResponseEntity.ok(events);
     }
 

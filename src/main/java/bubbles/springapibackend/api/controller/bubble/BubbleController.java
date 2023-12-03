@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +30,9 @@ public class BubbleController {
         List<Bubble> bubbles = bubbleRepository.findAll();
 
         if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
+
+        Collections.sort(bubbles, Comparator.comparing(Bubble::getId));
+
         return ResponseEntity.ok(bubbles);
     }
 
