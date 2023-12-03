@@ -4,6 +4,8 @@ import bubbles.springapibackend.domain.address.Address;
 import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.*;
 
@@ -17,7 +19,7 @@ public class EventInPerson extends Event {
     private boolean publicPlace;
     private Integer peopleCapacity;
 
-    @OneToOne
+    @ManyToOne
     private Address address;
 
     public EventInPerson(Integer id, String title, LocalDateTime date, Integer duration, User author,
