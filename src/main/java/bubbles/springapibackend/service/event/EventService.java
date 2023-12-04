@@ -8,6 +8,7 @@ import bubbles.springapibackend.domain.event.repository.EventRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,6 +36,10 @@ public class EventService {
 
     public List<Event> getFilteredEvents(List<Category> categories) {
         return eventRepository.findFilteredEvents(categories);
+    }
+
+    public List<Event> findTop5EventsAfterDate(LocalDateTime dateTime) {
+        return eventRepository.findTop5ByDateAfter(dateTime);
     }
 
     public Event createInPersonEvent(EventInPerson newEvent) {

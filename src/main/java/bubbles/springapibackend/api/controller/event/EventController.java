@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -77,6 +78,21 @@ public class EventController {
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
+
+    @GetMapping("/top5")
+    @Operation(summary = "Get Top 5 Events After a Specific Date",
+            description = "Returns the top 5 events occurring after a specific date.")
+    public ResponseEntity<List<Event>> getTop5EventsAfterDate() {
+        LocalDateTime date = LocalDateTime.now();
+        List<Event> top5Events = eventService.findTop5EventsAfterDate(date);
+
+        if (top5Events.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(top5Events);
+        }
+    }
+
 
     @Operation(summary = "Create In-Person Event",
             description = "Create a new in-person event.")
