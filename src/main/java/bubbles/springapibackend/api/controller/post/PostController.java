@@ -1,23 +1,22 @@
 package bubbles.springapibackend.api.controller.post;
 
-import bubbles.springapibackend.domain.comment.Comment;
+import bubbles.springapibackend.api.util.Stack;
 import bubbles.springapibackend.domain.comment.dto.CommentRequestDTO;
 import bubbles.springapibackend.domain.comment.dto.CommentResponseDTO;
 import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.post.dto.PostRequestDTO;
 import bubbles.springapibackend.domain.post.dto.PostResponseDTO;
 import bubbles.springapibackend.domain.post.mapper.PostMapper;
-import bubbles.springapibackend.service.comment.CommentService;
 import bubbles.springapibackend.service.post.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,12 +45,29 @@ public class PostController {
     @GetMapping
     public ResponseEntity<List<PostResponseDTO>> getPosts() {
         List<PostResponseDTO> posts = postService.getPosts();
+
         if (posts.isEmpty()) {
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(posts);
         }
+
+        Stack<PostResponseDTO> postStack = new Stack<>(posts.size());
+
+        // Adiciona os posts à fila
+        for (PostResponseDTO post : posts) {
+            postStack.push(post);
+        }
+
+        List<PostResponseDTO> postsInStack = new ArrayList<>();
+
+        // Remove os posts da fila e adiciona à lista
+        while (!postStack.isEmpty()) {
+            postsInStack.add(postStack.pop());
+        }
+
+        return ResponseEntity.ok(postsInStack);
     }
+
+
 
     @Operation(summary = "Get Post by ID",
             description = "Returns a post by its unique ID.")
