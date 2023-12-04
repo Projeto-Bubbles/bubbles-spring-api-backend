@@ -31,7 +31,4 @@ public class Comment {
 
     private LocalDateTime dateTime;
     private String content;
-
-    @ManyToOne
-    private Post post;
 }
