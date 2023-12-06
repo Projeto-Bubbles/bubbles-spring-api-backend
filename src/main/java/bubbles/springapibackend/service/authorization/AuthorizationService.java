@@ -52,7 +52,7 @@ public class AuthorizationService implements UserDetailsService {
 
 
     public ResponseEntity<Object> register(@RequestBody RegisterDto registerDto) {
-        if (this.userRepository.findByEmail(registerDto.email()) != null) {
+        if (this.userRepository.existsByEmail(registerDto.email())) {
             return ResponseEntity.badRequest().build();
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.password());
