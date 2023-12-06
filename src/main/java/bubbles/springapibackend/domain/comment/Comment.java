@@ -25,7 +25,4 @@ public class Comment {
     private User author;
     private LocalDateTime dateTime;
     private String content;
-
-    @ManyToOne
-    private Post post;
 }
