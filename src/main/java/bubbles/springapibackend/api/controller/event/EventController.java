@@ -4,7 +4,6 @@ import bubbles.springapibackend.api.enums.Category;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.event.EventInPerson;
 import bubbles.springapibackend.domain.event.EventOnline;
-import bubbles.springapibackend.domain.event.repository.EventRepository;
 import bubbles.springapibackend.service.event.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,13 +22,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/events")
 @RequiredArgsConstructor
 public class EventController {
-    private final EventRepository eventRepository;
     private final EventService eventService;
 
     @GetMapping()
     @Operation(summary = "Get Available Events", description = "Returns all events for the current date or in the future.")
     public ResponseEntity<List<Event>> getAvailableEvents() {
-        List<Event> events = eventRepository.findAll();
+        List<Event> events = eventService.getAvailableEvents();
 
         if (events.isEmpty()) return ResponseEntity.noContent().build();
 
@@ -38,19 +36,22 @@ public class EventController {
         return ResponseEntity.ok(events);
     }
 
-    @Operation(summary = "Get Event by ID", description = "Returns an event by its unique ID.")
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Event>> getEventById(
-            @Parameter(description = "Unique event ID") @PathVariable Integer id) {
-        Optional<Event> eventOpt = eventRepository.findById(id);
+    @Operation(summary = "Get Available Events", description = "Returns all events for the current date or in the future.")
+    public ResponseEntity<Optional<Event>> getAvailableEvents(@PathVariable int id) {
+        Optional<Event> eventOpt = eventService.getEventById(id);
+
+        if (eventOpt.isEmpty()) return ResponseEntity.noContent().build();
+
         return ResponseEntity.of(Optional.ofNullable(eventOpt));
     }
+
 
     @Operation(summary = "Get Events by Author", description = "Returns events authored by a specific user.")
     @GetMapping("/author")
     public ResponseEntity<List<Event>> getEventsByAuthor(
             @Parameter(description = "Author's name") @RequestParam String author) {
-        List<Event> events = eventRepository.findByAuthor_Name(author);
+        List<Event> events = eventService.getEventsByAuthor(author);
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
@@ -60,7 +61,7 @@ public class EventController {
     @GetMapping("/bubble")
     public ResponseEntity<List<Event>> getEventsByBubble(
             @Parameter(description = "Bubble (group) name") @RequestParam String bubble) {
-        List<Event> events = eventRepository.findByBubble_Name(bubble);
+        List<Event> events = eventService.getEventsByBubble(bubble);
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
@@ -82,8 +83,8 @@ public class EventController {
     @PostMapping("/inPerson")
     public ResponseEntity<Event> createInPersonEvent(
             @Validated @RequestBody EventInPerson newEvent) {
-        EventInPerson savedEvent = eventRepository.save(newEvent);
-        return ResponseEntity.ok().body(savedEvent);
+        Event createdEvent = eventService.createInPersonEvent(newEvent);
+        return ResponseEntity.ok().body(createdEvent);
     }
 
     @Operation(summary = "Create Online Event",
@@ -91,8 +92,8 @@ public class EventController {
     @PostMapping("/online")
     public ResponseEntity<Event> createOnlineEvent(
             @Validated @RequestBody EventOnline newEvent) {
-        EventOnline savedEvent = eventRepository.save(newEvent);
-        return ResponseEntity.ok().body(savedEvent);
+        Event createdEvent = eventService.createOnlineEvent(newEvent);
+        return ResponseEntity.ok().body(createdEvent);
     }
 
     @Operation(summary = "Edit In-Person Event", description = "Edit an existing in-person event.")
@@ -100,14 +101,9 @@ public class EventController {
     public ResponseEntity<Event> editInPersonEvent(
             @Parameter(description = "Event ID") @PathVariable Integer id,
             @Parameter(description = "Patched in-person event JSON") @Validated @RequestBody EventInPerson updatedEvent) {
-        Optional<Event> existingEventOpt = eventRepository.findById(id);
-        if (existingEventOpt.isPresent()) {
-            EventInPerson existingEvent = (EventInPerson) existingEventOpt.get();
-            existingEvent.setTitle(updatedEvent.getTitle());
-            existingEvent.setDate(updatedEvent.getDate());
-            existingEvent.setDuration(updatedEvent.getDuration());
-            updatedEvent = eventRepository.save(existingEvent);
-            return ResponseEntity.ok(updatedEvent);
+        Event editedEvent = eventService.editInPersonEvent(id, updatedEvent);
+        if (editedEvent != null) {
+            return ResponseEntity.ok(editedEvent);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -118,14 +114,9 @@ public class EventController {
     public ResponseEntity<Event> editOnlineEvent(
             @Parameter(description = "Event ID") @PathVariable Integer id,
             @Parameter(description = "Patched online event JSON") @Validated @RequestBody EventOnline updatedEvent) {
-        Optional<Event> existingEventOpt = eventRepository.findById(id);
-        if (existingEventOpt.isPresent()) {
-            EventOnline existingEvent = (EventOnline) existingEventOpt.get();
-            existingEvent.setTitle(updatedEvent.getTitle());
-            existingEvent.setDate(updatedEvent.getDate());
-            existingEvent.setDuration(updatedEvent.getDuration());
-            updatedEvent = eventRepository.save(existingEvent);
-            return ResponseEntity.ok(updatedEvent);
+        Event editedEvent = eventService.editOnlineEvent(id, updatedEvent);
+        if (editedEvent != null) {
+            return ResponseEntity.ok(editedEvent);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -136,10 +127,9 @@ public class EventController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEventById(
             @Parameter(description = "Event ID") @PathVariable Integer id) {
-        Optional<Event> existingEventOpt = eventRepository.findById(id);
+        boolean deleted = eventService.deleteEventById(id);
 
-        if (existingEventOpt.isPresent()) {
-            eventRepository.deleteById(id);
+        if (deleted) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();

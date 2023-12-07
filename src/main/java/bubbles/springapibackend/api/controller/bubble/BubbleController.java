@@ -82,8 +82,6 @@ public class BubbleController {
         if (existingBubbleOpt.isPresent()) {
             Bubble existingBubble = existingBubbleOpt.get();
             existingBubble.setName(updatedBubble.getName());
-            existingBubble.setDescription(updatedBubble.getDescription());
-            existingBubble.setCreationDate(updatedBubble.getCreationDate());
             updatedBubble = bubbleRepository.save(existingBubble);
             return ResponseEntity.ok(updatedBubble);
         } else {
