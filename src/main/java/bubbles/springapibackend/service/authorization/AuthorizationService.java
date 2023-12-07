@@ -34,9 +34,6 @@ public class AuthorizationService implements UserDetailsService {
     private UserModelRepository userModelRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private TokenService tokenService;
 
     private AuthenticationManager authenticationManager;
@@ -49,12 +46,15 @@ public class AuthorizationService implements UserDetailsService {
     public ResponseEntity<Object> login(@RequestBody @Valid AuthetinticationDto data) {
         authenticationManager = context.getBean(AuthenticationManager.class);
 
+        System.out.println(data.email());
+
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((UserModel) auth.getPrincipal());
-        User user = userRepository.findByEmail(data.email());
-        return ResponseEntity.ok(new LoginResponseDto(token, user));
+
+        return ResponseEntity.ok(new LoginResponseDto(token));
     }
+
 
 
     public ResponseEntity<Object> register(@RequestBody RegisterDto registerDto) {

@@ -50,8 +50,6 @@ public class EventService {
         if (existingEventOpt.isPresent()) {
             EventInPerson existingEvent = (EventInPerson) existingEventOpt.get();
             existingEvent.setTitle(updatedEvent.getTitle());
-            existingEvent.setDate(updatedEvent.getDate());
-            existingEvent.setDuration(updatedEvent.getDuration());
             return eventRepository.save(existingEvent);
         }
         return null;
@@ -62,8 +60,6 @@ public class EventService {
         if (existingEventOpt.isPresent()) {
             EventOnline existingEvent = (EventOnline) existingEventOpt.get();
             existingEvent.setTitle(updatedEvent.getTitle());
-            existingEvent.setDate(updatedEvent.getDate());
-            existingEvent.setDuration(updatedEvent.getDuration());
             return eventRepository.save(existingEvent);
         }
         return null;

@@ -38,6 +38,7 @@ public class SecurityConfigurations {
             new AntPathRequestMatcher("/actuator/*"),
             new AntPathRequestMatcher("/auth/**"),
             new AntPathRequestMatcher("/bubbles/**"),
+            new AntPathRequestMatcher("/users/**"),
             new AntPathRequestMatcher("/events/**"),
             new AntPathRequestMatcher("/files/**"),
             new AntPathRequestMatcher("/posts/**"),
