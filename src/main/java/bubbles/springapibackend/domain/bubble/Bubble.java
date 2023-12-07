@@ -28,6 +28,6 @@ public class Bubble {
     @Column(name = "category")
     private Category category;
 
-    @OneToOne
+    @ManyToOne
     private User creator;
 }
