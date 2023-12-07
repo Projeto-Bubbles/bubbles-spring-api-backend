@@ -1,12 +1,13 @@
 package bubbles.springapibackend.service.authorization;
 
 import bubbles.springapibackend.api.configuration.security.TokenService;
+import bubbles.springapibackend.domain.user.User;
 import bubbles.springapibackend.domain.user.repository.UserModelRepository;
+import bubbles.springapibackend.domain.user.repository.UserRepository;
 import bubbles.springapibackend.service.user.dto.AuthetinticationDto;
 import bubbles.springapibackend.service.user.dto.LoginResponseDto;
 import bubbles.springapibackend.service.user.dto.RegisterDto;
 import bubbles.springapibackend.domain.user.model.UserModel;
-import bubbles.springapibackend.domain.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -30,7 +31,10 @@ public class AuthorizationService implements UserDetailsService {
     private ApplicationContext context;
 
     @Autowired
-    private UserModelRepository userRepository;
+    private UserModelRepository userModelRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private TokenService tokenService;
@@ -39,7 +43,7 @@ public class AuthorizationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email);
+        return userModelRepository.findByEmail(email);
     }
 
     public ResponseEntity<Object> login(@RequestBody @Valid AuthetinticationDto data) {
@@ -48,19 +52,20 @@ public class AuthorizationService implements UserDetailsService {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((UserModel) auth.getPrincipal());
-        return ResponseEntity.ok(new LoginResponseDto(token));
+        User user = userRepository.findByEmail(data.email());
+        return ResponseEntity.ok(new LoginResponseDto(token, user));
     }
 
 
     public ResponseEntity<Object> register(@RequestBody RegisterDto registerDto) {
-        if (this.userRepository.findByEmail(registerDto.email()) != null) {
+        if (this.userModelRepository.existsByEmail(registerDto.email())) {
             return ResponseEntity.badRequest().build();
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.password());
 
         UserModel newUser = new UserModel(registerDto.email(), encryptedPassword);
         newUser.setCreatedAt(new Date(System.currentTimeMillis()));
-        this.userRepository.save(newUser);
+        this.userModelRepository.save(newUser);
         return ResponseEntity.ok().build();
     }
 
