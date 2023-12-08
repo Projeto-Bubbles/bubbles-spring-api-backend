@@ -58,11 +58,7 @@ public class AuthorizationService implements UserDetailsService {
 
 
     public ResponseEntity<Object> register(@RequestBody RegisterDto registerDto) {
-<<<<<<< HEAD
-        if (this.userRepository.existsByEmail(registerDto.email())) {
-=======
         if (this.userModelRepository.existsByEmail(registerDto.email())) {
->>>>>>> 4a8918056083784ef93bde4f6832f1558d70d315
             return ResponseEntity.badRequest().build();
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.password());

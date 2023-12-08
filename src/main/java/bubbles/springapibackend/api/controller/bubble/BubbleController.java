@@ -50,6 +50,7 @@ public class BubbleController {
             @Parameter(description = "Creator's name") @RequestParam String creator) {
         List<Bubble> bubbles = bubbleRepository.findByCreatorName(creator);
         if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
+        Collections.sort(bubbles, Comparator.comparing(Bubble::getId));
         return ResponseEntity.ok(bubbles);
     }
 
@@ -62,6 +63,9 @@ public class BubbleController {
         List<Bubble> bubbles = bubbleService.getFilteredBubbles(categoryEnums);
 
         if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
+
+        Collections.sort(bubbles, Comparator.comparing(Bubble::getId));
+
         return ResponseEntity.ok(bubbles);
     }
 

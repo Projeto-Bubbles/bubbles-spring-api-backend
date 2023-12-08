@@ -53,6 +53,7 @@ public class EventController {
             @Parameter(description = "Author's name") @RequestParam String author) {
         List<Event> events = eventService.getEventsByAuthor(author);
         if (events.isEmpty()) return ResponseEntity.noContent().build();
+        Collections.sort(events, Comparator.comparing(Event::getId));
         return ResponseEntity.ok(events);
     }
 
@@ -63,6 +64,7 @@ public class EventController {
             @Parameter(description = "Bubble (group) name") @RequestParam String bubble) {
         List<Event> events = eventService.getEventsByBubble(bubble);
         if (events.isEmpty()) return ResponseEntity.noContent().build();
+        Collections.sort(events, Comparator.comparing(Event::getId));
         return ResponseEntity.ok(events);
     }
 
@@ -75,6 +77,7 @@ public class EventController {
         List<Event> events = eventService.getFilteredEvents(categoryEnums);
 
         if (events.isEmpty()) return ResponseEntity.noContent().build();
+        Collections.sort(events, Comparator.comparing(Event::getId));
         return ResponseEntity.ok(events);
     }
 
