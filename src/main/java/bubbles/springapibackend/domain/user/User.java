@@ -1,11 +1,14 @@
 package bubbles.springapibackend.domain.user;
 
 import bubbles.springapibackend.domain.address.Address;
+import bubbles.springapibackend.domain.post.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
@@ -25,4 +28,7 @@ public class User {
 
     @OneToOne
     private Address address;
+
+    @OneToMany
+    private List<Post> posts;
 }

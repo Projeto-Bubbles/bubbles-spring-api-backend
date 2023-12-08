@@ -22,7 +22,16 @@ public class Comment {
     private Integer id;
 
     @ManyToOne
+    @JoinColumn(name = "author_id")
     private User author;
+<<<<<<< HEAD
+=======
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
+
+>>>>>>> 4a8918056083784ef93bde4f6832f1558d70d315
     private LocalDateTime dateTime;
     private String content;
 }

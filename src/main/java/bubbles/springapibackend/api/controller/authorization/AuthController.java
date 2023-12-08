@@ -1,5 +1,7 @@
 package bubbles.springapibackend.api.controller.authorization;
 
+import bubbles.springapibackend.domain.user.User;
+import bubbles.springapibackend.domain.user.repository.UserRepository;
 import bubbles.springapibackend.service.authorization.AuthorizationService;
 import bubbles.springapibackend.service.user.dto.AuthetinticationDto;
 import bubbles.springapibackend.service.user.dto.RegisterDto;

@@ -1,11 +1,13 @@
 package bubbles.springapibackend.service.authorization;
 
 import bubbles.springapibackend.api.configuration.security.TokenService;
+import bubbles.springapibackend.domain.user.User;
+import bubbles.springapibackend.domain.user.repository.UserModelRepository;
+import bubbles.springapibackend.domain.user.repository.UserRepository;
 import bubbles.springapibackend.service.user.dto.AuthetinticationDto;
 import bubbles.springapibackend.service.user.dto.LoginResponseDto;
 import bubbles.springapibackend.service.user.dto.RegisterDto;
 import bubbles.springapibackend.domain.user.model.UserModel;
-import bubbles.springapibackend.domain.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -29,7 +31,7 @@ public class AuthorizationService implements UserDetailsService {
     private ApplicationContext context;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserModelRepository userModelRepository;
 
     @Autowired
     private TokenService tokenService;
@@ -38,28 +40,36 @@ public class AuthorizationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email);
+        return userModelRepository.findByEmail(email);
     }
 
     public ResponseEntity<Object> login(@RequestBody @Valid AuthetinticationDto data) {
         authenticationManager = context.getBean(AuthenticationManager.class);
 
+        System.out.println(data.email());
+
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((UserModel) auth.getPrincipal());
+
         return ResponseEntity.ok(new LoginResponseDto(token));
     }
 
 
+
     public ResponseEntity<Object> register(@RequestBody RegisterDto registerDto) {
+<<<<<<< HEAD
         if (this.userRepository.existsByEmail(registerDto.email())) {
+=======
+        if (this.userModelRepository.existsByEmail(registerDto.email())) {
+>>>>>>> 4a8918056083784ef93bde4f6832f1558d70d315
             return ResponseEntity.badRequest().build();
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.password());
 
         UserModel newUser = new UserModel(registerDto.email(), encryptedPassword);
         newUser.setCreatedAt(new Date(System.currentTimeMillis()));
-        this.userRepository.save(newUser);
+        this.userModelRepository.save(newUser);
         return ResponseEntity.ok().build();
     }
 

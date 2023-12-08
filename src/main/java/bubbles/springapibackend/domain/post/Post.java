@@ -1,6 +1,7 @@
 package bubbles.springapibackend.domain.post;
 
 import bubbles.springapibackend.domain.comment.Comment;
+import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,8 +23,11 @@ public class Post {
     private Integer id;
     private LocalDateTime dateTime;
     private String content;
-    private String author;
+
+    @ManyToOne
+    private User author;
     private String bubble;
-    @OneToMany
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 }
