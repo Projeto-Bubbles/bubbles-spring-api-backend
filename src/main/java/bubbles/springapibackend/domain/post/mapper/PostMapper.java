@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 public class PostMapper {
 
     private CommentMapper commentMapper;
-    private UserService userService; // Adicionando o UserService
+    private UserService userService;
 
     public PostResponseDTO toDTO(Post post) {
         PostResponseDTO dto = new PostResponseDTO();
         dto.setId(post.getId());
-        dto.setDateTime(post.getDateTime());
+        dto.setDateTime(post.getMoment());
         dto.setContent(post.getContent());
-        dto.setAuthor(post.getAuthor()); // Mantém a referência completa do autor
+        dto.setAuthor(post.getAuthor());
         dto.setBubble(post.getBubble());
         if (post.getComments() != null) {
             dto.setComments(post.getComments().stream()
@@ -37,7 +37,6 @@ public class PostMapper {
     public Post toEntity(PostRequestDTO dto) {
         Post post = new Post();
         post.setContent(dto.getContent());
-        // Modificado para buscar o usuário pelo ID
         User author = userService.getUserById(dto.getAuthorId());
         post.setAuthor(author);
         post.setBubble(dto.getBubble());

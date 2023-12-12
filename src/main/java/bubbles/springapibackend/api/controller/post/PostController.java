@@ -52,14 +52,12 @@ public class PostController {
 
         Stack<PostResponseDTO> postStack = new Stack<>(posts.size());
 
-        // Adiciona os posts à fila
         for (PostResponseDTO post : posts) {
             postStack.push(post);
         }
 
         List<PostResponseDTO> postsInStack = new ArrayList<>();
 
-        // Remove os posts da fila e adiciona à lista
         while (!postStack.isEmpty()) {
             postsInStack.add(postStack.pop());
         }

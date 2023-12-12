@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface BubbleRepository extends JpaRepository<Bubble, Integer> {
     Optional<Bubble> findById(Integer id);
 
-    List<Bubble> findByCreatorName(String creator);
+    List<Bubble> findByCreatorUsername(String creator);
 
     @Query("SELECT b FROM Bubble b WHERE (:categories IS NULL OR b.category IN :categories)")
     List<Bubble> findAllByCategory(@Param("categories") List<Category> categories);

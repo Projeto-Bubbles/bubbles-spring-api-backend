@@ -29,7 +29,7 @@ public class CommentService {
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
 
         Comment comment = commentMapper.toEntity(commentRequestDTO);
-        comment.setDateTime(LocalDateTime.now());
+        comment.setMoment(LocalDateTime.now());
         comment.setPost(post);
 
         return commentRepository.save(comment);

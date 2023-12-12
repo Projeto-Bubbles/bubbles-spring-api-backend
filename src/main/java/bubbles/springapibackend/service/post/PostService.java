@@ -60,7 +60,7 @@ public class PostService {
         User user = userService.getUserById(userId);
 
         Post newPost = new Post();
-        newPost.setDateTime(LocalDateTime.now());
+        newPost.setMoment(LocalDateTime.now());
         newPost.setContent(newPostDTO.getContent());
         newPost.setAuthor(user);
         newPost.setBubble(newPostDTO.getBubble());
@@ -86,7 +86,7 @@ public class PostService {
 
         if (existingPostOpt.isPresent()) {
             Post existingPost = existingPostOpt.get();
-            existingPost.setDateTime(LocalDateTime.now());
+            existingPost.setMoment(LocalDateTime.now());
             existingPost.setContent(updatedPostDTO.getContent());
 
             Post updatedPost = postRepository.save(existingPost);

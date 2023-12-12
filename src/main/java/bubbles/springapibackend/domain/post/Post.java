@@ -21,11 +21,12 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private LocalDateTime dateTime;
+    private LocalDateTime moment;
     private String content;
 
     @ManyToOne
     private User author;
+
     private String bubble;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)

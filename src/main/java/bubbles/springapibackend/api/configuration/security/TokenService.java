@@ -1,6 +1,6 @@
 package bubbles.springapibackend.api.configuration.security;
 
-import bubbles.springapibackend.domain.user.model.UserModel;
+import bubbles.springapibackend.domain.user.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -15,7 +15,7 @@ import java.time.ZoneOffset;
 public class TokenService {
     private final String secret = "bubbles";
 
-    public String generateToken(UserModel userModel) {
+    public String generateToken(User userModel) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 

@@ -26,11 +26,11 @@ public class EventService {
     }
 
     public List<Event> getEventsByAuthor(String author) {
-        return eventRepository.findByAuthor_Name(author);
+        return eventRepository.findByAuthorUsername(author);
     }
 
     public List<Event> getEventsByBubble(String bubble) {
-        return eventRepository.findByBubble_Name(bubble);
+        return eventRepository.findByBubbleHeadline(bubble);
     }
 
     public List<Event> getFilteredEvents(List<Category> categories) {

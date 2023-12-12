@@ -48,7 +48,7 @@ public class BubbleController {
     @GetMapping("/creator")
     public ResponseEntity<List<Bubble>> getBubblesByAuthor(
             @Parameter(description = "Creator's name") @RequestParam String creator) {
-        List<Bubble> bubbles = bubbleRepository.findByCreatorName(creator);
+        List<Bubble> bubbles = bubbleRepository.findByCreatorUsername(creator);
         if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
         Collections.sort(bubbles, Comparator.comparing(Bubble::getId));
         return ResponseEntity.ok(bubbles);
@@ -85,7 +85,7 @@ public class BubbleController {
         Optional<Bubble> existingBubbleOpt = bubbleRepository.findById(id);
         if (existingBubbleOpt.isPresent()) {
             Bubble existingBubble = existingBubbleOpt.get();
-            existingBubble.setName(updatedBubble.getName());
+            existingBubble.setHeadline(updatedBubble.getHeadline());
             updatedBubble = bubbleRepository.save(existingBubble);
             return ResponseEntity.ok(updatedBubble);
         } else {

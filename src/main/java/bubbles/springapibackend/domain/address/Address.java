@@ -16,11 +16,22 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(columnDefinition = "CHAR(8)")
     private String cep;
-    private String country;
+
+    @Column(columnDefinition = "VARCHAR(60)")
     private String state;
+
+    @Column(columnDefinition = "VARCHAR(60)")
     private String city;
+
+    @Column(columnDefinition = "VARCHAR(60)")
     private String neighborhood;
+
+    @Column(columnDefinition = "VARCHAR(60)")
     private String street;
-    private String number;
+
+    @Column(columnDefinition = "VARCHAR(10)")
+    private String houseNumber;
 }

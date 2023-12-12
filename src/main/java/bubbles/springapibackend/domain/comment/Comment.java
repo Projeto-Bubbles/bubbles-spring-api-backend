@@ -20,6 +20,8 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private LocalDateTime moment;
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -28,7 +30,4 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-
-    private LocalDateTime dateTime;
-    private String content;
 }

@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
-    List<Event> findByAuthor_Name(String author);
+    List<Event> findByAuthorUsername(String author);
 
-    List<Event> findByBubble_Name(String bubble);
+    List<Event> findByBubbleHeadline(String bubble);
 
     Optional<Event> findById(Integer id);
 

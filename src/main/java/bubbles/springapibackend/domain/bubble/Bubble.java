@@ -20,12 +20,17 @@ public class Bubble {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String description;
+
+    @Column(columnDefinition = "VARCHAR(100)")
+    private String headline;
+
+    @Column(columnDefinition = "VARCHAR(500)")
+    private String explanation;
+
     private LocalDate creationDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "category")
+    @Column(columnDefinition = "VARCHAR(10)")
     private Category category;
 
     @ManyToOne

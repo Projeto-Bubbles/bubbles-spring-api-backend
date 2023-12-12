@@ -1,7 +1,5 @@
 package bubbles.springapibackend.api.configuration.security;
 
-import bubbles.springapibackend.domain.user.model.UserModel;
-import bubbles.springapibackend.domain.user.repository.UserModelRepository;
 import bubbles.springapibackend.domain.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +20,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     TokenService tokenService;
 
     @Autowired
-    UserModelRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
