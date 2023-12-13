@@ -2,6 +2,7 @@ package bubbles.springapibackend.domain.comment;
 
 import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

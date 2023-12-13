@@ -31,7 +31,7 @@ public class BubbleController {
 
         if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
 
-        Collections.sort(bubbles, Comparator.comparing(Bubble::getId));
+        bubbles.sort(Comparator.comparing(Bubble::getId));
 
         return ResponseEntity.ok(bubbles);
     }
@@ -41,7 +41,7 @@ public class BubbleController {
     public ResponseEntity<Optional<Bubble>> getBubbleById(
             @Parameter(description = "Unique bubble ID") @PathVariable Integer id) {
         Optional<Bubble> bubbleOpt = bubbleRepository.findById(id);
-        return ResponseEntity.of(Optional.ofNullable(bubbleOpt));
+        return ResponseEntity.of(Optional.of(bubbleOpt));
     }
 
     @Operation(summary = "Get Bubble by Creator", description = "Returns bubbles created by a specific user.")
@@ -50,7 +50,7 @@ public class BubbleController {
             @Parameter(description = "Creator's name") @RequestParam String creator) {
         List<Bubble> bubbles = bubbleRepository.findByCreatorUsername(creator);
         if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
-        Collections.sort(bubbles, Comparator.comparing(Bubble::getId));
+        bubbles.sort(Comparator.comparing(Bubble::getId));
         return ResponseEntity.ok(bubbles);
     }
 
@@ -64,13 +64,13 @@ public class BubbleController {
 
         if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
 
-        Collections.sort(bubbles, Comparator.comparing(Bubble::getId));
+        bubbles.sort(Comparator.comparing(Bubble::getId));
 
         return ResponseEntity.ok(bubbles);
     }
 
     @Operation(summary = "Create Bubble", description = "Create a new bubble.")
-    @PostMapping()
+    @PostMapping(consumes = {"application/json;charset=UTF-8"})
     public ResponseEntity<Bubble> createBubble(
             @Validated @RequestBody Bubble newBubble) {
         Bubble savedBubble = bubbleRepository.save(newBubble);

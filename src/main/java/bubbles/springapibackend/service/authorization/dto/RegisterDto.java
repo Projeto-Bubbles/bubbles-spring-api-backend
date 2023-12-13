@@ -1,4 +1,4 @@
-package bubbles.springapibackend.service.user.dto;
+package bubbles.springapibackend.service.authorization.dto;
 
 import jakarta.validation.constraints.NotNull;
 

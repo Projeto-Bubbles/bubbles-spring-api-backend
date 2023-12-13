@@ -7,12 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BubbleRepository extends JpaRepository<Bubble, Integer> {
-    Optional<Bubble> findById(Integer id);
-
     List<Bubble> findByCreatorUsername(String creator);
+
+    List<Bubble> findByCreatorId(Integer id);
 
     @Query("SELECT b FROM Bubble b WHERE (:categories IS NULL OR b.category IN :categories)")
     List<Bubble> findAllByCategory(@Param("categories") List<Category> categories);

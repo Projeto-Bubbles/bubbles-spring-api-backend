@@ -1,3 +1,3 @@
-package bubbles.springapibackend.service.user.dto;
+package bubbles.springapibackend.service.authorization.dto;
 
 public record AuthetinticationDto(String email, String password) {}

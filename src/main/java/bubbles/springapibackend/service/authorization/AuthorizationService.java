@@ -3,9 +3,9 @@ package bubbles.springapibackend.service.authorization;
 import bubbles.springapibackend.api.configuration.security.TokenService;
 import bubbles.springapibackend.domain.user.User;
 import bubbles.springapibackend.domain.user.repository.UserRepository;
-import bubbles.springapibackend.service.user.dto.AuthetinticationDto;
-import bubbles.springapibackend.service.user.dto.LoginResponseDto;
-import bubbles.springapibackend.service.user.dto.RegisterDto;
+import bubbles.springapibackend.service.authorization.dto.AuthetinticationDto;
+import bubbles.springapibackend.service.authorization.dto.LoginResponseDto;
+import bubbles.springapibackend.service.authorization.dto.RegisterDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,14 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Date;
 import java.util.Objects;
 
 @Service
@@ -37,7 +35,7 @@ public class AuthorizationService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email);
     }
 
@@ -56,7 +54,7 @@ public class AuthorizationService implements UserDetailsService {
 
 
     public ResponseEntity<Object> register(@RequestBody RegisterDto registerDto) {
-        if (this.userRepository.existsByEmail(registerDto.email())) {
+        if (this.userRepository.findByEmail(registerDto.email()) != null) {
             return ResponseEntity.badRequest().build();
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.password());

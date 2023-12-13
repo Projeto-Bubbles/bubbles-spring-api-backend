@@ -13,7 +13,7 @@ import bubbles.springapibackend.domain.post.repository.PostRepository;
 import bubbles.springapibackend.domain.user.User;
 import bubbles.springapibackend.service.bubble.BubbleService;
 import bubbles.springapibackend.service.comment.CommentService;
-import bubbles.springapibackend.service.user.dto.UserService;
+import bubbles.springapibackend.service.user.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -3,6 +3,8 @@ package bubbles.springapibackend.domain.bubble;
 import bubbles.springapibackend.api.enums.Category;
 import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,7 +37,7 @@ public class Bubble {
     @Column(columnDefinition = "VARCHAR(10)")
     private Category category;
 
-    @ManyToOne
+    @OneToOne
     private User creator;
 
     @OneToMany(mappedBy = "bubble", cascade = CascadeType.ALL)

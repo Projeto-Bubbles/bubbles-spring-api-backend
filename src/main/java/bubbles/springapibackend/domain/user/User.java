@@ -1,6 +1,7 @@
 package bubbles.springapibackend.domain.user;
 
 import bubbles.springapibackend.domain.address.Address;
+import bubbles.springapibackend.domain.comment.Comment;
 import bubbles.springapibackend.domain.post.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,7 +41,7 @@ public class User implements UserDetails {
     @OneToOne
     private Address address;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author")
     private List<Post> posts;
 
     public User(String email, String password) {
@@ -60,7 +61,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override

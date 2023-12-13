@@ -7,7 +7,7 @@ import bubbles.springapibackend.domain.post.dto.PostRequestDTO;
 import bubbles.springapibackend.domain.post.dto.PostResponseDTO;
 import bubbles.springapibackend.domain.user.User;
 import bubbles.springapibackend.service.bubble.BubbleService;
-import bubbles.springapibackend.service.user.dto.UserService;
+import bubbles.springapibackend.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

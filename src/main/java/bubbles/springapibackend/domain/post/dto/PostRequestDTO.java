@@ -1,6 +1,5 @@
 package bubbles.springapibackend.domain.post.dto;
 
-import bubbles.springapibackend.domain.user.User;
 import lombok.Data;
 
 @Data
