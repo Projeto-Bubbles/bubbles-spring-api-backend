@@ -25,10 +25,7 @@ public abstract class Event {
     @Column(columnDefinition = "VARCHAR(100)")
     private String title;
 
-    @Column(columnDefinition = "DATETIME")
     private LocalDateTime moment;
-
-
     private Integer duration;
 
     @ManyToOne

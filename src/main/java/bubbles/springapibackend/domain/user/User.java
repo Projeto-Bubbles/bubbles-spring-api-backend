@@ -31,6 +31,7 @@ public class User implements UserDetails {
 
     @Column(columnDefinition = "CHAR(11)")
     private String cpf;
+
     private String nickname;
 
     @Column(columnDefinition = "VARCHAR(50)")
@@ -39,7 +40,7 @@ public class User implements UserDetails {
     @OneToOne
     private Address address;
 
-    @OneToMany
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Post> posts;
 
     public User(String email, String password) {

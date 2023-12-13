@@ -20,7 +20,10 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private LocalDateTime moment;
+
+    @Column(columnDefinition = "VARCHAR(300)")
     private String content;
 
     @ManyToOne

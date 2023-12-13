@@ -21,12 +21,17 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private LocalDateTime moment;
+
+    @Column(columnDefinition = "VARCHAR(650)")
     private String content;
 
     @ManyToOne
+    @JoinColumn(name = "author_id")
     private User author;
 
+    @Column(columnDefinition = "VARCHAR(100)")
     private String bubble;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
