@@ -1,6 +1,7 @@
 package bubbles.springapibackend.domain.bubble;
 
 import bubbles.springapibackend.api.enums.Category;
+import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_bubble")
@@ -35,4 +37,7 @@ public class Bubble {
 
     @ManyToOne
     private User creator;
+
+    @OneToMany(mappedBy = "bubble", cascade = CascadeType.ALL)
+    private List<Post> posts;
 }

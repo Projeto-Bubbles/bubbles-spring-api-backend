@@ -8,7 +8,8 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findByAuthorUsername(String author);
-    List<Post> findByBubble(String bubble);
+
+    List<Post> findByBubbleHeadline(String bubble);
 
     Optional<Post> findById(Integer id);
 }

@@ -1,5 +1,6 @@
 package bubbles.springapibackend.service.post;
 
+import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.comment.Comment;
 import bubbles.springapibackend.domain.comment.dto.CommentRequestDTO;
 import bubbles.springapibackend.domain.comment.dto.CommentResponseDTO;
@@ -10,6 +11,7 @@ import bubbles.springapibackend.domain.post.dto.PostResponseDTO;
 import bubbles.springapibackend.domain.post.mapper.PostMapper;
 import bubbles.springapibackend.domain.post.repository.PostRepository;
 import bubbles.springapibackend.domain.user.User;
+import bubbles.springapibackend.service.bubble.BubbleService;
 import bubbles.springapibackend.service.comment.CommentService;
 import bubbles.springapibackend.service.user.dto.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -30,6 +32,7 @@ public class PostService {
     private final PostMapper postMapper;
     private final CommentMapper commentMapper;
     private final UserService userService;
+    private final BubbleService bubbleService;
 
     public List<CommentResponseDTO> getCommentsByPost(Integer postId) {
         return commentService.getCommentsByPost(postId).stream()
@@ -49,21 +52,29 @@ public class PostService {
                         "found"));
     }
 
+    public List<PostResponseDTO> getPostsByAuthor(String author) {
+        return postRepository.findByAuthorUsername(author).stream()
+                .map(postMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public List<PostResponseDTO> getPostsByBubble(String bubble) {
-        return postRepository.findByBubble(bubble).stream()
+        return postRepository.findByBubbleHeadline(bubble).stream()
                 .map(postMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public PostResponseDTO createPost(PostRequestDTO newPostDTO) {
         Integer userId = newPostDTO.getAuthorId();
+        Integer bubbleId = newPostDTO.getBubbleId();
         User user = userService.getUserById(userId);
+        Bubble bubble = bubbleService.getBubbleById(bubbleId);
 
         Post newPost = new Post();
         newPost.setMoment(LocalDateTime.now());
         newPost.setContent(newPostDTO.getContent());
         newPost.setAuthor(user);
-        newPost.setBubble(newPostDTO.getBubble());
+        newPost.setBubble(bubble);
 
         Post savedPost = postRepository.save(newPost);
         return postMapper.toDTO(savedPost);

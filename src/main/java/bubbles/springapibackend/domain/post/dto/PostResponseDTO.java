@@ -1,5 +1,6 @@
 package bubbles.springapibackend.domain.post.dto;
 
+import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.comment.dto.CommentResponseDTO;
 import bubbles.springapibackend.domain.user.User;
 import lombok.Data;
@@ -13,6 +14,6 @@ public class PostResponseDTO {
     private LocalDateTime dateTime;
     private String content;
     private User author;
-    private String bubble;
+    private Bubble bubble;
     private List<CommentResponseDTO> comments;
 }

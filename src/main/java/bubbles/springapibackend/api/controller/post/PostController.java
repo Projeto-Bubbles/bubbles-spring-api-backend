@@ -77,6 +77,19 @@ public class PostController {
         return ResponseEntity.ok(postResponseDTO);
     }
 
+    @Operation(summary = "Get Posts by Author",
+            description = "Returns posts associated with a specific author.")
+    @GetMapping("/author")
+    public ResponseEntity<List<PostResponseDTO>> getByAuthor(
+            @Parameter(description = "Author name") @RequestParam String author) {
+        List<PostResponseDTO> posts = postService.getPostsByAuthor(author);
+        if (posts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(posts);
+        }
+    }
+
     @Operation(summary = "Get Posts by Bubble",
             description = "Returns posts associated with a specific bubble (group).")
     @GetMapping("/bubble")
