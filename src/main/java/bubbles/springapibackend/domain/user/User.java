@@ -1,7 +1,6 @@
 package bubbles.springapibackend.domain.user;
 
 import bubbles.springapibackend.domain.address.Address;
-import bubbles.springapibackend.domain.comment.Comment;
 import bubbles.springapibackend.domain.post.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Entity

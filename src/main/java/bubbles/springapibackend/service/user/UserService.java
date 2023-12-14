@@ -10,10 +10,10 @@ import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.post.repository.PostRepository;
 import bubbles.springapibackend.domain.user.User;
 import bubbles.springapibackend.domain.user.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -31,8 +31,8 @@ public class UserService {
     }
 
     public User getUserById(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
-                "User with ID " + id + " not found"));
+        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Usuário com ID: " + id + " não encontrado!"));
     }
 
     public User getUserByEmail(String email) {

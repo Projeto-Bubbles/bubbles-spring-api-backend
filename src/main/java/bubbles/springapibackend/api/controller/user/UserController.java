@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +22,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
     private UserService userService;
+    private UserMapper userMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    public UserController(UserService userService, UserMapper userMapper) {
+        this.userService = userService;
+        this.userMapper = userMapper;
+    }
 
     @GetMapping()
     @Operation(summary = "Get Available Users", description = "Returns all users for the current date or in the future.")
     public ResponseEntity<List<UserDTO>> getAvailableUsers() {
         List<User> users = userService.getAllUsers();
+
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         List<UserDTO> usersDTOS = users.stream().map(userMapper::toDTO)
                 .sorted(Comparator.comparing(UserDTO::getId)).collect(Collectors.toList());
         return ResponseEntity.ok(usersDTOS);
@@ -50,6 +59,11 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserByEmail(
             @Parameter(description = "User email") @RequestParam String email) {
         User user = userService.getUserByEmail(email);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         UserDTO userDTO = userMapper.toDTO(user);
         return ResponseEntity.ok(userDTO);
     }
@@ -60,7 +74,7 @@ public class UserController {
         User savedUser = userMapper.toEntity(newUserDTO);
         savedUser = userService.createUser(savedUser);
         newUserDTO = userMapper.toDTO(savedUser);
-        return ResponseEntity.ok(newUserDTO);
+        return new ResponseEntity<>(newUserDTO, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Edit User", description = "Edit an existing user.")
@@ -68,18 +82,26 @@ public class UserController {
     public ResponseEntity<UserDTO> editUser(
             @Parameter(description = "User ID") @PathVariable Integer id,
             @Parameter(description = "Patched user JSON") @Validated @RequestBody UserDTO updatedUserDTO) {
+        if (userService.getUserById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         User user = userMapper.toEntity(updatedUserDTO);
         user.setId(id);
         user = userService.updateUser(user);
         updatedUserDTO = userMapper.toDTO(user);
         return ResponseEntity.ok(updatedUserDTO);
-
     }
+
     @Operation(summary = "Delete User by ID",
             description = "Delete an user by its unique ID.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(
             @Parameter(description = "User ID") @PathVariable Integer id) {
+        if (userService.getUserById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
