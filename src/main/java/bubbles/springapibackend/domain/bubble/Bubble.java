@@ -3,8 +3,6 @@ package bubbles.springapibackend.domain.bubble;
 import bubbles.springapibackend.api.enums.Category;
 import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.user.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

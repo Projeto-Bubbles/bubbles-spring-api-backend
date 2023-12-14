@@ -36,9 +36,7 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAvailableUsers() {
         List<User> users = userService.getAllUsers();
 
-        if (users.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        if (users.isEmpty()) return ResponseEntity.notFound().build();
 
         List<UserDTO> usersDTOS = users.stream().map(userMapper::toDTO)
                 .sorted(Comparator.comparing(UserDTO::getId)).collect(Collectors.toList());
@@ -60,9 +58,7 @@ public class UserController {
             @Parameter(description = "User email") @RequestParam String email) {
         User user = userService.getUserByEmail(email);
 
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
+        if (user == null) return ResponseEntity.notFound().build();
 
         UserDTO userDTO = userMapper.toDTO(user);
         return ResponseEntity.ok(userDTO);
@@ -82,9 +78,7 @@ public class UserController {
     public ResponseEntity<UserDTO> editUser(
             @Parameter(description = "User ID") @PathVariable Integer id,
             @Parameter(description = "Patched user JSON") @Validated @RequestBody UserDTO updatedUserDTO) {
-        if (userService.getUserById(id) == null) {
-            return ResponseEntity.notFound().build();
-        }
+        if (userService.getUserById(id) == null) return ResponseEntity.notFound().build();
 
         User user = userMapper.toEntity(updatedUserDTO);
         user.setId(id);
@@ -98,9 +92,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(
             @Parameter(description = "User ID") @PathVariable Integer id) {
-        if (userService.getUserById(id) == null) {
-            return ResponseEntity.notFound().build();
-        }
+        if (userService.getUserById(id) == null) return ResponseEntity.notFound().build();
 
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();

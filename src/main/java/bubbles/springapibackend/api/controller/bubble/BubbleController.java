@@ -2,79 +2,80 @@ package bubbles.springapibackend.api.controller.bubble;
 
 import bubbles.springapibackend.api.enums.Category;
 import bubbles.springapibackend.domain.bubble.Bubble;
-import bubbles.springapibackend.domain.bubble.repository.BubbleRepository;
+import bubbles.springapibackend.domain.bubble.dto.BubbleDTO;
+import bubbles.springapibackend.domain.bubble.mapper.BubbleMapper;
+import bubbles.springapibackend.domain.user.User;
+import bubbles.springapibackend.domain.user.dto.UserDTO;
 import bubbles.springapibackend.service.bubble.BubbleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/bubbles")
-@RequiredArgsConstructor
 public class BubbleController {
-    private final BubbleRepository bubbleRepository;
     private final BubbleService bubbleService;
+    private final BubbleMapper bubbleMapper;
 
-    @GetMapping()
+    @Autowired
+    public BubbleController(BubbleService bubbleService, BubbleMapper bubbleMapper) {
+        this.bubbleService = bubbleService;
+        this.bubbleMapper = bubbleMapper;
+    }
+
     @Operation(summary = "Get Available Bubbles", description = "Returns all bubbles for the current date or in the future.")
-    public ResponseEntity<List<Bubble>> getAvailableBubbles() {
-        List<Bubble> bubbles = bubbleRepository.findAll();
+    @GetMapping()
+    public ResponseEntity<List<BubbleDTO>> getAvailableBubbles() {
+        List<BubbleDTO> bubbles = bubbleService.getAllBubbles();
 
-        if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
+        if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
 
-        bubbles.sort(Comparator.comparing(Bubble::getId));
-
-        return ResponseEntity.ok(bubbles);
+        List<BubbleDTO> bubbleDTOS = bubbles.stream()
+                .sorted(Comparator.comparing(BubbleDTO::getId))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(bubbleDTOS);
     }
 
     @Operation(summary = "Get Bubble by ID", description = "Returns an bubble by its unique ID.")
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Bubble>> getBubbleById(
+    public ResponseEntity<BubbleDTO> getBubbleById(
             @Parameter(description = "Unique bubble ID") @PathVariable Integer id) {
-        Optional<Bubble> bubbleOpt = bubbleRepository.findById(id);
-        return ResponseEntity.of(Optional.of(bubbleOpt));
-    }
-
-    @Operation(summary = "Get Bubble by Creator", description = "Returns bubbles created by a specific user.")
-    @GetMapping("/creator")
-    public ResponseEntity<List<Bubble>> getBubblesByAuthor(
-            @Parameter(description = "Creator's name") @RequestParam String creator) {
-        List<Bubble> bubbles = bubbleRepository.findByCreatorUsername(creator);
-        if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
-        bubbles.sort(Comparator.comparing(Bubble::getId));
-        return ResponseEntity.ok(bubbles);
+        Bubble bubble = bubbleService.getBubbleById(id);
+        BubbleDTO bubbleDTO = bubbleMapper.toDTO(bubble);
+        return ResponseEntity.ok(bubbleDTO);
     }
 
     @GetMapping("/filtered")
     @Operation(summary = "Get Bubbles by Category",
             description = "Returns bubbles associated with a specific category.")
-    public ResponseEntity<List<Bubble>> getBubblesByCategory(
+    public ResponseEntity<List<BubbleDTO>> getBubblesByCategory(
             @Parameter(description = "Bubble categories") @RequestParam List<String> categories) {
         List<Category> categoryEnums = categories.stream().map(Category::valueOf).collect(Collectors.toList());
-        List<Bubble> bubbles = bubbleService.getFilteredBubbles(categoryEnums);
+        List<BubbleDTO> bubbles = bubbleService.getFilteredBubbles(categoryEnums);
 
         if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
 
-        bubbles.sort(Comparator.comparing(Bubble::getId));
+        List<BubbleDTO> bubbleDTOS = bubbles.stream()
+                .sorted(Comparator.comparing(BubbleDTO::getId))
+                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(bubbles);
+        return ResponseEntity.ok(bubbleDTOS);
     }
 
     @Operation(summary = "Create Bubble", description = "Create a new bubble.")
-    @PostMapping(consumes = {"application/json;charset=UTF-8"})
+    @PostMapping()
     public ResponseEntity<Bubble> createBubble(
             @Validated @RequestBody Bubble newBubble) {
-        Bubble savedBubble = bubbleRepository.save(newBubble);
-        return ResponseEntity.ok().body(savedBubble);
+        Bubble savedBubble = bubbleService.createBubble(newBubble);
+        return new ResponseEntity<>(savedBubble, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Edit Bubble", description = "Edit an existing bubble.")
@@ -82,15 +83,17 @@ public class BubbleController {
     public ResponseEntity<Bubble> editBubble(
             @Parameter(description = "Bubble ID") @PathVariable Integer id,
             @Parameter(description = "Patched bubble JSON") @Validated @RequestBody Bubble updatedBubble) {
-        Optional<Bubble> existingBubbleOpt = bubbleRepository.findById(id);
-        if (existingBubbleOpt.isPresent()) {
-            Bubble existingBubble = existingBubbleOpt.get();
-            existingBubble.setHeadline(updatedBubble.getHeadline());
-            updatedBubble = bubbleRepository.save(existingBubble);
-            return ResponseEntity.ok(updatedBubble);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        Bubble existingBubble = bubbleService.getBubbleById(id);
+
+        if (existingBubble == null) return ResponseEntity.notFound().build();
+
+        Bubble newBubble = new Bubble();
+        newBubble.setId(id);
+        newBubble.setHeadline(updatedBubble.getHeadline());
+        newBubble.setExplanation(updatedBubble.getExplanation());
+
+        Bubble editedBubble = bubbleService.updateBubble(newBubble);
+        return ResponseEntity.ok(editedBubble);
     }
 
     @Operation(summary = "Delete Bubble by ID",
@@ -98,13 +101,9 @@ public class BubbleController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBubbleById(
             @Parameter(description = "Bubble ID") @PathVariable Integer id) {
-        Optional<Bubble> existingBubbleOpt = bubbleRepository.findById(id);
+        if (bubbleService.getBubbleById(id) == null) return ResponseEntity.notFound().build();
 
-        if (existingBubbleOpt.isPresent()) {
-            bubbleRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        bubbleService.deleteBubbleById(id);
+        return ResponseEntity.noContent().build();
     }
 }

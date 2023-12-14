@@ -1,6 +1,5 @@
 package bubbles.springapibackend.api.controller.post;
 
-import bubbles.springapibackend.api.util.Stack;
 import bubbles.springapibackend.domain.comment.dto.CommentRequestDTO;
 import bubbles.springapibackend.domain.comment.dto.CommentResponseDTO;
 import bubbles.springapibackend.domain.post.Post;
@@ -16,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -40,32 +39,17 @@ public class PostController {
         }
     }
 
-    @Operation(summary = "Get All Posts",
-            description = "Returns a list of all posts.")
-    @GetMapping
+    @Operation(summary = "Get All Posts", description = "Returns a list of all posts.")
+    @GetMapping()
     public ResponseEntity<List<PostResponseDTO>> getPosts() {
         List<PostResponseDTO> posts = postService.getPosts();
 
-        if (posts.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+        if (posts.isEmpty()) return ResponseEntity.noContent().build();
 
-        Stack<PostResponseDTO> postStack = new Stack<>(posts.size());
+        Collections.reverse(posts);
 
-        for (PostResponseDTO post : posts) {
-            postStack.push(post);
-        }
-
-        List<PostResponseDTO> postsInStack = new ArrayList<>();
-
-        while (!postStack.isEmpty()) {
-            postsInStack.add(postStack.pop());
-        }
-
-        return ResponseEntity.ok(postsInStack);
+        return ResponseEntity.ok(posts);
     }
-
-
 
     @Operation(summary = "Get Post by ID",
             description = "Returns a post by its unique ID.")
