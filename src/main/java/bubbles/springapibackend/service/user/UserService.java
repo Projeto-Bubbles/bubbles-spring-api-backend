@@ -35,8 +35,12 @@ public class UserService {
                 HttpStatus.NOT_FOUND, "Usuário com ID: " + id + " não encontrado!"));
     }
 
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getUserByEmail(String userEmail) {
+        return userRepository.findByEmail(userEmail);
+    }
+
+    public User getUserByNickname(String userNickname) {
+        return userRepository.findByNickname(userNickname);
     }
 
     public User createUser(User user) {

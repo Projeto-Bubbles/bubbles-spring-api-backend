@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BubbleMapper {
+
     public BubbleDTO toDTO(Bubble bubble) {
-        if (bubble == null) {
-            throw new EntityNotFoundException("Bolha nula");
+        if (bubble == null || bubble.getCreator() == null) {
+            throw new EntityNotFoundException("Bolha nula ou criador nulo");
         }
 
         BubbleDTO bubbleDTO = new BubbleDTO();
@@ -24,7 +25,7 @@ public class BubbleMapper {
         return bubbleDTO;
     }
 
-    public Bubble toEntity(BubbleDTO bubbleDTO){
+    public Bubble toEntity(BubbleDTO bubbleDTO) {
         if (bubbleDTO == null) {
             throw new EntityNotFoundException("Bolha nula");
         }

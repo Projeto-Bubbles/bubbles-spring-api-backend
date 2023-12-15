@@ -1,6 +1,5 @@
 package bubbles.springapibackend.domain.comment.dto;
 
-import bubbles.springapibackend.domain.user.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
