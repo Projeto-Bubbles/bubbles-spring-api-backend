@@ -10,15 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
-    List<Event> findByAuthorUsername(String author);
+    List<Event> findAllByAuthorNickname(String author);
 
     List<Event> findByBubbleHeadline(String bubble);
 
     List<Event> findByAuthorId(Integer id);
 
     List<Event> findByBubbleId(Integer id);
-
-    Optional<Event> findById(Integer id);
 
     @Query("SELECT e FROM Event e WHERE (:categories IS NULL OR e.bubble.category IN :categories)")
     List<Event> findFilteredEvents(@Param("categories") List<Category> categories);

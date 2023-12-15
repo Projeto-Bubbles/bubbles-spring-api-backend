@@ -8,7 +8,6 @@ import bubbles.springapibackend.domain.post.mapper.PostMapper;
 import bubbles.springapibackend.service.post.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,11 +80,8 @@ public class PostController {
     public ResponseEntity<List<PostResponseDTO>> getByBubble(
             @Parameter(description = "Bubble (group) name") @RequestParam String bubble) {
         List<PostResponseDTO> posts = postService.getPostsByBubble(bubble);
-        if (posts.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(posts);
-        }
+        if (posts.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(posts);
     }
 
     @Operation(summary = "Create Post", description = "Create a new post.")
