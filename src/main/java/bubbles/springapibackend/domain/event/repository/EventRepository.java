@@ -16,6 +16,8 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 
     List<Event> findByAuthorId(Integer id);
 
+    List<Event> findByBubbleId(Integer id);
+
     Optional<Event> findById(Integer id);
 
     @Query("SELECT e FROM Event e WHERE (:categories IS NULL OR e.bubble.category IN :categories)")

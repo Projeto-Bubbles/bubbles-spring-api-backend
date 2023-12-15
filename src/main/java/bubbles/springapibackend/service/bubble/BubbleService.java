@@ -5,6 +5,8 @@ import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.bubble.dto.BubbleDTO;
 import bubbles.springapibackend.domain.bubble.mapper.BubbleMapper;
 import bubbles.springapibackend.domain.bubble.repository.BubbleRepository;
+import bubbles.springapibackend.domain.event.Event;
+import bubbles.springapibackend.domain.event.repository.EventRepository;
 import bubbles.springapibackend.domain.user.User;
 import bubbles.springapibackend.service.user.UserService;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ public class BubbleService {
     private final BubbleRepository bubbleRepository;
     private final BubbleMapper bubbleMapper;
     private final UserService userService;
+    private final EventRepository eventRepository;
 
     public List<BubbleDTO> getAllBubbles() {
         return bubbleRepository.findAll().stream()
@@ -69,7 +72,13 @@ public class BubbleService {
         return bubbleMapper.toDTO(bubbleRepository.save(existingBubble));
     }
 
-    public void deleteBubbleById(Integer id) {
-        bubbleRepository.deleteById(id);
+    public void deleteBubbleById(Integer bubbleId) {
+        List<Event> events = eventRepository.findByBubbleId(bubbleId);
+        for (Event event : events) {
+            event.setBubble(null);
+            eventRepository.save(event);
+        }
+
+        bubbleRepository.deleteById(bubbleId);
     }
 }
