@@ -1,6 +1,7 @@
 package bubbles.springapibackend.domain.user;
 
 import bubbles.springapibackend.domain.address.Address;
+import bubbles.springapibackend.domain.comment.Comment;
 import bubbles.springapibackend.domain.post.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,11 +27,13 @@ public class User implements UserDetails {
     private Integer id;
 
     private String username;
+
     private String email;
 
     @Column(columnDefinition = "CHAR(11)")
     private String cpf;
 
+    @Column(unique = true)
     private String nickname;
 
     @Column(columnDefinition = "VARCHAR(50)")
@@ -39,8 +42,11 @@ public class User implements UserDetails {
     @OneToOne
     private Address address;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Post> posts;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     public User(String email, String password) {
         this.email = email;

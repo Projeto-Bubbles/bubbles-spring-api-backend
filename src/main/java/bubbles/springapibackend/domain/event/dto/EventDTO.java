@@ -10,6 +10,6 @@ public abstract class EventDTO {
     private String title;
     private LocalDateTime moment;
     private Integer duration;
-    private String author;
-    private String bubble;
+    private String creator;
+    private Integer bubbleId;
 }

@@ -29,9 +29,10 @@ public class BubbleController {
         this.bubbleMapper = bubbleMapper;
     }
 
-    @Operation(summary = "Get Available Bubbles", description = "Returns all bubbles for the current date or in the future.")
+    @Operation(summary = "Pegar todas as bolhas",
+            description = "Retorna todas as bolhas disponíveis.")
     @GetMapping()
-    public ResponseEntity<List<BubbleDTO>> getAvailableBubbles() {
+    public ResponseEntity<List<BubbleDTO>> getAllBubbles() {
         List<BubbleDTO> bubbles = bubbleService.getAllBubbles();
 
         if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
@@ -42,40 +43,27 @@ public class BubbleController {
         return ResponseEntity.ok(bubbleDTOS);
     }
 
-    @Operation(summary = "Get Bubble by ID", description = "Returns an bubble by its unique ID.")
-    @GetMapping("/{id}")
+    @Operation(summary = "Pegar bolha pelo ID",
+            description = "Retorna uma bolha pelo seu ID.")
+    @GetMapping("/{bubbleId}")
     public ResponseEntity<BubbleDTO> getBubbleById(
-            @Parameter(description = "Unique bubble ID") @PathVariable Integer id) {
-        Bubble bubble = bubbleService.getBubbleById(id);
+            @Parameter(description = "ID da bolha.") @PathVariable Integer bubbleId) {
+        Bubble bubble = bubbleService.getBubbleById(bubbleId);
         BubbleDTO bubbleDTO = bubbleMapper.toDTO(bubble);
         return ResponseEntity.ok(bubbleDTO);
     }
 
-    @Operation(summary = "Get Bubble by Creator",
-            description = "Returns bubbles associated with a specific creator.")
-    @GetMapping("/creator")
-    public ResponseEntity<List<BubbleDTO>> getBubbleByCreator(
-            @Parameter(description = "Bubble Creator") @RequestParam String creatorNickname) {
-        List<BubbleDTO> bubbles = bubbleService.getBubbleByCreatorNickname(creatorNickname);
+    @Operation(summary = "Pegar bolhas por título",
+            description = "Retorna todas as bolhas cujos títulos contenham a sequência de" +
+                    " caracteres fornecida, ignorando diferenças de maiúsculas e minúsculas.")
+    @GetMapping("/headline")
+    public ResponseEntity<List<BubbleDTO>> getAllBubblesByHeadlineContainsIgnoreCase(
+            @Parameter(description = "Título da bolha.")
+            @RequestParam String bubbleHeadline) {
+        List<BubbleDTO> bubbles = bubbleService
+                .getAllBubblesByHeadlineContainsIgnoreCase(bubbleHeadline);
 
-        if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
-
-        List<BubbleDTO> bubbleDTOS = bubbles.stream()
-                .sorted(Comparator.comparing(BubbleDTO::getId))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(bubbleDTOS);
-    }
-
-    @GetMapping("/filtered")
-    @Operation(summary = "Get Bubbles by Category",
-            description = "Returns bubbles associated with a specific category.")
-    public ResponseEntity<List<BubbleDTO>> getBubblesByCategory(
-            @Parameter(description = "Bubble categories") @RequestParam List<String> categories) {
-        List<Category> categoryEnums = categories.stream().map(Category::valueOf).collect(Collectors.toList());
-        List<BubbleDTO> bubbles = bubbleService.getFilteredBubbles(categoryEnums);
-
-        if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
+        if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
 
         List<BubbleDTO> bubbleDTOS = bubbles.stream()
                 .sorted(Comparator.comparing(BubbleDTO::getId))
@@ -84,31 +72,90 @@ public class BubbleController {
         return ResponseEntity.ok(bubbleDTOS);
     }
 
-    @Operation(summary = "Create Bubble", description = "Create a new bubble.")
-    @PostMapping()
-    public ResponseEntity<BubbleDTO> createBubble(
+    @Operation(summary = "Pegar bolhas por categoria",
+            description = "Retorna todas as bolhas indicadas por uma lista de categorias.")
+    @GetMapping("/categories")
+    public ResponseEntity<List<BubbleDTO>> getAllBubblesByCategory(
+            @Parameter(description = "Categorias de bolhas.")
+            @RequestParam List<String> bubbleCategories) {
+        List<Category> categoryEnums = bubbleCategories.stream().map(Category::valueOf)
+                .collect(Collectors.toList());
+        List<BubbleDTO> bubbles = bubbleService.getAllBubblesByCategory(categoryEnums);
+
+        if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
+
+        List<BubbleDTO> bubbleDTOS = bubbles.stream()
+                .sorted(Comparator.comparing(BubbleDTO::getId))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(bubbleDTOS);
+    }
+
+    @Operation(summary = "Pegar bolhas criadas por um usuário (ID)",
+            description = "Retorna todas as bolhas criadas por um usuário específico," +
+                    " usando seu ID.")
+    @GetMapping("/creator/{creatorId}")
+    public ResponseEntity<List<BubbleDTO>> getAllBubblesByCreatorID(
+            @Parameter(description = "ID do criador da bolha.")
+            @PathVariable Integer creatorId) {
+        List<BubbleDTO> bubbles = bubbleService.getAllBubblesByCreatorId(creatorId);
+
+        if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
+
+        List<BubbleDTO> bubbleDTOS = bubbles.stream()
+                .sorted(Comparator.comparing(BubbleDTO::getId))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(bubbleDTOS);
+    }
+
+    @Operation(summary = "Pegar bolhas criadas por um usuário (Apelido)",
+            description = "Retorna todas as bolhas criadas por um usuário específico," +
+                    " usando seu apelido.")
+    @GetMapping("/creator/nickname")
+    public ResponseEntity<List<BubbleDTO>> getAllBubblesByCreatorNickname(
+            @Parameter(description = "Apelido do criador da bolha.")
+            @RequestParam String creatorNickname) {
+        List<BubbleDTO> bubbles = bubbleService.getAllBubblesByCreatorNickname(creatorNickname);
+
+        if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
+
+        List<BubbleDTO> bubbleDTOS = bubbles.stream()
+                .sorted(Comparator.comparing(BubbleDTO::getId))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(bubbleDTOS);
+    }
+
+    @Operation(summary = "Criar bolha",
+            description = "Cria uma nova bolha.")
+    @PostMapping("/create")
+    public ResponseEntity<BubbleDTO> createNewBubble(
             @Validated @RequestBody BubbleDTO newBubbleDTO) {
-        BubbleDTO savedBubble = bubbleService.createBubble(newBubbleDTO);
-        return new ResponseEntity<>(savedBubble, HttpStatus.CREATED);
+        BubbleDTO newBubble = bubbleService.createNewBubble(newBubbleDTO);
+        return new ResponseEntity<>(newBubble, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Edit Bubble", description = "Edit an existing bubble.")
-    @PatchMapping("/edit/{bubbleId}")
-    public ResponseEntity<BubbleDTO> editBubble(
-            @Parameter(description = "Bubble ID") @PathVariable Integer bubbleId,
-            @Parameter(description = "Patched bubble JSON") @RequestBody BubbleDTO updatedBubbleDTO) {
-        BubbleDTO updatedBubble = bubbleService.updateBubble(bubbleId, updatedBubbleDTO);
+    @Operation(summary = "Atualizar bolha",
+            description = "Atualiza uma bolha existente pelo seu ID.")
+    @PatchMapping("/update/{bubbleId}")
+    public ResponseEntity<BubbleDTO> updateBubbleById(
+            @Parameter(description = "ID da bolha.") @PathVariable Integer bubbleId,
+            @Parameter(description = "JSON da bolha a ser atualizada.")
+            @RequestBody BubbleDTO updatedBubbleDTO) {
+        BubbleDTO updatedBubble = bubbleService.updateBubbleById(bubbleId, updatedBubbleDTO);
         return ResponseEntity.ok().body(updatedBubble);
     }
 
-    @Operation(summary = "Delete Bubble by ID",
-            description = "Delete an bubble by its unique ID.")
-    @DeleteMapping("/{id}")
+    @Operation(summary = "Deletar Bolha",
+            description = "Deleta uma bolha existente pelo seu ID")
+    @DeleteMapping("/{bubbleId}")
     public ResponseEntity<Void> deleteBubbleById(
-            @Parameter(description = "Bubble ID") @PathVariable Integer id) {
-        if (bubbleService.getBubbleById(id) == null) return ResponseEntity.notFound().build();
+            @Parameter(description = "ID da bolha") @PathVariable Integer bubbleId) {
+        if (bubbleService.getBubbleById(bubbleId) == null) return ResponseEntity.notFound()
+                .build();
 
-        bubbleService.deleteBubbleById(id);
+        bubbleService.deleteBubbleById(bubbleId);
         return ResponseEntity.noContent().build();
     }
 }

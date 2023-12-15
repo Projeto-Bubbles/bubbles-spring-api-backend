@@ -41,7 +41,7 @@ public class EventService {
     }
 
     public List<EventDTO> getEventsByAuthor(String author) {
-        return eventRepository.findAllByAuthorNickname(author).stream()
+        return eventRepository.findAllByCreatorNickname(author).stream()
                 .map(eventMapper::toDTO).collect(Collectors.toList());
     }
 
@@ -51,13 +51,13 @@ public class EventService {
     }
 
     public List<EventDTO> getFilteredEvents(List<Category> categories) {
-        return eventRepository.findFilteredEvents(categories).stream()
+        return eventRepository.findAllByBubbleCategory(categories).stream()
                 .map(eventMapper::toDTO).collect(Collectors.toList());
     }
 
     public EventDTO createInPersonEvent(EventInPersonDTO newEventInPersonDTO) {
-        User user = userService.getUserByNickname(newEventInPersonDTO.getAuthor());
-        Bubble bubble = bubbleService.getBubbleByHeadline(newEventInPersonDTO.getBubble());
+        User user = userService.getUserByNickname(newEventInPersonDTO.getCreator());
+        Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getBubbleId());
 
         EventInPerson newEventInPerson = new EventInPerson(
                 newEventInPersonDTO.getId(),
@@ -76,8 +76,8 @@ public class EventService {
     }
 
     public EventDTO createOnlineEvent(EventOnlineDTO newEventOnlineDTO) {
-        User user = userService.getUserByNickname(newEventOnlineDTO.getAuthor());
-        Bubble bubble = bubbleService.getBubbleByHeadline(newEventOnlineDTO.getBubble());
+        User user = userService.getUserByNickname(newEventOnlineDTO.getCreator());
+        Bubble bubble = bubbleService.getBubbleById(newEventOnlineDTO.getBubbleId());
 
         EventOnline newEventOnline = new EventOnline(
                 newEventOnlineDTO.getId(),

@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BubbleRepository extends JpaRepository<Bubble, Integer> {
-    List<Bubble> findByCreatorId(Integer id);
+    List<Bubble> findAllByHeadlineContainsIgnoreCase(String bubbleHeadline);
 
-    @Query("SELECT b FROM Bubble b WHERE (:categories IS NULL OR b.category IN :categories)")
-    List<Bubble> findAllByCategory(@Param("categories") List<Category> categories);
+    @Query("SELECT b FROM Bubble b WHERE (:bubbleCategories IS NULL OR b.category IN :bubbleCategories)")
+    List<Bubble> findAllByCategory(@Param("bubbleCategories") List<Category> bubbleCategories);
 
-    List<Bubble> findAllByCreatorNickname(String nickname);
+    List<Bubble> findAllByCreatorId(Integer creatorId);
 
-    Optional<Bubble> findByHeadline(String headline);
+    List<Bubble> findAllByCreatorNickname(String creatorNickname);
 }

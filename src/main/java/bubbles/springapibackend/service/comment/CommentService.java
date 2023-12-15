@@ -21,7 +21,7 @@ public class CommentService {
     private final CommentMapper commentMapper;
 
     public List<Comment> getCommentsByPost(Integer postId) {
-        return commentRepository.findByPostId(postId);
+        return commentRepository.findAllByPostId(postId);
     }
 
     public Comment createComment(CommentRequestDTO commentRequestDTO, Integer postId) {

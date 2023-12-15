@@ -52,22 +52,22 @@ public class UserService {
     }
 
     public void deleteUserById(Integer id) {
-        List<Bubble> bubbles = bubbleRepository.findByCreatorId(id);
+        List<Bubble> bubbles = bubbleRepository.findAllByCreatorId(id);
         for (Bubble bubble : bubbles) {
             bubble.setCreator(null);
             bubbleRepository.save(bubble);
         }
 
-        List<Event> events = eventRepository.findByAuthorId(id);
+        List<Event> events = eventRepository.findAllByCreatorId(id);
         for (Event event : events) {
-            event.setAuthor(null);
+            event.setCreator(null);
             eventRepository.save(event);
         }
 
         List<Post> posts = postRepository.findByAuthorId(id);
         postRepository.deleteAll(posts);
 
-        List<Comment> comments = commentRepository.findByAuthorId(id);
+        List<Comment> comments = commentRepository.findAllByAuthorId(id);
         commentRepository.deleteAll(comments);
 
         userRepository.deleteById(id);

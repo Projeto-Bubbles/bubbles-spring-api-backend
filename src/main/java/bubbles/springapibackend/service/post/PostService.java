@@ -61,10 +61,8 @@ public class PostService {
     }
 
     public PostResponseDTO createPost(PostResponseDTO newPostDTO) {
-        String userNickName = newPostDTO.getAuthor();
-        String bubbleHeadline = newPostDTO.getBubble();
-        User user = userService.getUserByNickname(userNickName);
-        Bubble bubble = bubbleService.getBubbleByHeadline(bubbleHeadline);
+        User user = userService.getUserByNickname(newPostDTO.getAuthor());
+        Bubble bubble = bubbleService.getBubbleById(newPostDTO.getBubbleId());
 
         Post newPost = new Post();
         newPost.setMoment(LocalDateTime.now());

@@ -26,11 +26,14 @@ public abstract class Event {
     private String title;
 
     private LocalDateTime moment;
+
     private Integer duration;
 
     @ManyToOne
-    private User author;
+    @JoinColumn(name = "author_id")
+    private User creator;
 
     @ManyToOne
+    @JoinColumn(name = "bubble_id")
     private Bubble bubble;
 }

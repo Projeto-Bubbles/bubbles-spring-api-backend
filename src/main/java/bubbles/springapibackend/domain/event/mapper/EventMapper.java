@@ -37,8 +37,8 @@ public class EventMapper {
         eventDTO.setTitle(event.getTitle());
         eventDTO.setMoment(event.getMoment());
         eventDTO.setDuration(event.getDuration());
-        eventDTO.setAuthor(event.getAuthor().getNickname());
-        eventDTO.setBubble(event.getBubble().getHeadline());
+        eventDTO.setCreator(event.getCreator().getNickname());
+        eventDTO.setBubbleId(event.getBubble().getId());
     }
 
     private EventInPersonDTO eventInPersonToDTO(EventInPerson eventInPerson) {

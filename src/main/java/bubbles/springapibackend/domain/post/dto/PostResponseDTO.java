@@ -12,6 +12,6 @@ public class PostResponseDTO {
     private LocalDateTime dateTime;
     private String content;
     private String author;
-    private String bubble;
+    private Integer bubbleId;
     private List<CommentResponseDTO> comments;
 }

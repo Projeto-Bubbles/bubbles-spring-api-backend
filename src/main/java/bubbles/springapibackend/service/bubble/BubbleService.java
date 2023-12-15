@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,26 +35,28 @@ public class BubbleService {
                 HttpStatus.NOT_FOUND, "Bolha com ID: " + bubbleId + " não encontrado!"));
     }
 
-    public List<BubbleDTO> getBubbleByCreatorNickname(String creatorNickname) {
+    public List<BubbleDTO> getAllBubblesByHeadlineContainsIgnoreCase(String bubbleHeadline) {
+        return bubbleRepository.findAllByHeadlineContainsIgnoreCase(bubbleHeadline).stream()
+                .map(bubbleMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<BubbleDTO> getAllBubblesByCategory(List<Category> bubbleCategories) {
+        return bubbleRepository.findAllByCategory(bubbleCategories).stream()
+                .map(bubbleMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<BubbleDTO> getAllBubblesByCreatorId(Integer creatorId){
+        return bubbleRepository.findAllByCreatorId(creatorId).stream()
+                .map(bubbleMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<BubbleDTO> getAllBubblesByCreatorNickname(String creatorNickname) {
         return bubbleRepository.findAllByCreatorNickname(creatorNickname).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
-    public Bubble getBubbleByHeadline(String bubbleHeadline) {
-        Optional<Bubble> bubbleOptional = bubbleRepository.findByHeadline(bubbleHeadline);
-
-        return bubbleOptional.orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Bolha com ID: " + bubbleHeadline + " não encontrado!"));
-    }
-
-    public List<BubbleDTO> getFilteredBubbles(List<Category> categories) {
-        return bubbleRepository.findAllByCategory(categories).stream()
-                .map(bubbleMapper::toDTO).collect(Collectors.toList());
-    }
-
-    public BubbleDTO createBubble(BubbleDTO newBubbleDTO) {
-        String userNickname = newBubbleDTO.getCreator();
-        User user = userService.getUserByNickname(userNickname);
+    public BubbleDTO createNewBubble(BubbleDTO newBubbleDTO) {
+        User user = userService.getUserByNickname(newBubbleDTO.getCreator());
 
         Bubble newBubble = new Bubble();
         newBubble.setId(newBubbleDTO.getId());
@@ -65,23 +66,22 @@ public class BubbleService {
         newBubble.setCategory(newBubbleDTO.getCategory());
         newBubble.setCreator(user);
 
-        Bubble savedBubble = bubbleRepository.save(newBubble);
-        return bubbleMapper.toDTO(savedBubble);
+        return bubbleMapper.toDTO(bubbleRepository.save(newBubble));
     }
 
-    public BubbleDTO updateBubble(Integer bubbleId, BubbleDTO updatedBubbleDTO) {
-        Bubble existingBubble = bubbleRepository.findById(bubbleId)
+    public BubbleDTO updateBubbleById(Integer bubbleId, BubbleDTO updatedBubbleDTO) {
+        Bubble updatedBubble = bubbleRepository.findById(bubbleId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Bolha com ID: " + bubbleId + " não encontrado!"));
 
-        existingBubble.setHeadline(updatedBubbleDTO.getHeadline());
-        existingBubble.setExplanation(updatedBubbleDTO.getExplanation());
+        updatedBubble.setHeadline(updatedBubbleDTO.getHeadline());
+        updatedBubble.setExplanation(updatedBubbleDTO.getExplanation());
 
-        return bubbleMapper.toDTO(bubbleRepository.save(existingBubble));
+        return bubbleMapper.toDTO(bubbleRepository.save(updatedBubble));
     }
 
     public void deleteBubbleById(Integer bubbleId) {
-        List<Event> events = eventRepository.findByBubbleId(bubbleId);
+        List<Event> events = eventRepository.findAllByBubbleId(bubbleId);
         for (Event event : events) {
             event.setBubble(null);
             eventRepository.save(event);
