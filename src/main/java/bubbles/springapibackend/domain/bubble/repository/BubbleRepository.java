@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BubbleRepository extends JpaRepository<Bubble, Integer> {
     List<Bubble> findByCreatorId(Integer id);
@@ -15,4 +16,6 @@ public interface BubbleRepository extends JpaRepository<Bubble, Integer> {
     List<Bubble> findAllByCategory(@Param("categories") List<Category> categories);
 
     List<Bubble> findAllByCreatorNickname(String nickname);
+
+    Optional<Bubble> findByHeadline(String headline);
 }

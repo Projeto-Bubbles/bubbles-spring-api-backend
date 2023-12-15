@@ -34,7 +34,7 @@ public class BubbleController {
     public ResponseEntity<List<BubbleDTO>> getAvailableBubbles() {
         List<BubbleDTO> bubbles = bubbleService.getAllBubbles();
 
-        if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
+        if (bubbles.isEmpty()) return ResponseEntity.noContent().build();
 
         List<BubbleDTO> bubbleDTOS = bubbles.stream()
                 .sorted(Comparator.comparing(BubbleDTO::getId))

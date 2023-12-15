@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +39,13 @@ public class BubbleService {
     public List<BubbleDTO> getBubbleByCreatorNickname(String creatorNickname) {
         return bubbleRepository.findAllByCreatorNickname(creatorNickname).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public Bubble getBubbleByHeadline(String bubbleHeadline) {
+        Optional<Bubble> bubbleOptional = bubbleRepository.findByHeadline(bubbleHeadline);
+
+        return bubbleOptional.orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Bolha com ID: " + bubbleHeadline + " não encontrado!"));
     }
 
     public List<BubbleDTO> getFilteredBubbles(List<Category> categories) {

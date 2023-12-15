@@ -8,6 +8,7 @@ import bubbles.springapibackend.domain.post.dto.PostResponseDTO;
 import bubbles.springapibackend.domain.user.User;
 import bubbles.springapibackend.service.bubble.BubbleService;
 import bubbles.springapibackend.service.user.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,21 +17,23 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 public class PostMapper {
-
     private CommentMapper commentMapper;
     private UserService userService;
     private BubbleService bubbleService;
 
     public PostResponseDTO toDTO(Post post) {
+        if (post == null) {
+            throw new EntityNotFoundException("Post com valor nulo");
+        }
+
         PostResponseDTO dto = new PostResponseDTO();
         dto.setId(post.getId());
         dto.setDateTime(post.getMoment());
         dto.setContent(post.getContent());
-        dto.setAuthor(post.getAuthor());
-        dto.setBubble(post.getBubble());
+        dto.setAuthor(post.getAuthor().getNickname());
+        dto.setBubble(post.getBubble().getHeadline());
         if (post.getComments() != null) {
-            dto.setComments(post.getComments().stream()
-                    .map(commentMapper::toDTO)
+            dto.setComments(post.getComments().stream().map(commentMapper::toDTO)
                     .collect(Collectors.toList()));
         }
 
