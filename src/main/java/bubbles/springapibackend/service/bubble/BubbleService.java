@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,16 @@ public class BubbleService {
 
     public List<BubbleDTO> getAllBubblesByHeadlineContainsIgnoreCase(String bubbleHeadline) {
         return bubbleRepository.findAllByHeadlineContainsIgnoreCase(bubbleHeadline).stream()
+                .map(bubbleMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<BubbleDTO> getAllBubblesByCreationDateAfter(LocalDate bubbleCreationDate) {
+        return bubbleRepository.findAllByCreationDateIsGreaterThanEqual(bubbleCreationDate).stream()
+                .map(bubbleMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<BubbleDTO> getAllBubblesByCreationDateBefore(LocalDate bubbleCreationDate) {
+        return bubbleRepository.findAllByCreationDateIsLessThanEqual(bubbleCreationDate).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 

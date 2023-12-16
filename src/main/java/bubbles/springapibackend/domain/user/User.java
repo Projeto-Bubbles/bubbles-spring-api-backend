@@ -4,10 +4,12 @@ import bubbles.springapibackend.domain.address.Address;
 import bubbles.springapibackend.domain.comment.Comment;
 import bubbles.springapibackend.domain.post.Post;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,8 +30,10 @@ public class User implements UserDetails {
 
     private String username;
 
+    @Email
     private String email;
 
+    @CPF
     @Column(columnDefinition = "CHAR(11)")
     private String cpf;
 

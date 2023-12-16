@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,6 +63,42 @@ public class BubbleController {
             @RequestParam String bubbleHeadline) {
         List<BubbleDTO> bubbles = bubbleService
                 .getAllBubblesByHeadlineContainsIgnoreCase(bubbleHeadline);
+
+        if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
+
+        List<BubbleDTO> bubbleDTOS = bubbles.stream()
+                .sorted(Comparator.comparing(BubbleDTO::getId))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(bubbleDTOS);
+    }
+
+    @Operation(summary = "Pegar bolhas criadas após uma data",
+            description = "Retorna todas as bolhas criadas a partir de uma data específica.")
+    @GetMapping("/date/after")
+    public ResponseEntity<List<BubbleDTO>> getAllBubblesByCreationDateAfter(
+            @Parameter(description = "Data de criação da bolha.")
+            @RequestParam LocalDate bubbleCreationDate) {
+        List<BubbleDTO> bubbles = bubbleService
+                .getAllBubblesByCreationDateAfter(bubbleCreationDate);
+
+        if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
+
+        List<BubbleDTO> bubbleDTOS = bubbles.stream()
+                .sorted(Comparator.comparing(BubbleDTO::getId))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(bubbleDTOS);
+    }
+
+    @Operation(summary = "Pegar bolhas criadas antes de uma data",
+            description = "Retorna todas as bolhas criadas antes de uma data específica.")
+    @GetMapping("/date/before")
+    public ResponseEntity<List<BubbleDTO>> getAllBubblesByCreationDateBefore(
+            @Parameter(description = "Data de criação da bolha.")
+            @RequestParam LocalDate bubbleCreationDate) {
+        List<BubbleDTO> bubbles = bubbleService
+                .getAllBubblesByCreationDateBefore(bubbleCreationDate);
 
         if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
 
