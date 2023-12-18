@@ -12,6 +12,7 @@ import bubbles.springapibackend.domain.user.User;
 import bubbles.springapibackend.domain.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -43,7 +44,8 @@ public class UserService {
         return userRepository.findByNickname(userNickname);
     }
 
-    public User createUser(User user) {
+    public User registerUser(User user) {
+        user.setParole(new BCryptPasswordEncoder().encode(user.getParole()));
         return userRepository.save(user);
     }
 
