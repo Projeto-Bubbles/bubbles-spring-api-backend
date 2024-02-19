@@ -23,8 +23,8 @@ public class PostMapper {
         dto.setId(post.getId());
         dto.setDateTime(post.getMoment());
         dto.setContent(post.getContent());
-        dto.setAuthor(post.getAuthor().getNickname());
-        dto.setBubbleId(post.getBubble().getId());
+        dto.setAuthor(post.getAuthor());
+//        dto.setBubble(post.getBubble().getHeadline());
         if (post.getComments() != null) {
             dto.setComments(post.getComments().stream().map(commentMapper::toDTO)
                     .collect(Collectors.toList()));

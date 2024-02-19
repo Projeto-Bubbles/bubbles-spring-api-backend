@@ -6,6 +6,7 @@ import bubbles.springapibackend.domain.comment.dto.CommentRequestDTO;
 import bubbles.springapibackend.domain.comment.dto.CommentResponseDTO;
 import bubbles.springapibackend.domain.comment.mapper.CommentMapper;
 import bubbles.springapibackend.domain.post.Post;
+import bubbles.springapibackend.domain.post.dto.PostRequestDTO;
 import bubbles.springapibackend.domain.post.dto.PostResponseDTO;
 import bubbles.springapibackend.domain.post.mapper.PostMapper;
 import bubbles.springapibackend.domain.post.repository.PostRepository;
@@ -60,8 +61,12 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostResponseDTO createPost(PostResponseDTO newPostDTO) {
-        User user = userService.getUserByNickname(newPostDTO.getAuthor());
+    public PostResponseDTO createPost(PostRequestDTO newPostDTO) {
+        if (newPostDTO.getAuthorId() == null || newPostDTO.getBubbleId() == null) {
+            throw new IllegalArgumentException("AuthorId and BubbleId must not be null");
+        }
+
+        User user = userService.getUserById(newPostDTO.getAuthorId());
         Bubble bubble = bubbleService.getBubbleById(newPostDTO.getBubbleId());
 
         Post newPost = new Post();

@@ -3,11 +3,14 @@ package bubbles.springapibackend.api.controller.post;
 import bubbles.springapibackend.domain.comment.dto.CommentRequestDTO;
 import bubbles.springapibackend.domain.comment.dto.CommentResponseDTO;
 import bubbles.springapibackend.domain.post.Post;
+import bubbles.springapibackend.domain.post.dto.PostRequestDTO;
 import bubbles.springapibackend.domain.post.dto.PostResponseDTO;
 import bubbles.springapibackend.domain.post.mapper.PostMapper;
+import bubbles.springapibackend.domain.post.repository.PostRepository;
 import bubbles.springapibackend.service.post.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +23,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/posts")
+@RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
     private final PostMapper postMapper;
-
-    @Autowired
-    public PostController(PostService postService, PostMapper postMapper) {
-        this.postService = postService;
-        this.postMapper = postMapper;
-    }
 
     @Operation(summary = "Get Comments for a Post",
             description = "Returns a list of comments for a specific post.")
@@ -88,7 +86,7 @@ public class PostController {
     @PostMapping()
     public ResponseEntity<PostResponseDTO> createPost(
             @Parameter(description = "JSON object representing the new post",
-                    required = true) @Validated @RequestBody PostResponseDTO newPostDTO) {
+                    required = true) @Validated @RequestBody PostRequestDTO newPostDTO) {
         PostResponseDTO createdPost = postService.createPost(newPostDTO);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
