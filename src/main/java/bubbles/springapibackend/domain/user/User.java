@@ -29,7 +29,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String username;
+    private String name;
 
     @Email
     private String email;
@@ -39,10 +39,10 @@ public class User implements UserDetails {
     private String cpf;
 
     @Column(unique = true)
-    private String nickname;
+    private String username;
 
     @Column(columnDefinition = "VARCHAR(60)")
-    private String parole;
+    private String password;
 
     @OneToOne
     private Address address;
@@ -55,7 +55,7 @@ public class User implements UserDetails {
 
     public User(String email, String password) {
         this.email = email;
-        this.parole = password;
+        this.password = password;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return parole;
+        return password;
     }
 
     @Override

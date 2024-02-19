@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public abstract class EventDTO {
     private Integer id;
     private String title;
-    private LocalDateTime moment;
+    private LocalDateTime dateTime;
     private Integer duration;
     private String creator;
     private Integer bubbleId;

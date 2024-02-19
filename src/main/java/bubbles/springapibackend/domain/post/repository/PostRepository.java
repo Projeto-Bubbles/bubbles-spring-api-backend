@@ -8,7 +8,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findByAuthorId(Integer authorId);
 
-    List<Post> findByAuthorNickname(String authorNickname);
+    List<Post> findByAuthorUsername(String authorUsername);
 
-    List<Post> findByBubbleHeadline(String bubbleHeadline);
+    List<Post> findByBubbleTitle(String bubbleTitle);
 }

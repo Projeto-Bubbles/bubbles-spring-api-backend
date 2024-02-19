@@ -58,11 +58,11 @@ public class BubbleController {
             description = "Retorna todas as bolhas cujos títulos contenham a sequência de" +
                     " caracteres fornecida, ignorando diferenças de maiúsculas e minúsculas.")
     @GetMapping("/headline")
-    public ResponseEntity<List<BubbleDTO>> getAllBubblesByHeadlineContainsIgnoreCase(
+    public ResponseEntity<List<BubbleDTO>> getAllBubblesByTitleContainsIgnoreCase(
             @Parameter(description = "Título da bolha.")
-            @RequestParam String bubbleHeadline) {
+            @RequestParam String bubbleTitle) {
         List<BubbleDTO> bubbles = bubbleService
-                .getAllBubblesByHeadlineContainsIgnoreCase(bubbleHeadline);
+                .getAllBubblesByTitleContainsIgnoreCase(bubbleTitle);
 
         if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
 
@@ -152,8 +152,8 @@ public class BubbleController {
     @GetMapping("/creator/nickname")
     public ResponseEntity<List<BubbleDTO>> getAllBubblesByCreatorNickname(
             @Parameter(description = "Apelido do criador da bolha.")
-            @RequestParam String creatorNickname) {
-        List<BubbleDTO> bubbles = bubbleService.getAllBubblesByCreatorNickname(creatorNickname);
+            @RequestParam String creatorUsername) {
+        List<BubbleDTO> bubbles = bubbleService.getAllBubblesByCreatorUsername(creatorUsername);
 
         if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
 

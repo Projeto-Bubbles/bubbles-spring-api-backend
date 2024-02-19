@@ -41,12 +41,12 @@ public class EventService {
     }
 
     public List<EventDTO> getEventsByAuthor(String author) {
-        return eventRepository.findAllByCreatorNickname(author).stream()
+        return eventRepository.findAllByCreatorUsername(author).stream()
                 .map(eventMapper::toDTO).collect(Collectors.toList());
     }
 
     public List<EventDTO> getEventsByBubble(String bubble) {
-        return eventRepository.findByBubbleHeadline(bubble).stream()
+        return eventRepository.findByBubbleTitle(bubble).stream()
                 .map(eventMapper::toDTO).collect(Collectors.toList());
     }
 
@@ -56,13 +56,13 @@ public class EventService {
     }
 
     public EventDTO createInPersonEvent(EventInPersonDTO newEventInPersonDTO) {
-        User user = userService.getUserByNickname(newEventInPersonDTO.getCreator());
+        User user = userService.getUserByUsername(newEventInPersonDTO.getCreator());
         Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getBubbleId());
 
         EventInPerson newEventInPerson = new EventInPerson(
                 newEventInPersonDTO.getId(),
                 newEventInPersonDTO.getTitle(),
-                newEventInPersonDTO.getMoment(),
+                newEventInPersonDTO.getDateTime(),
                 newEventInPersonDTO.getDuration(),
                 user,
                 bubble,
@@ -76,13 +76,13 @@ public class EventService {
     }
 
     public EventDTO createOnlineEvent(EventOnlineDTO newEventOnlineDTO) {
-        User user = userService.getUserByNickname(newEventOnlineDTO.getCreator());
+        User user = userService.getUserByUsername(newEventOnlineDTO.getCreator());
         Bubble bubble = bubbleService.getBubbleById(newEventOnlineDTO.getBubbleId());
 
         EventOnline newEventOnline = new EventOnline(
                 newEventOnlineDTO.getId(),
                 newEventOnlineDTO.getTitle(),
-                newEventOnlineDTO.getMoment(),
+                newEventOnlineDTO.getDateTime(),
                 newEventOnlineDTO.getDuration(),
                 user,
                 bubble,
@@ -100,7 +100,7 @@ public class EventService {
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
         existingEvent.setTitle(updatedEventInPersonDTO.getTitle());
-        existingEvent.setMoment(updatedEventInPersonDTO.getMoment());
+        existingEvent.setDateTime(updatedEventInPersonDTO.getDateTime());
         existingEvent.setDuration(updatedEventInPersonDTO.getDuration());
 
         EventInPerson eventInPerson = (EventInPerson) existingEvent;
@@ -117,7 +117,7 @@ public class EventService {
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
         existingEvent.setTitle(updatedEventOnlineDTO.getTitle());
-        existingEvent.setMoment(updatedEventOnlineDTO.getMoment());
+        existingEvent.setDateTime(updatedEventOnlineDTO.getDateTime());
         existingEvent.setDuration(updatedEventOnlineDTO.getDuration());
 
         EventOnline eventOnline = (EventOnline) existingEvent;

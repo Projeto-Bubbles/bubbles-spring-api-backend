@@ -35,9 +35,9 @@ public class EventMapper {
     private void mapAttributes(Event event, EventDTO eventDTO) {
         eventDTO.setId(event.getId());
         eventDTO.setTitle(event.getTitle());
-        eventDTO.setMoment(event.getMoment());
+        eventDTO.setDateTime(event.getDateTime());
         eventDTO.setDuration(event.getDuration());
-        eventDTO.setCreator(event.getCreator().getNickname());
+        eventDTO.setCreator(event.getCreator().getUsername());
         eventDTO.setBubbleId(event.getBubble().getId());
     }
 

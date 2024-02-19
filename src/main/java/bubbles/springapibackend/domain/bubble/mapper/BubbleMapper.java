@@ -15,11 +15,11 @@ public class BubbleMapper {
 
         BubbleDTO bubbleDTO = new BubbleDTO();
         bubbleDTO.setId(bubble.getId());
-        bubbleDTO.setHeadline(bubble.getHeadline());
-        bubbleDTO.setExplanation(bubble.getExplanation());
+        bubbleDTO.setTitle(bubble.getTitle());
+        bubbleDTO.setDescription(bubble.getDescription());
         bubbleDTO.setCreationDate(bubble.getCreationDate());
         bubbleDTO.setCategory(bubble.getCategory());
-        bubbleDTO.setCreator(bubble.getCreator().getNickname());
+        bubbleDTO.setCreator(bubble.getCreator().getUsername());
 
         return bubbleDTO;
     }

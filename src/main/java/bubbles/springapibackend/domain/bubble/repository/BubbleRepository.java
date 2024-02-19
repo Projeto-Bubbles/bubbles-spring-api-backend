@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BubbleRepository extends JpaRepository<Bubble, Integer> {
-    List<Bubble> findAllByHeadlineContainsIgnoreCase(String bubbleHeadline);
+    List<Bubble> findAllByTitleContainsIgnoreCase(String bubbleHeadline);
 
     List<Bubble> findAllByCreationDateIsGreaterThanEqual(LocalDate bubbleCreationDate);
 
@@ -21,5 +21,5 @@ public interface BubbleRepository extends JpaRepository<Bubble, Integer> {
 
     List<Bubble> findAllByCreatorId(Integer creatorId);
 
-    List<Bubble> findAllByCreatorNickname(String creatorNickname);
+    List<Bubble> findAllByCreatorUsername(String creatorUsername);
 }

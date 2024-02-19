@@ -51,12 +51,12 @@ public class PostService {
     }
 
     public List<PostResponseDTO> getPostsByAuthor(String author) {
-        return postRepository.findByAuthorNickname(author).stream()
+        return postRepository.findByAuthorUsername(author).stream()
                 .map(postMapper::toDTO).collect(Collectors.toList());
     }
 
     public List<PostResponseDTO> getPostsByBubble(String bubble) {
-        return postRepository.findByBubbleHeadline(bubble).stream()
+        return postRepository.findByBubbleTitle(bubble).stream()
                 .map(postMapper::toDTO)
                 .collect(Collectors.toList());
     }

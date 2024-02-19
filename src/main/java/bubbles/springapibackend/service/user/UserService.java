@@ -40,12 +40,12 @@ public class UserService {
         return userRepository.findByEmail(userEmail);
     }
 
-    public User getUserByNickname(String userNickname) {
-        return userRepository.findByNickname(userNickname);
+    public User getUserByUsername(String userName) {
+        return userRepository.findByUsername(userName);
     }
 
     public User registerUser(User user) {
-        user.setParole(new BCryptPasswordEncoder().encode(user.getParole()));
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return userRepository.save(user);
     }
 

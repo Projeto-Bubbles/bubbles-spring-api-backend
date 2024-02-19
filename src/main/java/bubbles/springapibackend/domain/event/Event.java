@@ -25,7 +25,7 @@ public abstract class Event {
     @Column(columnDefinition = "VARCHAR(100)")
     private String title;
 
-    private LocalDateTime moment;
+    private LocalDateTime dateTime;
 
     private Integer duration;
 

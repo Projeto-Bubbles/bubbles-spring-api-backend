@@ -25,10 +25,10 @@ public class Bubble {
     private Integer id;
 
     @Column(columnDefinition = "VARCHAR(100)")
-    private String headline;
+    private String title;
 
     @Column(columnDefinition = "VARCHAR(500)")
-    private String explanation;
+    private String description;
 
     private LocalDate creationDate;
 

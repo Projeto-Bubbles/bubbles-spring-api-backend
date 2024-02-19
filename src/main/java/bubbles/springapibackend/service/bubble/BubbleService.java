@@ -36,8 +36,8 @@ public class BubbleService {
                 HttpStatus.NOT_FOUND, "Bolha com ID: " + bubbleId + " não encontrado!"));
     }
 
-    public List<BubbleDTO> getAllBubblesByHeadlineContainsIgnoreCase(String bubbleHeadline) {
-        return bubbleRepository.findAllByHeadlineContainsIgnoreCase(bubbleHeadline).stream()
+    public List<BubbleDTO> getAllBubblesByTitleContainsIgnoreCase(String bubbleTitle) {
+        return bubbleRepository.findAllByTitleContainsIgnoreCase(bubbleTitle).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
@@ -61,18 +61,18 @@ public class BubbleService {
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<BubbleDTO> getAllBubblesByCreatorNickname(String creatorNickname) {
-        return bubbleRepository.findAllByCreatorNickname(creatorNickname).stream()
+    public List<BubbleDTO> getAllBubblesByCreatorUsername(String creatorUsername) {
+        return bubbleRepository.findAllByCreatorUsername(creatorUsername).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
     public BubbleDTO createNewBubble(BubbleDTO newBubbleDTO) {
-        User user = userService.getUserByNickname(newBubbleDTO.getCreator());
+        User user = userService.getUserByUsername(newBubbleDTO.getCreator());
 
         Bubble newBubble = new Bubble();
         newBubble.setId(newBubbleDTO.getId());
-        newBubble.setHeadline(newBubbleDTO.getHeadline());
-        newBubble.setExplanation(newBubbleDTO.getExplanation());
+        newBubble.setTitle(newBubbleDTO.getTitle());
+        newBubble.setDescription(newBubbleDTO.getDescription());
         newBubble.setCreationDate(newBubbleDTO.getCreationDate());
         newBubble.setCategory(newBubbleDTO.getCategory());
         newBubble.setCreator(user);
@@ -85,8 +85,8 @@ public class BubbleService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Bolha com ID: " + bubbleId + " não encontrado!"));
 
-        updatedBubble.setHeadline(updatedBubbleDTO.getHeadline());
-        updatedBubble.setExplanation(updatedBubbleDTO.getExplanation());
+        updatedBubble.setTitle(updatedBubbleDTO.getTitle());
+        updatedBubble.setDescription(updatedBubbleDTO.getDescription());
 
         return bubbleMapper.toDTO(bubbleRepository.save(updatedBubble));
     }
