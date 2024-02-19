@@ -2,6 +2,7 @@ package bubbles.springapibackend.domain.comment;
 
 import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private LocalDateTime moment;
+
+    @Column(columnDefinition = "VARCHAR(300)")
+    private String content;
+
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
@@ -28,7 +34,4 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-
-    private LocalDateTime dateTime;
-    private String content;
 }

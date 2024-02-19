@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@DiscriminatorColumn(name = "event_type")
+@DiscriminatorColumn(name = "event_type", columnDefinition = "VARCHAR(13)")
 @Table(name = "tb_event")
 @Getter
 @Setter
@@ -21,13 +21,19 @@ public abstract class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(columnDefinition = "VARCHAR(100)")
     private String title;
-    private LocalDateTime date;
+
+    private LocalDateTime moment;
+
     private Integer duration;
 
     @ManyToOne
-    private User author;
+    @JoinColumn(name = "author_id")
+    private User creator;
 
     @ManyToOne
+    @JoinColumn(name = "bubble_id")
     private Bubble bubble;
 }

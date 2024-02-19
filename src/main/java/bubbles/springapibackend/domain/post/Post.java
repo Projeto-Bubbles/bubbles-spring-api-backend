@@ -1,5 +1,6 @@
 package bubbles.springapibackend.domain.post;
 
+import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.comment.Comment;
 import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
@@ -21,12 +22,19 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private LocalDateTime dateTime;
+
+    private LocalDateTime moment;
+
+    @Column(columnDefinition = "VARCHAR(650)")
     private String content;
 
     @ManyToOne
+    @JoinColumn(name = "author_id")
     private User author;
-    private String bubble;
+
+    @ManyToOne
+    @JoinColumn(name = "bubble_id")
+    private Bubble bubble;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;

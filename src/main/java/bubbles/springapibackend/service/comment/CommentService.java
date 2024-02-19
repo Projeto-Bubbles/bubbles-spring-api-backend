@@ -21,7 +21,7 @@ public class CommentService {
     private final CommentMapper commentMapper;
 
     public List<Comment> getCommentsByPost(Integer postId) {
-        return commentRepository.findByPostId(postId);
+        return commentRepository.findAllByPostId(postId);
     }
 
     public Comment createComment(CommentRequestDTO commentRequestDTO, Integer postId) {
@@ -29,7 +29,7 @@ public class CommentService {
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
 
         Comment comment = commentMapper.toEntity(commentRequestDTO);
-        comment.setDateTime(LocalDateTime.now());
+        comment.setMoment(LocalDateTime.now());
         comment.setPost(post);
 
         return commentRepository.save(comment);

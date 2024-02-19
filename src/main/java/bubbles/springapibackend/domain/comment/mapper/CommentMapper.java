@@ -19,15 +19,15 @@ public class CommentMapper {
     public CommentResponseDTO toDTO(Comment comment) {
         CommentResponseDTO dto = new CommentResponseDTO();
         dto.setId(comment.getId());
-        dto.setDateTime(comment.getDateTime());
+        dto.setDateTime(comment.getMoment());
         dto.setContent(comment.getContent());
-        dto.setAuthor(comment.getAuthor());
+        dto.setAuthor(comment.getAuthor().getNickname());
         return dto;
     }
 
     public Comment toEntity(CommentRequestDTO dto) {
         Comment comment = new Comment();
-        comment.setDateTime(dto.getDateTime());
+        comment.setMoment(dto.getDateTime());
         comment.setContent(dto.getContent());
         Optional<User> authorOpt = userRepository.findById(dto.getAuthorId());
         authorOpt.ifPresent(comment::setAuthor);

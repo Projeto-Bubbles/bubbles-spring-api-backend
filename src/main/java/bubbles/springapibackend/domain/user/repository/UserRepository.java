@@ -1,12 +1,12 @@
 package bubbles.springapibackend.domain.user.repository;
 
 import bubbles.springapibackend.domain.user.User;
-import bubbles.springapibackend.domain.user.model.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
+@Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    User findByEmail(String email);
+    User findByNickname(String userName);
+
+    User findByEmail(String userEmail);
 }

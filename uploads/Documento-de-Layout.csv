@@ -1,0 +1,27 @@
+"Documento de Layout","","","","",""
+"Número 
+do Campo","Nome do 
+Campo","Tamanho","Posição","Formato","Descrição"
+"Header - Tamanho dos dados úteis: 27","","","","",""
+"1","Tipo de Registro","2","001-002","N","Registro de Header: ""01"""
+"2","Tipo do Arquivo","3","003-005","A","Tipos ""CSV"" ou ""TXT"""
+"3","Data e Hora","19","006-024","A","Data e hora da exportação
+(dd/mm/aaaa HH:MM:ss)"
+"4","Versão do Layout","3","025-027","N","Versão do layout"
+"Corpo (Eventos) - Tamanho dos dados úteis: 849","","","","",""
+"1","Tipo de Registro","2","001-002","N","Registro de Corpo: ""02"""
+"2","ID","6","003-008","N","ID do evento"
+"3","Tipo","10","009-018","A","Tipo de evento"
+"4","Título","100","019-118","A","Título do evento"
+"5","Descrição","400","119-518","A","Descrição do evento"
+"6","Data e Hora","19","519-537","A","Data e hora do evento
+(dd/mm/aaaa HH:MM:ss)"
+"7","Duração (minutos)","4","538-541","N","Duração do evento em minutos"
+"8","Plataforma","100","542-641","A","Plataforma do evento"
+"9","URL","200","642-841","A","URL do evento (link)"
+"10","Local Público","1","842-842","N","Indicação de local público
+(1 para Sim, 0 para Não)"
+"11","Capacidade ","7","843-849","N","Capacidade de pessoas do evento"
+"Trailer - Tamanho dos dados úteis: 10","","","","",""
+"1","Tipo de Registro","2","001-002","N","Registro de Trailer: ""03"""
+"2","Registros dos Dados","8","003-010","N","Total de registros no arquivo"
