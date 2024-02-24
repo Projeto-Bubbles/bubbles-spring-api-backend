@@ -89,7 +89,7 @@ public class UserController {
 
     @Operation(summary = "Delete User by ID",
             description = "Delete an user by its unique ID.")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idUser}")
     public ResponseEntity<Void> deleteUserById(
             @Parameter(description = "User ID") @PathVariable Integer idUser) {
         if (userService.getUserById(idUser) == null) return ResponseEntity.notFound().build();

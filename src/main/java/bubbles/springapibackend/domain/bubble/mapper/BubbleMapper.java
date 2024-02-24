@@ -19,7 +19,7 @@ public class BubbleMapper {
         bubbleDTO.setDescription(bubble.getExplanation());
         bubbleDTO.setCreationDate(bubble.getCreationDate());
         bubbleDTO.setCategory(bubble.getCategory());
-        bubbleDTO.setCreator(bubble.getFkUser().getUsername());
+        bubbleDTO.setCreator(bubble.getFkUser().getNickname());
 
         return bubbleDTO;
     }

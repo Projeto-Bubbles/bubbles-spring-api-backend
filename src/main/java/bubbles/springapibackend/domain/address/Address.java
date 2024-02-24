@@ -17,7 +17,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAddress;
 
-    @Column(columnDefinition = "CHAR(8)")
+    @Column(columnDefinition = "CHARACTER(8)")
     private String cep;
 
     @Column(columnDefinition = "VARCHAR(60)")

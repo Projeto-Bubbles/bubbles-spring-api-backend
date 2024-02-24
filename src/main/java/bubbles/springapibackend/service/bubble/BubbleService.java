@@ -67,7 +67,7 @@ public class BubbleService {
     }
 
     public BubbleDTO createNewBubble(BubbleDTO newBubbleDTO) {
-        User user = userService.getUserByUsername(newBubbleDTO.getCreator());
+        User user = userService.getUserByNickname(newBubbleDTO.getCreator());
 
         Bubble newBubble = new Bubble();
         newBubble.setIdBubble(newBubbleDTO.getId());

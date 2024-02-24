@@ -56,7 +56,7 @@ public class EventService {
     }
 
     public EventDTO createInPersonEvent(EventInPersonDTO newEventInPersonDTO) {
-        User user = userService.getUserByUsername(newEventInPersonDTO.getCreator());
+        User user = userService.getUserByNickname(newEventInPersonDTO.getCreator());
         Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getBubbleId());
 
         EventInPerson newEventInPerson = new EventInPerson(
@@ -76,7 +76,7 @@ public class EventService {
     }
 
     public EventDTO createOnlineEvent(EventOnlineDTO newEventOnlineDTO) {
-        User user = userService.getUserByUsername(newEventOnlineDTO.getCreator());
+        User user = userService.getUserByNickname(newEventOnlineDTO.getCreator());
         Bubble bubble = bubbleService.getBubbleById(newEventOnlineDTO.getBubbleId());
 
         EventOnline newEventOnline = new EventOnline(

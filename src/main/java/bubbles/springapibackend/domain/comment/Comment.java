@@ -31,6 +31,7 @@ public class Comment {
     @JoinColumn(name = "fk_user")
     private User fkUser;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "fk_post")
     private Post fkPost;

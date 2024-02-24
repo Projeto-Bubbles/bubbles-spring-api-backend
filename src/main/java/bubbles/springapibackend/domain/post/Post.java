@@ -3,6 +3,7 @@ package bubbles.springapibackend.domain.post;
 import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.comment.Comment;
 import bubbles.springapibackend.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class Post {
     @JoinColumn(name = "fk_bubble")
     private Bubble fkBubble;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "fkPost", cascade = CascadeType.ALL)
     private List<Comment> comments;
 }

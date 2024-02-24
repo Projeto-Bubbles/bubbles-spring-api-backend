@@ -44,6 +44,10 @@ public class UserService {
         return userRepository.findByUsername(userName);
     }
 
+    public User getUserByNickname(String userNickname) {
+        return userRepository.findByNickname(userNickname);
+    }
+
     public User registerUser(User user) {
         user.setSecretKey(new BCryptPasswordEncoder().encode(user.getPassword()));
         return userRepository.save(user);

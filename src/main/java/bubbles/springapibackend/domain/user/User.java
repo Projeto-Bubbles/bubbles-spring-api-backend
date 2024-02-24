@@ -37,7 +37,7 @@ public class User implements UserDetails {
     private String email;
 
     @CPF
-    @Column(columnDefinition = "CHAR(11)")
+    @Column(columnDefinition = "CHARACTER(11)")
     private String cpf;
 
     @Column(unique = true)

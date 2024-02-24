@@ -131,7 +131,7 @@ public class BubbleController {
     @Operation(summary = "Pegar bolhas criadas por um usuário (ID)",
             description = "Retorna todas as bolhas criadas por um usuário específico," +
                     " usando seu ID.")
-    @GetMapping("/creator/{creatorId}")
+    @GetMapping("/creator/{userId}")
     public ResponseEntity<List<BubbleDTO>> getAllBubblesByUserID(
             @Parameter(description = "ID do criador da bolha.")
             @PathVariable Integer userId) {
