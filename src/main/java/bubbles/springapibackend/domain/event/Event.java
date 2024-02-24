@@ -1,6 +1,8 @@
 package bubbles.springapibackend.domain.event;
 
+import bubbles.springapibackend.domain.address.Address;
 import bubbles.springapibackend.domain.bubble.Bubble;
+import bubbles.springapibackend.domain.participation.Participation;
 import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @DiscriminatorColumn(name = "event_type", columnDefinition = "VARCHAR(13)")
@@ -36,4 +39,17 @@ public abstract class Event {
     @ManyToOne
     @JoinColumn(name = "fk_bubble")
     private Bubble fkBubble;
+
+    @OneToMany(mappedBy = "fkEvent", cascade = CascadeType.ALL)
+    private List<Participation> participants;
+
+    public Event(Integer idEvent, String title, LocalDateTime moment, Integer duration,
+                 User fkUser, Bubble fkBubble) {
+        this.idEvent = idEvent;
+        this.title = title;
+        this.moment = moment;
+        this.duration = duration;
+        this.fkUser = fkUser;
+        this.fkBubble = fkBubble;
+    }
 }

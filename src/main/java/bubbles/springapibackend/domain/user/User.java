@@ -2,6 +2,8 @@ package bubbles.springapibackend.domain.user;
 
 import bubbles.springapibackend.domain.address.Address;
 import bubbles.springapibackend.domain.comment.Comment;
+import bubbles.springapibackend.domain.member.Member;
+import bubbles.springapibackend.domain.participation.Participation;
 import bubbles.springapibackend.domain.post.Post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -47,6 +49,12 @@ public class User implements UserDetails {
     @OneToOne
     @JoinColumn(name = "fk_address")
     private Address fkAddress;
+
+    @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
+    private List<Member> members;
+
+    @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
+    private List<Participation> participants;
 
     @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
     private List<Post> posts;

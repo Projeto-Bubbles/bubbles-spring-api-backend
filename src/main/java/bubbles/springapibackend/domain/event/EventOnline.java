@@ -1,12 +1,14 @@
 package bubbles.springapibackend.domain.event;
 
 import bubbles.springapibackend.domain.bubble.Bubble;
+import bubbles.springapibackend.domain.participation.Participation;
 import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter

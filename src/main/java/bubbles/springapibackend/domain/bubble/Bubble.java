@@ -2,6 +2,7 @@ package bubbles.springapibackend.domain.bubble;
 
 import bubbles.springapibackend.api.enums.Category;
 import bubbles.springapibackend.domain.event.Event;
+import bubbles.springapibackend.domain.member.Member;
 import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
@@ -39,6 +40,9 @@ public class Bubble {
     @OneToOne
     @JoinColumn(name = "fk_user")
     private User fkUser;
+
+    @OneToMany(mappedBy = "fkBubble", cascade = CascadeType.ALL)
+    private List<Member> members;
 
     @OneToMany(mappedBy = "fkBubble", cascade = CascadeType.ALL)
     private List<Post> posts;
