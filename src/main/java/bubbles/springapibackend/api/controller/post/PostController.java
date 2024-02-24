@@ -6,12 +6,10 @@ import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.post.dto.PostRequestDTO;
 import bubbles.springapibackend.domain.post.dto.PostResponseDTO;
 import bubbles.springapibackend.domain.post.mapper.PostMapper;
-import bubbles.springapibackend.domain.post.repository.PostRepository;
 import bubbles.springapibackend.service.post.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,9 +29,9 @@ public class PostController {
     @Operation(summary = "Get Comments for a Post",
             description = "Returns a list of comments for a specific post.")
     @GetMapping("/{postId}/comments")
-    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPost(
+    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(
             @Parameter(description = "Unique post ID") @PathVariable Integer postId) {
-        List<CommentResponseDTO> comments = postService.getCommentsByPost(postId);
+        List<CommentResponseDTO> comments = postService.getCommentsByPostId(postId);
         if (comments.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(comments);
     }
@@ -65,9 +63,9 @@ public class PostController {
     @Operation(summary = "Get Posts by Author",
             description = "Returns posts associated with a specific author.")
     @GetMapping("/author")
-    public ResponseEntity<List<PostResponseDTO>> getByAuthor(
-            @Parameter(description = "Author name") @RequestParam String author) {
-        List<PostResponseDTO> posts = postService.getPostsByAuthor(author);
+    public ResponseEntity<List<PostResponseDTO>> getByUserNickname(
+            @Parameter(description = "Author name") @RequestParam String userNickname) {
+        List<PostResponseDTO> posts = postService.getPostsByUserNickname(userNickname);
         if (posts.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(posts);
     }
@@ -75,9 +73,9 @@ public class PostController {
     @Operation(summary = "Get Posts by Bubble",
             description = "Returns posts associated with a specific bubble (group).")
     @GetMapping("/bubble")
-    public ResponseEntity<List<PostResponseDTO>> getByBubble(
-            @Parameter(description = "Bubble (group) name") @RequestParam String bubble) {
-        List<PostResponseDTO> posts = postService.getPostsByBubble(bubble);
+    public ResponseEntity<List<PostResponseDTO>> getByBubbleTitle(
+            @Parameter(description = "Bubble (group) name") @RequestParam String bubbleTitle) {
+        List<PostResponseDTO> posts = postService.getPostsByBubbleTitle(bubbleTitle);
         if (posts.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(posts);
     }

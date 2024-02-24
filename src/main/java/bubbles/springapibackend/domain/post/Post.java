@@ -21,21 +21,21 @@ import java.util.List;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idPost;
 
     private LocalDateTime moment;
 
     @Column(columnDefinition = "VARCHAR(650)")
-    private String content;
+    private String contents;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
-    private User author;
+    @JoinColumn(name = "fk_user")
+    private User fkUser;
 
     @ManyToOne
-    @JoinColumn(name = "bubble_id")
-    private Bubble bubble;
+    @JoinColumn(name = "fk_bubble")
+    private Bubble fkBubble;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkPost", cascade = CascadeType.ALL)
     private List<Comment> comments;
 }

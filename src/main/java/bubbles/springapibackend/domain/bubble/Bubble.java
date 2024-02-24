@@ -22,13 +22,13 @@ import java.util.List;
 public class Bubble {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idBubble;
 
     @Column(columnDefinition = "VARCHAR(100)")
     private String title;
 
     @Column(columnDefinition = "VARCHAR(500)")
-    private String description;
+    private String explanation;
 
     private LocalDate creationDate;
 
@@ -37,11 +37,12 @@ public class Bubble {
     private Category category;
 
     @OneToOne
-    private User creator;
+    @JoinColumn(name = "fk_user")
+    private User fkUser;
 
-    @OneToMany(mappedBy = "bubble", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkBubble", cascade = CascadeType.ALL)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "bubble", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkBubble", cascade = CascadeType.ALL)
     private List<Event> events;
 }

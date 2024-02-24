@@ -56,13 +56,13 @@ public class BubbleService {
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<BubbleDTO> getAllBubblesByCreatorId(Integer creatorId){
-        return bubbleRepository.findAllByCreatorId(creatorId).stream()
+    public List<BubbleDTO> getAllBubblesByUserId(Integer userId){
+        return bubbleRepository.findAllByFkUserIdUser(userId).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<BubbleDTO> getAllBubblesByCreatorUsername(String creatorUsername) {
-        return bubbleRepository.findAllByCreatorUsername(creatorUsername).stream()
+    public List<BubbleDTO> getAllBubblesByUserNickname(String userNickname) {
+        return bubbleRepository.findAllByFkUserNickname(userNickname).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
@@ -70,12 +70,12 @@ public class BubbleService {
         User user = userService.getUserByUsername(newBubbleDTO.getCreator());
 
         Bubble newBubble = new Bubble();
-        newBubble.setId(newBubbleDTO.getId());
+        newBubble.setIdBubble(newBubbleDTO.getId());
         newBubble.setTitle(newBubbleDTO.getTitle());
-        newBubble.setDescription(newBubbleDTO.getDescription());
+        newBubble.setExplanation(newBubbleDTO.getDescription());
         newBubble.setCreationDate(newBubbleDTO.getCreationDate());
         newBubble.setCategory(newBubbleDTO.getCategory());
-        newBubble.setCreator(user);
+        newBubble.setFkUser(user);
 
         return bubbleMapper.toDTO(bubbleRepository.save(newBubble));
     }
@@ -86,15 +86,15 @@ public class BubbleService {
                         HttpStatus.NOT_FOUND, "Bolha com ID: " + bubbleId + " não encontrado!"));
 
         updatedBubble.setTitle(updatedBubbleDTO.getTitle());
-        updatedBubble.setDescription(updatedBubbleDTO.getDescription());
+        updatedBubble.setExplanation(updatedBubbleDTO.getDescription());
 
         return bubbleMapper.toDTO(bubbleRepository.save(updatedBubble));
     }
 
     public void deleteBubbleById(Integer bubbleId) {
-        List<Event> events = eventRepository.findAllByBubbleId(bubbleId);
+        List<Event> events = eventRepository.findAllByFkBubbleIdBubble(bubbleId);
         for (Event event : events) {
-            event.setBubble(null);
+            event.setFkBubble(null);
             eventRepository.save(event);
         }
 

@@ -18,19 +18,19 @@ public class CommentMapper {
 
     public CommentResponseDTO toDTO(Comment comment) {
         CommentResponseDTO dto = new CommentResponseDTO();
-        dto.setId(comment.getId());
+        dto.setId(comment.getIdComment());
         dto.setDateTime(comment.getMoment());
-        dto.setContent(comment.getContent());
-        dto.setAuthor(comment.getAuthor().getUsername());
+        dto.setContent(comment.getContents());
+        dto.setAuthor(comment.getFkUser().getNickname());
         return dto;
     }
 
     public Comment toEntity(CommentRequestDTO dto) {
         Comment comment = new Comment();
         comment.setMoment(dto.getDateTime());
-        comment.setContent(dto.getContent());
+        comment.setContents(dto.getContent());
         Optional<User> authorOpt = userRepository.findById(dto.getAuthorId());
-        authorOpt.ifPresent(comment::setAuthor);
+        authorOpt.ifPresent(comment::setFkUser);
         return comment;
     }
 }

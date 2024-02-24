@@ -40,13 +40,13 @@ public class EventService {
                 HttpStatus.NOT_FOUND, "Bolha com ID: " + eventId + " não encontrado!"));
     }
 
-    public List<EventDTO> getEventsByAuthor(String author) {
-        return eventRepository.findAllByCreatorUsername(author).stream()
+    public List<EventDTO> getEventsByUserNickname(String userNickname) {
+        return eventRepository.findAllByFkUserNickname(userNickname).stream()
                 .map(eventMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<EventDTO> getEventsByBubble(String bubble) {
-        return eventRepository.findByBubbleTitle(bubble).stream()
+    public List<EventDTO> getEventsByBubbleTitle(String bubbleTitle) {
+        return eventRepository.findByFkBubbleTitle(bubbleTitle).stream()
                 .map(eventMapper::toDTO).collect(Collectors.toList());
     }
 
@@ -100,13 +100,13 @@ public class EventService {
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
         existingEvent.setTitle(updatedEventInPersonDTO.getTitle());
-        existingEvent.setDateTime(updatedEventInPersonDTO.getDateTime());
+        existingEvent.setMoment(updatedEventInPersonDTO.getDateTime());
         existingEvent.setDuration(updatedEventInPersonDTO.getDuration());
 
         EventInPerson eventInPerson = (EventInPerson) existingEvent;
         eventInPerson.setPublicPlace(updatedEventInPersonDTO.isPublicPlace());
         eventInPerson.setPeopleCapacity(updatedEventInPersonDTO.getPeopleCapacity());
-        eventInPerson.setAddress(updatedEventInPersonDTO.getAddress());
+        eventInPerson.setFkAddress(updatedEventInPersonDTO.getAddress());
 
         return (EventInPersonDTO) eventMapper.toDTO(eventRepository.save(eventInPerson));
     }
@@ -117,12 +117,12 @@ public class EventService {
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
         existingEvent.setTitle(updatedEventOnlineDTO.getTitle());
-        existingEvent.setDateTime(updatedEventOnlineDTO.getDateTime());
+        existingEvent.setMoment(updatedEventOnlineDTO.getDateTime());
         existingEvent.setDuration(updatedEventOnlineDTO.getDuration());
 
         EventOnline eventOnline = (EventOnline) existingEvent;
         eventOnline.setPlatform(updatedEventOnlineDTO.getPlatform());
-        eventOnline.setUrl(updatedEventOnlineDTO.getUrl());
+        eventOnline.setLink(updatedEventOnlineDTO.getUrl());
 
         return (EventOnlineDTO) eventMapper.toDTO(eventRepository.save(eventOnline));
     }

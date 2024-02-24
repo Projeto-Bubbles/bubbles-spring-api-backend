@@ -132,10 +132,10 @@ public class BubbleController {
             description = "Retorna todas as bolhas criadas por um usuário específico," +
                     " usando seu ID.")
     @GetMapping("/creator/{creatorId}")
-    public ResponseEntity<List<BubbleDTO>> getAllBubblesByCreatorID(
+    public ResponseEntity<List<BubbleDTO>> getAllBubblesByUserID(
             @Parameter(description = "ID do criador da bolha.")
-            @PathVariable Integer creatorId) {
-        List<BubbleDTO> bubbles = bubbleService.getAllBubblesByCreatorId(creatorId);
+            @PathVariable Integer userId) {
+        List<BubbleDTO> bubbles = bubbleService.getAllBubblesByUserId(userId);
 
         if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
 
@@ -150,10 +150,10 @@ public class BubbleController {
             description = "Retorna todas as bolhas criadas por um usuário específico," +
                     " usando seu apelido.")
     @GetMapping("/creator/nickname")
-    public ResponseEntity<List<BubbleDTO>> getAllBubblesByCreatorNickname(
+    public ResponseEntity<List<BubbleDTO>> getAllBubblesByUserNickname(
             @Parameter(description = "Apelido do criador da bolha.")
-            @RequestParam String creatorUsername) {
-        List<BubbleDTO> bubbles = bubbleService.getAllBubblesByCreatorUsername(creatorUsername);
+            @RequestParam String userNickname) {
+        List<BubbleDTO> bubbles = bubbleService.getAllBubblesByUserNickname(userNickname);
 
         if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
 

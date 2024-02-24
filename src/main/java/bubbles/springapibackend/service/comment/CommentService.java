@@ -20,8 +20,8 @@ public class CommentService {
     private final PostRepository postRepository;
     private final CommentMapper commentMapper;
 
-    public List<Comment> getCommentsByPost(Integer postId) {
-        return commentRepository.findAllByPostId(postId);
+    public List<Comment> getCommentsByPostId(Integer postId) {
+        return commentRepository.findAllByFkPostIdPost(postId);
     }
 
     public Comment createComment(CommentRequestDTO commentRequestDTO, Integer postId) {
@@ -30,7 +30,7 @@ public class CommentService {
 
         Comment comment = commentMapper.toEntity(commentRequestDTO);
         comment.setMoment(LocalDateTime.now());
-        comment.setPost(post);
+        comment.setFkPost(post);
 
         return commentRepository.save(comment);
     }

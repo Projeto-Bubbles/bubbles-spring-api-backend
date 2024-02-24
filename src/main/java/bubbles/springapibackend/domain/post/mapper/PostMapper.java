@@ -20,11 +20,11 @@ public class PostMapper {
         }
 
         PostResponseDTO dto = new PostResponseDTO();
-        dto.setId(post.getId());
-        dto.setDateTime(post.getMoment());
-        dto.setContent(post.getContent());
-        dto.setAuthor(post.getAuthor());
-//        dto.setBubble(post.getBubble().getHeadline());
+        dto.setId(post.getIdPost());
+        dto.setDate_time(post.getMoment());
+        dto.setContent(post.getContents());
+        dto.setAuthor(post.getFkUser());
+        dto.setBubble(post.getFkBubble().getTitle());
         if (post.getComments() != null) {
             dto.setComments(post.getComments().stream().map(commentMapper::toDTO)
                     .collect(Collectors.toList()));

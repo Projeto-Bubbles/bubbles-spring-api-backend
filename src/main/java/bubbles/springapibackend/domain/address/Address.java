@@ -15,13 +15,13 @@ import lombok.Setter;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idAddress;
 
     @Column(columnDefinition = "CHAR(8)")
     private String cep;
 
     @Column(columnDefinition = "VARCHAR(60)")
-    private String state;
+    private String estate;
 
     @Column(columnDefinition = "VARCHAR(60)")
     private String city;

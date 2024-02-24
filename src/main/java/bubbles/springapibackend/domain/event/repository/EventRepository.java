@@ -9,16 +9,16 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
-    List<Event> findByBubbleTitle(String bubbleTitle);
+    List<Event> findByFkBubbleTitle(String bubbleTitle);
 
-    @Query("SELECT e FROM Event e WHERE (:bubbleCategories IS NULL OR e.bubble.category IN :bubbleCategories)")
+    @Query("SELECT e FROM Event e WHERE (:bubbleCategories IS NULL OR e.fkBubble.category IN :bubbleCategories)")
     List<Event> findAllByBubbleCategory(@Param("bubbleCategories") List<Category> bubbleCategories);
 
-    List<Event> findAllByCreatorId(Integer creatorId);
+    List<Event> findAllByFkUserIdUser(Integer userId);
 
-    List<Event> findAllByCreatorUsername(String creatorUsername);
+    List<Event> findAllByFkUserNickname(String userNickname);
 
-    List<Event> findAllByBubbleId(Integer bubbleId);
+    List<Event> findAllByFkBubbleIdBubble(Integer bubbleId);
 }
 
 

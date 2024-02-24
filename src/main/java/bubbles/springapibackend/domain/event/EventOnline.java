@@ -17,12 +17,12 @@ public class EventOnline extends Event{
     private String platform;
 
     @Column(columnDefinition = "VARCHAR(300)")
-    private String url;
+    private String link;
 
     public EventOnline(Integer id, String title, LocalDateTime date, Integer duration, User author,
                        Bubble bubble, String platform, String url) {
         super(id, title, date, duration, author, bubble);
         this.platform = platform;
-        this.url = url;
+        this.link = url;
     }
 }

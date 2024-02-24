@@ -10,9 +10,8 @@ import java.util.List;
 @Data
 public class PostResponseDTO {
     private Integer id;
-    private LocalDateTime dateTime;
+    private LocalDateTime date_time;
     private String content;
-    private String name;
     private User author;
     private String bubble;
     private List<CommentResponseDTO> comments;

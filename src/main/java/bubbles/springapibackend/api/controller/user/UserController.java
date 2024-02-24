@@ -81,7 +81,7 @@ public class UserController {
         if (userService.getUserById(id) == null) return ResponseEntity.notFound().build();
 
         User user = userMapper.toEntity(updatedUserDTO);
-        user.setId(id);
+        user.setIdUser(id);
         user = userService.updateUser(user);
         updatedUserDTO = userMapper.toDTO(user);
         return ResponseEntity.ok(updatedUserDTO);
@@ -91,10 +91,10 @@ public class UserController {
             description = "Delete an user by its unique ID.")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(
-            @Parameter(description = "User ID") @PathVariable Integer id) {
-        if (userService.getUserById(id) == null) return ResponseEntity.notFound().build();
+            @Parameter(description = "User ID") @PathVariable Integer idUser) {
+        if (userService.getUserById(idUser) == null) return ResponseEntity.notFound().build();
 
-        userService.deleteUserById(id);
+        userService.deleteUserById(idUser);
         return ResponseEntity.noContent().build();
     }
 }

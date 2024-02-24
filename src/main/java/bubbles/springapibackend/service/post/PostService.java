@@ -35,8 +35,8 @@ public class PostService {
     private final UserService userService;
     private final BubbleService bubbleService;
 
-    public List<CommentResponseDTO> getCommentsByPost(Integer postId) {
-        return commentService.getCommentsByPost(postId).stream()
+    public List<CommentResponseDTO> getCommentsByPostId(Integer postId) {
+        return commentService.getCommentsByPostId(postId).stream()
                 .map(commentMapper::toDTO).collect(Collectors.toList());
     }
 
@@ -50,13 +50,13 @@ public class PostService {
                 HttpStatus.NOT_FOUND, "Post com ID: " + postId + " não encontrado!"));
     }
 
-    public List<PostResponseDTO> getPostsByAuthor(String author) {
-        return postRepository.findByAuthorUsername(author).stream()
+    public List<PostResponseDTO> getPostsByUserNickname(String userNickname) {
+        return postRepository.findByFkUserNickname(userNickname).stream()
                 .map(postMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<PostResponseDTO> getPostsByBubble(String bubble) {
-        return postRepository.findByBubbleTitle(bubble).stream()
+    public List<PostResponseDTO> getPostsByBubbleTitle(String bubbleTitle) {
+        return postRepository.findByFkBubbleTitle(bubbleTitle).stream()
                 .map(postMapper::toDTO)
                 .collect(Collectors.toList());
     }
@@ -71,9 +71,9 @@ public class PostService {
 
         Post newPost = new Post();
         newPost.setMoment(LocalDateTime.now());
-        newPost.setContent(newPostDTO.getContent());
-        newPost.setAuthor(user);
-        newPost.setBubble(bubble);
+        newPost.setContents(newPostDTO.getContent());
+        newPost.setFkUser(user);
+        newPost.setFkBubble(bubble);
 
         Post savedPost = postRepository.save(newPost);
         return postMapper.toDTO(savedPost);
@@ -97,7 +97,7 @@ public class PostService {
                         HttpStatus.NOT_FOUND, "Bolha com ID: " + postId + " não encontrado!"));
 
         existingPost.setMoment(LocalDateTime.now());
-        existingPost.setContent(updatedPostDTO.getContent());
+        existingPost.setContents(updatedPostDTO.getContent());
 
         return postMapper.toDTO(postRepository.save(existingPost));
     }

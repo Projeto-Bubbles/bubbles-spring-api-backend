@@ -3,10 +3,7 @@ package bubbles.springapibackend.domain.event;
 import bubbles.springapibackend.domain.address.Address;
 import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -22,13 +19,14 @@ public class EventInPerson extends Event {
     private Integer peopleCapacity;
 
     @ManyToOne
-    private Address address;
+    @JoinColumn(name = "fk_address")
+    private Address fkAddress;
 
     public EventInPerson(Integer id, String title, LocalDateTime date, Integer duration, User author,
                          Bubble bubble, boolean publicPlace, Integer peopleCapacity, Address address) {
         super(id, title, date, duration, author, bubble);
         this.publicPlace = publicPlace;
         this.peopleCapacity = peopleCapacity;
-        this.address = address;
+        this.fkAddress = address;
     }
 }

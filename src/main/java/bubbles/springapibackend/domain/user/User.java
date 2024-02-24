@@ -27,9 +27,9 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idUser;
 
-    private String name;
+    private String username;
 
     @Email
     private String email;
@@ -39,23 +39,24 @@ public class User implements UserDetails {
     private String cpf;
 
     @Column(unique = true)
-    private String username;
+    private String nickname;
 
     @Column(columnDefinition = "VARCHAR(60)")
-    private String password;
+    private String secretKey;
 
     @OneToOne
-    private Address address;
+    @JoinColumn(name = "fk_address")
+    private Address fkAddress;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public User(String email, String password) {
         this.email = email;
-        this.password = password;
+        this.secretKey = password;
     }
 
     @Override
@@ -65,7 +66,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return secretKey;
     }
 
     @Override

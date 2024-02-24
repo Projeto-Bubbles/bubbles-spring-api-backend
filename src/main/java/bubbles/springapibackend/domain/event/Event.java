@@ -20,20 +20,20 @@ import java.time.LocalDateTime;
 public abstract class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer idEvent;
 
     @Column(columnDefinition = "VARCHAR(100)")
     private String title;
 
-    private LocalDateTime dateTime;
+    private LocalDateTime moment;
 
     private Integer duration;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
-    private User creator;
+    @JoinColumn(name = "fk_user")
+    private User fkUser;
 
     @ManyToOne
-    @JoinColumn(name = "bubble_id")
-    private Bubble bubble;
+    @JoinColumn(name = "fk_bubble")
+    private Bubble fkBubble;
 }

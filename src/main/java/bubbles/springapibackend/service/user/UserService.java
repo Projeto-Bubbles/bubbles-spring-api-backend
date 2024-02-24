@@ -45,7 +45,7 @@ public class UserService {
     }
 
     public User registerUser(User user) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setSecretKey(new BCryptPasswordEncoder().encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -53,25 +53,25 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUserById(Integer id) {
-        List<Bubble> bubbles = bubbleRepository.findAllByCreatorId(id);
+    public void deleteUserById(Integer userId) {
+        List<Bubble> bubbles = bubbleRepository.findAllByFkUserIdUser(userId);
         for (Bubble bubble : bubbles) {
-            bubble.setCreator(null);
+            bubble.setFkUser(null);
             bubbleRepository.save(bubble);
         }
 
-        List<Event> events = eventRepository.findAllByCreatorId(id);
+        List<Event> events = eventRepository.findAllByFkUserIdUser(userId);
         for (Event event : events) {
-            event.setCreator(null);
+            event.setFkUser(null);
             eventRepository.save(event);
         }
 
-        List<Post> posts = postRepository.findByAuthorId(id);
+        List<Post> posts = postRepository.findByFkUserIdUser(userId);
         postRepository.deleteAll(posts);
 
-        List<Comment> comments = commentRepository.findAllByAuthorId(id);
+        List<Comment> comments = commentRepository.findAllByFkUserIdUser(userId);
         commentRepository.deleteAll(comments);
 
-        userRepository.deleteById(id);
+        userRepository.deleteById(userId);
     }
 }

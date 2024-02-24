@@ -33,12 +33,12 @@ public class EventMapper {
     }
 
     private void mapAttributes(Event event, EventDTO eventDTO) {
-        eventDTO.setId(event.getId());
+        eventDTO.setId(event.getIdEvent());
         eventDTO.setTitle(event.getTitle());
-        eventDTO.setDateTime(event.getDateTime());
+        eventDTO.setDateTime(event.getMoment());
         eventDTO.setDuration(event.getDuration());
-        eventDTO.setCreator(event.getCreator().getUsername());
-        eventDTO.setBubbleId(event.getBubble().getId());
+        eventDTO.setCreator(event.getFkUser().getUsername());
+        eventDTO.setBubbleId(event.getFkBubble().getIdBubble());
     }
 
     private EventInPersonDTO eventInPersonToDTO(EventInPerson eventInPerson) {
@@ -47,8 +47,8 @@ public class EventMapper {
 
         eventDTO.setPublicPlace(eventInPerson.isPublicPlace());
         eventDTO.setPeopleCapacity(eventInPerson.getPeopleCapacity());
-        if (eventInPerson.getAddress() != null) {
-            eventDTO.setAddress(eventInPerson.getAddress());
+        if (eventInPerson.getFkAddress() != null) {
+            eventDTO.setAddress(eventInPerson.getFkAddress());
         }
 
         return eventDTO;
@@ -59,7 +59,7 @@ public class EventMapper {
         mapAttributes(eventOnline, eventDTO);
 
         eventDTO.setPlatform(eventOnline.getPlatform());
-        eventDTO.setUrl(eventOnline.getUrl());
+        eventDTO.setUrl(eventOnline.getLink());
 
         return eventDTO;
     }

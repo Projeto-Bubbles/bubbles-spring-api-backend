@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
-    List<Post> findByAuthorId(Integer authorId);
+    List<Post> findByFkUserIdUser(Integer authorId);
 
-    List<Post> findByAuthorUsername(String authorUsername);
+    List<Post> findByFkUserNickname(String authorUsername);
 
-    List<Post> findByBubbleTitle(String bubbleTitle);
+    List<Post> findByFkBubbleTitle(String bubbleTitle);
 }

@@ -51,9 +51,9 @@ public class EventController {
 
     @Operation(summary = "Get Events by Author", description = "Returns events authored by a specific user.")
     @GetMapping("/author")
-    public ResponseEntity<List<EventDTO>> getEventsByAuthor(
-            @Parameter(description = "Author's name") @RequestParam String author) {
-        List<EventDTO> events = eventService.getEventsByAuthor(author);
+    public ResponseEntity<List<EventDTO>> getEventsByUserNickname(
+            @Parameter(description = "Author's name") @RequestParam String userNickname) {
+        List<EventDTO> events = eventService.getEventsByUserNickname(userNickname);
 
         if (events.isEmpty()) return ResponseEntity.noContent().build();
 
@@ -68,8 +68,8 @@ public class EventController {
             description = "Returns events associated with a specific bubble (group).")
     @GetMapping("/bubble")
     public ResponseEntity<List<EventDTO>> getEventsByBubble(
-            @Parameter(description = "Bubble (group) name") @RequestParam String bubble) {
-        List<EventDTO> events = eventService.getEventsByBubble(bubble);
+            @Parameter(description = "Bubble (group) name") @RequestParam String bubbleTitle) {
+        List<EventDTO> events = eventService.getEventsByBubbleTitle(bubbleTitle);
         if (events.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
