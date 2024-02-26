@@ -1,25 +1,33 @@
 package bubbles.springapibackend.domain.bubble.mapper;
 
 import bubbles.springapibackend.domain.bubble.Bubble;
-import bubbles.springapibackend.domain.bubble.dto.BubbleDTO;
+import bubbles.springapibackend.domain.bubble.dto.BubbleResponseDTO;
+import bubbles.springapibackend.domain.user.mapper.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 
 @Component
 public class BubbleMapper {
-    public BubbleDTO toDTO(Bubble bubble) {
+    private final UserMapper userMapper;
+
+    @Autowired
+    public BubbleMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
+    public BubbleResponseDTO toDTO(Bubble bubble) {
         if (bubble == null || bubble.getFkUser() == null) {
             throw new EntityNotFoundException("Bolha nula ou criador nulo");
         }
 
-        BubbleDTO bubbleDTO = new BubbleDTO();
-        bubbleDTO.setId(bubble.getIdBubble());
+        BubbleResponseDTO bubbleDTO = new BubbleResponseDTO();
+        bubbleDTO.setIdBubble(bubble.getIdBubble());
         bubbleDTO.setTitle(bubble.getTitle());
-        bubbleDTO.setDescription(bubble.getExplanation());
+        bubbleDTO.setExplanation(bubble.getExplanation());
         bubbleDTO.setCreationDate(bubble.getCreationDate());
         bubbleDTO.setCategory(bubble.getCategory());
-        bubbleDTO.setCreator(bubble.getFkUser().getNickname());
+        bubbleDTO.setFkUser(userMapper.toUserBubbleDTO(bubble.getFkUser()));
 
         return bubbleDTO;
     }

@@ -27,10 +27,9 @@ public class CommentMapper {
 
     public Comment toEntity(CommentRequestDTO dto) {
         Comment comment = new Comment();
+        comment.setFkUser(userRepository.getUserByIdUser(dto.getAuthorId()));
         comment.setMoment(dto.getDateTime());
         comment.setContents(dto.getContent());
-        Optional<User> authorOpt = userRepository.findById(dto.getAuthorId());
-        authorOpt.ifPresent(comment::setFkUser);
         return comment;
     }
 }

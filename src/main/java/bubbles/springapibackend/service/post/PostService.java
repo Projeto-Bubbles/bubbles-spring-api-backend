@@ -63,7 +63,7 @@ public class PostService {
 
     public PostResponseDTO createPost(PostRequestDTO newPostDTO) {
         if (newPostDTO.getAuthorId() == null || newPostDTO.getBubbleId() == null) {
-            throw new IllegalArgumentException("AuthorId and BubbleId must not be null");
+            throw new IllegalArgumentException("fkUser ou fkBubble não podem ser nulo");
         }
 
         User user = userService.getUserById(newPostDTO.getAuthorId());

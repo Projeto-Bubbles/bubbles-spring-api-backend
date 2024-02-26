@@ -37,7 +37,6 @@ public class Post {
     @JoinColumn(name = "fk_bubble")
     private Bubble fkBubble;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "fkPost", cascade = CascadeType.ALL)
     private List<Comment> comments;
 }

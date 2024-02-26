@@ -2,7 +2,8 @@ package bubbles.springapibackend.service.bubble;
 
 import bubbles.springapibackend.api.enums.Category;
 import bubbles.springapibackend.domain.bubble.Bubble;
-import bubbles.springapibackend.domain.bubble.dto.BubbleDTO;
+import bubbles.springapibackend.domain.bubble.dto.BubbleRequestDTO;
+import bubbles.springapibackend.domain.bubble.dto.BubbleResponseDTO;
 import bubbles.springapibackend.domain.bubble.mapper.BubbleMapper;
 import bubbles.springapibackend.domain.bubble.repository.BubbleRepository;
 import bubbles.springapibackend.domain.event.Event;
@@ -26,7 +27,7 @@ public class BubbleService {
     private final UserService userService;
     private final EventRepository eventRepository;
 
-    public List<BubbleDTO> getAllBubbles() {
+    public List<BubbleResponseDTO> getAllBubbles() {
         return bubbleRepository.findAll().stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
@@ -36,57 +37,60 @@ public class BubbleService {
                 HttpStatus.NOT_FOUND, "Bolha com ID: " + bubbleId + " não encontrado!"));
     }
 
-    public List<BubbleDTO> getAllBubblesByTitleContainsIgnoreCase(String bubbleTitle) {
+    public List<BubbleResponseDTO> getAllBubblesByTitleContainsIgnoreCase(String bubbleTitle) {
         return bubbleRepository.findAllByTitleContainsIgnoreCase(bubbleTitle).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<BubbleDTO> getAllBubblesByCreationDateAfter(LocalDate bubbleCreationDate) {
+    public List<BubbleResponseDTO> getAllBubblesByCreationDateAfter(LocalDate bubbleCreationDate) {
         return bubbleRepository.findAllByCreationDateIsGreaterThanEqual(bubbleCreationDate).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<BubbleDTO> getAllBubblesByCreationDateBefore(LocalDate bubbleCreationDate) {
+    public List<BubbleResponseDTO> getAllBubblesByCreationDateBefore(LocalDate bubbleCreationDate) {
         return bubbleRepository.findAllByCreationDateIsLessThanEqual(bubbleCreationDate).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<BubbleDTO> getAllBubblesByCategory(List<Category> bubbleCategories) {
+    public List<BubbleResponseDTO> getAllBubblesByCategory(List<Category> bubbleCategories) {
         return bubbleRepository.findAllByCategory(bubbleCategories).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<BubbleDTO> getAllBubblesByUserId(Integer userId){
+    public List<BubbleResponseDTO> getAllBubblesByUserId(Integer userId){
         return bubbleRepository.findAllByFkUserIdUser(userId).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<BubbleDTO> getAllBubblesByUserNickname(String userNickname) {
+    public List<BubbleResponseDTO> getAllBubblesByUserNickname(String userNickname) {
         return bubbleRepository.findAllByFkUserNickname(userNickname).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
-    public BubbleDTO createNewBubble(BubbleDTO newBubbleDTO) {
-        User user = userService.getUserByNickname(newBubbleDTO.getCreator());
+    public BubbleResponseDTO createNewBubble(BubbleRequestDTO newBubbleDTO) {
+        if (newBubbleDTO.getFkUser() == null) {
+            throw new IllegalArgumentException("fkUser não pode ser nula");
+        }
+
+        User user = userService.getUserById(newBubbleDTO.getFkUser());
 
         Bubble newBubble = new Bubble();
-        newBubble.setIdBubble(newBubbleDTO.getId());
         newBubble.setTitle(newBubbleDTO.getTitle());
-        newBubble.setExplanation(newBubbleDTO.getDescription());
-        newBubble.setCreationDate(newBubbleDTO.getCreationDate());
+        newBubble.setExplanation(newBubbleDTO.getExplanation());
+        newBubble.setCreationDate(LocalDate.now());
         newBubble.setCategory(newBubbleDTO.getCategory());
         newBubble.setFkUser(user);
 
         return bubbleMapper.toDTO(bubbleRepository.save(newBubble));
     }
 
-    public BubbleDTO updateBubbleById(Integer bubbleId, BubbleDTO updatedBubbleDTO) {
+    public BubbleResponseDTO updateBubbleById(Integer bubbleId, BubbleResponseDTO updatedBubbleDTO) {
         Bubble updatedBubble = bubbleRepository.findById(bubbleId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Bolha com ID: " + bubbleId + " não encontrado!"));
 
         updatedBubble.setTitle(updatedBubbleDTO.getTitle());
-        updatedBubble.setExplanation(updatedBubbleDTO.getDescription());
+        updatedBubble.setExplanation(updatedBubbleDTO.getExplanation());
 
         return bubbleMapper.toDTO(bubbleRepository.save(updatedBubble));
     }

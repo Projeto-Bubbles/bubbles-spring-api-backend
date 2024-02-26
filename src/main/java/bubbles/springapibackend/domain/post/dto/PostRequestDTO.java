@@ -8,5 +8,3 @@ public class PostRequestDTO {
     private Integer authorId;
     private Integer bubbleId;
 }
-
-
