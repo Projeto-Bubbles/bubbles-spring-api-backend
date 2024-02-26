@@ -8,5 +8,5 @@ public class BubbleRequestDTO {
     private String title;
     private String explanation;
     private Category category;
-    private Integer fkUser;
+    private Integer creator;
 }

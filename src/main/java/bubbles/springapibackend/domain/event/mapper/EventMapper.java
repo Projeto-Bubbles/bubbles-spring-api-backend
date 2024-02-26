@@ -3,18 +3,29 @@ package bubbles.springapibackend.domain.event.mapper;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.event.EventInPerson;
 import bubbles.springapibackend.domain.event.EventOnline;
-import bubbles.springapibackend.domain.event.dto.EventDTO;
-import bubbles.springapibackend.domain.event.dto.EventInPersonDTO;
-import bubbles.springapibackend.domain.event.dto.EventOnlineDTO;
+import bubbles.springapibackend.domain.event.dto.EventResponseDTO;
+import bubbles.springapibackend.domain.event.dto.EventInPersonResponseDTO;
+import bubbles.springapibackend.domain.event.dto.EventOnlineResponseDTO;
+import bubbles.springapibackend.domain.user.mapper.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EventMapper {
-    public EventDTO toDTO(Event event) {
-        validateEvent(event);
+    private final UserMapper userMapper;
 
-        EventDTO eventDTO;
+    @Autowired
+    public EventMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
+    public EventResponseDTO toDTO(Event event) {
+        if (event == null) {
+            throw new EntityNotFoundException("Evento nulo!");
+        }
+
+        EventResponseDTO eventDTO;
         if (event instanceof EventInPerson) {
             eventDTO = eventInPersonToDTO((EventInPerson) event);
         } else if (event instanceof EventOnline) {
@@ -26,41 +37,35 @@ public class EventMapper {
         return eventDTO;
     }
 
-    private void validateEvent(Event event) {
-        if (event == null) {
-            throw new EntityNotFoundException("Evento nulo!");
-        }
-    }
-
-    private void mapAttributes(Event event, EventDTO eventDTO) {
+    private void mapAttributes(Event event, EventResponseDTO eventDTO) {
         eventDTO.setId(event.getIdEvent());
         eventDTO.setTitle(event.getTitle());
         eventDTO.setDateTime(event.getMoment());
         eventDTO.setDuration(event.getDuration());
-        eventDTO.setCreator(event.getFkUser().getUsername());
-        eventDTO.setBubbleId(event.getFkBubble().getIdBubble());
+        eventDTO.setOrganizer(userMapper.toUserBubbleDTO(event.getOrganizer()));
+        eventDTO.setIdBubble(event.getBubble().getIdBubble());
     }
 
-    private EventInPersonDTO eventInPersonToDTO(EventInPerson eventInPerson) {
-        EventInPersonDTO eventDTO = new EventInPersonDTO();
-        mapAttributes(eventInPerson, eventDTO);
+    private EventInPersonResponseDTO eventInPersonToDTO(EventInPerson eventInPerson) {
+        EventInPersonResponseDTO eventInPersonDTO = new EventInPersonResponseDTO();
+        mapAttributes(eventInPerson, eventInPersonDTO);
 
-        eventDTO.setPublicPlace(eventInPerson.isPublicPlace());
-        eventDTO.setPeopleCapacity(eventInPerson.getPeopleCapacity());
-        if (eventInPerson.getFkAddress() != null) {
-            eventDTO.setAddress(eventInPerson.getFkAddress());
+        eventInPersonDTO.setPublicPlace(eventInPerson.isPublicPlace());
+        eventInPersonDTO.setPeopleCapacity(eventInPerson.getPeopleCapacity());
+        if (eventInPerson.getAddress() != null) {
+            eventInPersonDTO.setAddress(eventInPerson.getAddress());
         }
 
-        return eventDTO;
+        return eventInPersonDTO;
     }
 
-    private EventOnlineDTO eventOnlineToDTO(EventOnline eventOnline) {
-        EventOnlineDTO eventDTO = new EventOnlineDTO();
-        mapAttributes(eventOnline, eventDTO);
+    private EventOnlineResponseDTO eventOnlineToDTO(EventOnline eventOnline) {
+        EventOnlineResponseDTO eventOnlineDTO = new EventOnlineResponseDTO();
+        mapAttributes(eventOnline, eventOnlineDTO);
 
-        eventDTO.setPlatform(eventOnline.getPlatform());
-        eventDTO.setUrl(eventOnline.getLink());
+        eventOnlineDTO.setPlatform(eventOnline.getPlatform());
+        eventOnlineDTO.setLink(eventOnline.getLink());
 
-        return eventDTO;
+        return eventOnlineDTO;
     }
 }

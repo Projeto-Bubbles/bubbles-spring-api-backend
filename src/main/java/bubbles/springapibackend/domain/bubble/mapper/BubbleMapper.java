@@ -17,7 +17,7 @@ public class BubbleMapper {
     }
 
     public BubbleResponseDTO toDTO(Bubble bubble) {
-        if (bubble == null || bubble.getFkUser() == null) {
+        if (bubble == null || bubble.getCreator() == null) {
             throw new EntityNotFoundException("Bolha nula ou criador nulo");
         }
 
@@ -27,7 +27,7 @@ public class BubbleMapper {
         bubbleDTO.setExplanation(bubble.getExplanation());
         bubbleDTO.setCreationDate(bubble.getCreationDate());
         bubbleDTO.setCategory(bubble.getCategory());
-        bubbleDTO.setFkUser(userMapper.toUserBubbleDTO(bubble.getFkUser()));
+        bubbleDTO.setCreator(userMapper.toUserBubbleDTO(bubble.getCreator()));
 
         return bubbleDTO;
     }

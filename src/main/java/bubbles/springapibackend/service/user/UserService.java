@@ -40,10 +40,6 @@ public class UserService {
         return userRepository.findByEmail(userEmail);
     }
 
-    public User getUserByUsername(String userName) {
-        return userRepository.findByUsername(userName);
-    }
-
     public User getUserByNickname(String userNickname) {
         return userRepository.findByNickname(userNickname);
     }
@@ -58,15 +54,15 @@ public class UserService {
     }
 
     public void deleteUserById(Integer userId) {
-        List<Bubble> bubbles = bubbleRepository.findAllByFkUserIdUser(userId);
+        List<Bubble> bubbles = bubbleRepository.findAllByCreatorIdUser(userId);
         for (Bubble bubble : bubbles) {
-            bubble.setFkUser(null);
+            bubble.setCreator(null);
             bubbleRepository.save(bubble);
         }
 
-        List<Event> events = eventRepository.findAllByFkUserIdUser(userId);
+        List<Event> events = eventRepository.findAllByOrganizerIdUser(userId);
         for (Event event : events) {
-            event.setFkUser(null);
+            event.setOrganizer(null);
             eventRepository.save(event);
         }
 

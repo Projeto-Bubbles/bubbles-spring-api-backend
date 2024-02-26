@@ -39,7 +39,7 @@ public class Bubble {
 
     @OneToOne
     @JoinColumn(name = "fk_user")
-    private User fkUser;
+    private User creator;
 
     @OneToMany(mappedBy = "fkBubble", cascade = CascadeType.ALL)
     private List<Member> members;
@@ -47,6 +47,6 @@ public class Bubble {
     @OneToMany(mappedBy = "fkBubble", cascade = CascadeType.ALL)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "fkBubble", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bubble", cascade = CascadeType.ALL)
     private List<Event> events;
 }

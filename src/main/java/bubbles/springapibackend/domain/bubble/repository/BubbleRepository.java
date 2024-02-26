@@ -19,7 +19,7 @@ public interface BubbleRepository extends JpaRepository<Bubble, Integer> {
     @Query("SELECT b FROM Bubble b WHERE (:bubbleCategories IS NULL OR b.category IN :bubbleCategories)")
     List<Bubble> findAllByCategory(@Param("bubbleCategories") List<Category> bubbleCategories);
 
-    List<Bubble> findAllByFkUserIdUser(Integer userId);
+    List<Bubble> findAllByCreatorIdUser(Integer userId);
 
-    List<Bubble> findAllByFkUserNickname(String creatorUsername);
+    List<Bubble> findAllByCreatorNickname(String creatorUsername);
 }

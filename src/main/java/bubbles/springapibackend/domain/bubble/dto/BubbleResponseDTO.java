@@ -13,5 +13,5 @@ public class BubbleResponseDTO {
     private String explanation;
     private LocalDate creationDate;
     private Category category;
-    private UserBubbleDTO fkUser;
+    private UserBubbleDTO creator;
 }

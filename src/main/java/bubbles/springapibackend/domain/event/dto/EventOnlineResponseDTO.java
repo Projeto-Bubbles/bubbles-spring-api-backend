@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class EventOnlineDTO extends EventDTO{
+public class EventOnlineResponseDTO extends EventResponseDTO {
     private String platform;
-    private String url;
+    private String link;
 }

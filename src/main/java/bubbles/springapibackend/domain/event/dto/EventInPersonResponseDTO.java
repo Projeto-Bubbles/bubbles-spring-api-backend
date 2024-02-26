@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class EventInPersonDTO extends EventDTO{
+public class EventInPersonResponseDTO extends EventResponseDTO {
     private boolean publicPlace;
     private Integer peopleCapacity;
     private Address address;

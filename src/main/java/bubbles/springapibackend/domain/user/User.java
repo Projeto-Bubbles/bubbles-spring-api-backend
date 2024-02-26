@@ -48,7 +48,7 @@ public class User implements UserDetails {
 
     @OneToOne
     @JoinColumn(name = "fk_address")
-    private Address fkAddress;
+    private Address address;
 
     @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
     private List<Member> members;

@@ -5,9 +5,7 @@ import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.event.EventInPerson;
 import bubbles.springapibackend.domain.event.EventOnline;
-import bubbles.springapibackend.domain.event.dto.EventDTO;
-import bubbles.springapibackend.domain.event.dto.EventInPersonDTO;
-import bubbles.springapibackend.domain.event.dto.EventOnlineDTO;
+import bubbles.springapibackend.domain.event.dto.*;
 import bubbles.springapibackend.domain.event.mapper.EventMapper;
 import bubbles.springapibackend.domain.event.repository.EventRepository;
 import bubbles.springapibackend.domain.user.User;
@@ -30,7 +28,7 @@ public class EventService {
     private final UserService userService;
     private final BubbleService bubbleService;
 
-    public List<EventDTO> getAvailableEvents() {
+    public List<EventResponseDTO> getAvailableEvents() {
         return eventRepository.findAll().stream()
                 .map(eventMapper::toDTO).collect(Collectors.toList());
     }
@@ -40,61 +38,61 @@ public class EventService {
                 HttpStatus.NOT_FOUND, "Bolha com ID: " + eventId + " não encontrado!"));
     }
 
-    public List<EventDTO> getEventsByUserNickname(String userNickname) {
-        return eventRepository.findAllByFkUserNickname(userNickname).stream()
+    public List<EventResponseDTO> getEventsByUserNickname(String userNickname) {
+        return eventRepository.findAllByOrganizerNickname(userNickname).stream()
                 .map(eventMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<EventDTO> getEventsByBubbleTitle(String bubbleTitle) {
-        return eventRepository.findByFkBubbleTitle(bubbleTitle).stream()
+    public List<EventResponseDTO> getEventsByBubbleTitle(String bubbleTitle) {
+        return eventRepository.findByBubbleTitle(bubbleTitle).stream()
                 .map(eventMapper::toDTO).collect(Collectors.toList());
     }
 
-    public List<EventDTO> getFilteredEvents(List<Category> categories) {
+    public List<EventResponseDTO> getFilteredEvents(List<Category> categories) {
         return eventRepository.findAllByBubbleCategory(categories).stream()
                 .map(eventMapper::toDTO).collect(Collectors.toList());
     }
 
-    public EventDTO createInPersonEvent(EventInPersonDTO newEventInPersonDTO) {
-        User user = userService.getUserByNickname(newEventInPersonDTO.getCreator());
-        Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getBubbleId());
+    public EventResponseDTO createInPersonEvent(EventInPersonRequestDTO newEventInPersonDTO) {
+        if (newEventInPersonDTO.getIdCreator() == null) {
+            throw new IllegalArgumentException("fkUser não pode ser nula");
+        }
+        User user = userService.getUserById(newEventInPersonDTO.getIdCreator());
+        Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getIdBubble());
 
-        EventInPerson newEventInPerson = new EventInPerson(
-                newEventInPersonDTO.getId(),
-                newEventInPersonDTO.getTitle(),
-                newEventInPersonDTO.getDateTime(),
-                newEventInPersonDTO.getDuration(),
-                user,
-                bubble,
-                newEventInPersonDTO.isPublicPlace(),
-                newEventInPersonDTO.getPeopleCapacity(),
-                newEventInPersonDTO.getAddress()
-        );
+        EventInPerson newEventInPerson = new EventInPerson();
+        newEventInPerson.setTitle(newEventInPersonDTO.getTitle());
+        newEventInPerson.setMoment(newEventInPersonDTO.getDateTime());
+        newEventInPerson.setDuration(newEventInPersonDTO.getDuration());
+        newEventInPerson.setOrganizer(user);
+        newEventInPerson.setBubble(bubble);
+        newEventInPerson.setPublicPlace(newEventInPersonDTO.isPublicPlace());
+        newEventInPerson.setPeopleCapacity(newEventInPersonDTO.getPeopleCapacity());
+        newEventInPerson.setAddress(newEventInPersonDTO.getAddress());
 
-        Event savedEventInPerson = eventRepository.save(newEventInPerson);
-        return eventMapper.toDTO(savedEventInPerson);
+        return eventMapper.toDTO(eventRepository.save(newEventInPerson));
     }
 
-    public EventDTO createOnlineEvent(EventOnlineDTO newEventOnlineDTO) {
-        User user = userService.getUserByNickname(newEventOnlineDTO.getCreator());
-        Bubble bubble = bubbleService.getBubbleById(newEventOnlineDTO.getBubbleId());
+    public EventResponseDTO createOnlineEvent(EventOnlineRequestDTO newEventOnlineDTO) {
+        if (newEventOnlineDTO.getIdCreator() == null) {
+            throw new IllegalArgumentException("fkUser não pode ser nula");
+        }
+        User user = userService.getUserById(newEventOnlineDTO.getIdCreator());
+        Bubble bubble = bubbleService.getBubbleById(newEventOnlineDTO.getIdBubble());
 
-        EventOnline newEventOnline = new EventOnline(
-                newEventOnlineDTO.getId(),
-                newEventOnlineDTO.getTitle(),
-                newEventOnlineDTO.getDateTime(),
-                newEventOnlineDTO.getDuration(),
-                user,
-                bubble,
-                newEventOnlineDTO.getPlatform(),
-                newEventOnlineDTO.getUrl()
-        );
+        EventOnline newEventOnline = new EventOnline();
+        newEventOnline.setTitle(newEventOnlineDTO.getTitle());
+        newEventOnline.setMoment(newEventOnlineDTO.getDateTime());
+        newEventOnline.setDuration(newEventOnlineDTO.getDuration());
+        newEventOnline.setOrganizer(user);
+        newEventOnline.setBubble(bubble);
+        newEventOnline.setPlatform(newEventOnlineDTO.getPlatform());
+        newEventOnline.setLink(newEventOnlineDTO.getLink());
 
-        Event savedEventOnline = eventRepository.save(newEventOnline);
-        return eventMapper.toDTO(savedEventOnline);
+        return eventMapper.toDTO(eventRepository.save(newEventOnline));
     }
 
-    public EventInPersonDTO editInPersonEvent(Integer eventId, EventInPersonDTO updatedEventInPersonDTO) {
+    public EventInPersonResponseDTO editInPersonEvent(Integer eventId, EventInPersonResponseDTO updatedEventInPersonDTO) {
         Event existingEvent = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
@@ -106,12 +104,12 @@ public class EventService {
         EventInPerson eventInPerson = (EventInPerson) existingEvent;
         eventInPerson.setPublicPlace(updatedEventInPersonDTO.isPublicPlace());
         eventInPerson.setPeopleCapacity(updatedEventInPersonDTO.getPeopleCapacity());
-        eventInPerson.setFkAddress(updatedEventInPersonDTO.getAddress());
+        eventInPerson.setAddress(updatedEventInPersonDTO.getAddress());
 
-        return (EventInPersonDTO) eventMapper.toDTO(eventRepository.save(eventInPerson));
+        return (EventInPersonResponseDTO) eventMapper.toDTO(eventRepository.save(eventInPerson));
     }
 
-    public EventOnlineDTO editOnlineEvent(Integer eventId, EventOnlineDTO updatedEventOnlineDTO) {
+    public EventOnlineResponseDTO editOnlineEvent(Integer eventId, EventOnlineResponseDTO updatedEventOnlineDTO) {
         Event existingEvent = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
@@ -122,9 +120,9 @@ public class EventService {
 
         EventOnline eventOnline = (EventOnline) existingEvent;
         eventOnline.setPlatform(updatedEventOnlineDTO.getPlatform());
-        eventOnline.setLink(updatedEventOnlineDTO.getUrl());
+        eventOnline.setLink(updatedEventOnlineDTO.getLink());
 
-        return (EventOnlineDTO) eventMapper.toDTO(eventRepository.save(eventOnline));
+        return (EventOnlineResponseDTO) eventMapper.toDTO(eventRepository.save(eventOnline));
     }
 
     public boolean deleteEventById(Integer id) {

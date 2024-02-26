@@ -5,11 +5,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public abstract class EventDTO {
-    private Integer id;
+public class EventRequestDTO {
     private String title;
     private LocalDateTime dateTime;
     private Integer duration;
-    private String creator;
-    private Integer bubbleId;
+    private Integer idCreator;
+    private Integer idBubble;
 }

@@ -31,11 +31,11 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "fk_user")
-    private User fkUser;
+    private User author;
 
     @ManyToOne
     @JoinColumn(name = "fk_bubble")
-    private Bubble fkBubble;
+    private Bubble bubble;
 
     @OneToMany(mappedBy = "fkPost", cascade = CascadeType.ALL)
     private List<Comment> comments;

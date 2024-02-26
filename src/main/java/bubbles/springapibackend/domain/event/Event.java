@@ -1,6 +1,5 @@
 package bubbles.springapibackend.domain.event;
 
-import bubbles.springapibackend.domain.address.Address;
 import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.participation.Participation;
 import bubbles.springapibackend.domain.user.User;
@@ -34,22 +33,22 @@ public abstract class Event {
 
     @ManyToOne
     @JoinColumn(name = "fk_user")
-    private User fkUser;
+    private User organizer;
 
     @ManyToOne
     @JoinColumn(name = "fk_bubble")
-    private Bubble fkBubble;
+    private Bubble bubble;
 
     @OneToMany(mappedBy = "fkEvent", cascade = CascadeType.ALL)
     private List<Participation> participants;
 
     public Event(Integer idEvent, String title, LocalDateTime moment, Integer duration,
-                 User fkUser, Bubble fkBubble) {
+                 User organizer, Bubble bubble) {
         this.idEvent = idEvent;
         this.title = title;
         this.moment = moment;
         this.duration = duration;
-        this.fkUser = fkUser;
-        this.fkBubble = fkBubble;
+        this.organizer = organizer;
+        this.bubble = bubble;
     }
 }

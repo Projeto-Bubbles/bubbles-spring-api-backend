@@ -58,28 +58,28 @@ public class BubbleService {
     }
 
     public List<BubbleResponseDTO> getAllBubblesByUserId(Integer userId){
-        return bubbleRepository.findAllByFkUserIdUser(userId).stream()
+        return bubbleRepository.findAllByCreatorIdUser(userId).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
     public List<BubbleResponseDTO> getAllBubblesByUserNickname(String userNickname) {
-        return bubbleRepository.findAllByFkUserNickname(userNickname).stream()
+        return bubbleRepository.findAllByCreatorNickname(userNickname).stream()
                 .map(bubbleMapper::toDTO).collect(Collectors.toList());
     }
 
     public BubbleResponseDTO createNewBubble(BubbleRequestDTO newBubbleDTO) {
-        if (newBubbleDTO.getFkUser() == null) {
+        if (newBubbleDTO.getCreator() == null) {
             throw new IllegalArgumentException("fkUser não pode ser nula");
         }
 
-        User user = userService.getUserById(newBubbleDTO.getFkUser());
+        User user = userService.getUserById(newBubbleDTO.getCreator());
 
         Bubble newBubble = new Bubble();
         newBubble.setTitle(newBubbleDTO.getTitle());
         newBubble.setExplanation(newBubbleDTO.getExplanation());
         newBubble.setCreationDate(LocalDate.now());
         newBubble.setCategory(newBubbleDTO.getCategory());
-        newBubble.setFkUser(user);
+        newBubble.setCreator(user);
 
         return bubbleMapper.toDTO(bubbleRepository.save(newBubble));
     }
@@ -96,9 +96,9 @@ public class BubbleService {
     }
 
     public void deleteBubbleById(Integer bubbleId) {
-        List<Event> events = eventRepository.findAllByFkBubbleIdBubble(bubbleId);
+        List<Event> events = eventRepository.findAllByBubbleIdBubble(bubbleId);
         for (Event event : events) {
-            event.setFkBubble(null);
+            event.setBubble(null);
             eventRepository.save(event);
         }
 
