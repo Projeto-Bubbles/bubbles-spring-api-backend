@@ -37,6 +37,6 @@ public class Post {
     @JoinColumn(name = "fk_bubble")
     private Bubble bubble;
 
-    @OneToMany(mappedBy = "fkPost", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 }

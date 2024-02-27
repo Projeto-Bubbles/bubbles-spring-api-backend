@@ -1,8 +1,10 @@
 package bubbles.springapibackend.domain.post.mapper;
 
+import bubbles.springapibackend.domain.bubble.mapper.BubbleMapper;
 import bubbles.springapibackend.domain.comment.mapper.CommentMapper;
 import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.post.dto.PostResponseDTO;
+import bubbles.springapibackend.domain.user.mapper.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PostMapper {
     private CommentMapper commentMapper;
+    private UserMapper userMapper;
+    private BubbleMapper bubbleMapper;
 
     public PostResponseDTO toDTO(Post post) {
         if (post == null) {
@@ -20,11 +24,11 @@ public class PostMapper {
         }
 
         PostResponseDTO dto = new PostResponseDTO();
-        dto.setId(post.getIdPost());
-        dto.setDate_time(post.getMoment());
-        dto.setContent(post.getContents());
-        dto.setAuthor(post.getFkUser());
-        dto.setBubble(post.getFkBubble().getTitle());
+        dto.setIdPost(post.getIdPost());
+        dto.setMoment(post.getMoment());
+        dto.setContents(post.getContents());
+        dto.setAuthor(userMapper.toUserInfoDTO(post.getAuthor()));
+        dto.setBubble(bubbleMapper.toBubbleInfoDTO(post.getBubble()));
         if (post.getComments() != null) {
             dto.setComments(post.getComments().stream().map(commentMapper::toDTO)
                     .collect(Collectors.toList()));

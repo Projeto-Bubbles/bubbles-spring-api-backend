@@ -1,6 +1,6 @@
 package bubbles.springapibackend.domain.event.dto;
 
-import bubbles.springapibackend.domain.user.dto.UserBubbleDTO;
+import bubbles.springapibackend.domain.user.dto.UserInfoDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,6 +11,6 @@ public abstract class EventResponseDTO {
     private String title;
     private LocalDateTime dateTime;
     private Integer duration;
-    private UserBubbleDTO organizer;
+    private UserInfoDTO organizer;
     private Integer idBubble;
 }

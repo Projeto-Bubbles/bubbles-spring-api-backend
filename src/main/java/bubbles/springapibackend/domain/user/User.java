@@ -56,10 +56,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
     private List<Participation> participants;
 
-    @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public User(String email, String password) {

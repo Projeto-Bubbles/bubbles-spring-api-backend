@@ -51,29 +51,29 @@ public class PostService {
     }
 
     public List<PostResponseDTO> getPostsByUserNickname(String userNickname) {
-        return postRepository.findByFkUserNickname(userNickname).stream()
+        return postRepository.findByAuthorNickname(userNickname).stream()
                 .map(postMapper::toDTO).collect(Collectors.toList());
     }
 
     public List<PostResponseDTO> getPostsByBubbleTitle(String bubbleTitle) {
-        return postRepository.findByFkBubbleTitle(bubbleTitle).stream()
+        return postRepository.findByBubbleTitle(bubbleTitle).stream()
                 .map(postMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public PostResponseDTO createPost(PostRequestDTO newPostDTO) {
-        if (newPostDTO.getAuthorId() == null || newPostDTO.getBubbleId() == null) {
+        if (newPostDTO.getIdAuthor() == null || newPostDTO.getIdBubble() == null) {
             throw new IllegalArgumentException("fkUser ou fkBubble não podem ser nulo");
         }
 
-        User user = userService.getUserById(newPostDTO.getAuthorId());
-        Bubble bubble = bubbleService.getBubbleById(newPostDTO.getBubbleId());
+        User user = userService.getUserById(newPostDTO.getIdAuthor());
+        Bubble bubble = bubbleService.getBubbleById(newPostDTO.getIdBubble());
 
         Post newPost = new Post();
         newPost.setMoment(LocalDateTime.now());
-        newPost.setContents(newPostDTO.getContent());
-        newPost.setFkUser(user);
-        newPost.setFkBubble(bubble);
+        newPost.setContents(newPostDTO.getContents());
+        newPost.setAuthor(user);
+        newPost.setBubble(bubble);
 
         Post savedPost = postRepository.save(newPost);
         return postMapper.toDTO(savedPost);
@@ -97,7 +97,7 @@ public class PostService {
                         HttpStatus.NOT_FOUND, "Bolha com ID: " + postId + " não encontrado!"));
 
         existingPost.setMoment(LocalDateTime.now());
-        existingPost.setContents(updatedPostDTO.getContent());
+        existingPost.setContents(updatedPostDTO.getContents());
 
         return postMapper.toDTO(postRepository.save(existingPost));
     }

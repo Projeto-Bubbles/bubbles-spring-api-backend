@@ -44,7 +44,7 @@ public class PostController {
         if (posts.isEmpty()) return ResponseEntity.noContent().build();
 
         List<PostResponseDTO> postsDTO = posts.stream()
-                .sorted(Comparator.comparing(PostResponseDTO::getId))
+                .sorted(Comparator.comparing(PostResponseDTO::getIdPost))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(postsDTO);

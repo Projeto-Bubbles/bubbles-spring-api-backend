@@ -1,6 +1,7 @@
 package bubbles.springapibackend.domain.bubble.mapper;
 
 import bubbles.springapibackend.domain.bubble.Bubble;
+import bubbles.springapibackend.domain.bubble.dto.BubbleInfoDTO;
 import bubbles.springapibackend.domain.bubble.dto.BubbleResponseDTO;
 import bubbles.springapibackend.domain.user.mapper.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,7 +28,19 @@ public class BubbleMapper {
         bubbleDTO.setExplanation(bubble.getExplanation());
         bubbleDTO.setCreationDate(bubble.getCreationDate());
         bubbleDTO.setCategory(bubble.getCategory());
-        bubbleDTO.setCreator(userMapper.toUserBubbleDTO(bubble.getCreator()));
+        bubbleDTO.setCreator(userMapper.toUserInfoDTO(bubble.getCreator()));
+
+        return bubbleDTO;
+    }
+
+    public BubbleInfoDTO toBubbleInfoDTO(Bubble bubble) {
+        if (bubble == null) {
+            throw new EntityNotFoundException("Bolha nula ou criador nulo");
+        }
+
+        BubbleInfoDTO bubbleDTO = new BubbleInfoDTO();
+        bubbleDTO.setIdBubble(bubble.getIdBubble());
+        bubbleDTO.setTitle(bubble.getTitle());
 
         return bubbleDTO;
     }

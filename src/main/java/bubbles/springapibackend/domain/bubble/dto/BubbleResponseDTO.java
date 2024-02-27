@@ -1,7 +1,7 @@
 package bubbles.springapibackend.domain.bubble.dto;
 
 import bubbles.springapibackend.api.enums.Category;
-import bubbles.springapibackend.domain.user.dto.UserBubbleDTO;
+import bubbles.springapibackend.domain.user.dto.UserInfoDTO;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -13,5 +13,5 @@ public class BubbleResponseDTO {
     private String explanation;
     private LocalDate creationDate;
     private Category category;
-    private UserBubbleDTO creator;
+    private UserInfoDTO creator;
 }

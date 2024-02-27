@@ -66,10 +66,10 @@ public class UserService {
             eventRepository.save(event);
         }
 
-        List<Post> posts = postRepository.findByFkUserIdUser(userId);
+        List<Post> posts = postRepository.findByAuthorIdUser(userId);
         postRepository.deleteAll(posts);
 
-        List<Comment> comments = commentRepository.findAllByFkUserIdUser(userId);
+        List<Comment> comments = commentRepository.findAllByAuthorIdUser(userId);
         commentRepository.deleteAll(comments);
 
         userRepository.deleteById(userId);

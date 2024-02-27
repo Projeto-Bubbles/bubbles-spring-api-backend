@@ -1,7 +1,7 @@
 package bubbles.springapibackend.domain.user.mapper;
 
 import bubbles.springapibackend.domain.user.User;
-import bubbles.springapibackend.domain.user.dto.UserBubbleDTO;
+import bubbles.springapibackend.domain.user.dto.UserInfoDTO;
 import bubbles.springapibackend.domain.user.dto.UserDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
@@ -24,8 +24,8 @@ public class UserMapper {
         return userDTO;
     }
 
-    public UserBubbleDTO toUserBubbleDTO(User user) {
-        UserBubbleDTO userDto = new UserBubbleDTO();
+    public UserInfoDTO toUserInfoDTO(User user) {
+        UserInfoDTO userDto = new UserInfoDTO();
         userDto.setIdUser(user.getIdUser());
         userDto.setUsername(user.getUsername());
         userDto.setNickname(user.getNickname());

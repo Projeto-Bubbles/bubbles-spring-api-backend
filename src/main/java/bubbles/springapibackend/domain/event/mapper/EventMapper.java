@@ -42,7 +42,7 @@ public class EventMapper {
         eventDTO.setTitle(event.getTitle());
         eventDTO.setDateTime(event.getMoment());
         eventDTO.setDuration(event.getDuration());
-        eventDTO.setOrganizer(userMapper.toUserBubbleDTO(event.getOrganizer()));
+        eventDTO.setOrganizer(userMapper.toUserInfoDTO(event.getOrganizer()));
         eventDTO.setIdBubble(event.getBubble().getIdBubble());
     }
 

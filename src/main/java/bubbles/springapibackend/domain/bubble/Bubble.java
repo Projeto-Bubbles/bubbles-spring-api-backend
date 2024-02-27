@@ -44,7 +44,7 @@ public class Bubble {
     @OneToMany(mappedBy = "fkBubble", cascade = CascadeType.ALL)
     private List<Member> members;
 
-    @OneToMany(mappedBy = "fkBubble", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bubble", cascade = CascadeType.ALL)
     private List<Post> posts;
 
     @OneToMany(mappedBy = "bubble", cascade = CascadeType.ALL)

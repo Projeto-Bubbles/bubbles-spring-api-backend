@@ -2,7 +2,6 @@ package bubbles.springapibackend.domain.comment;
 
 import bubbles.springapibackend.domain.post.Post;
 import bubbles.springapibackend.domain.user.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -32,10 +31,10 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "fk_user")
-    private User fkUser;
+    private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_post")
     @JsonIgnore
-    private Post fkPost;
+    private Post post;
 }
