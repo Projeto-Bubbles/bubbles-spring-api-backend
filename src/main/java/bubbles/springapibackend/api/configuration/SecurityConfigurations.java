@@ -40,7 +40,7 @@ public class SecurityConfigurations {
             new AntPathRequestMatcher("/bubbles/**"),
             new AntPathRequestMatcher("/users/**"),
             new AntPathRequestMatcher("/events/**"),
-            new AntPathRequestMatcher("/files/**"),
+            new AntPathRequestMatcher("/participation/**"),
             new AntPathRequestMatcher("/posts/**"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/error/**"),

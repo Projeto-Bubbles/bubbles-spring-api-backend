@@ -6,6 +6,7 @@ import bubbles.springapibackend.domain.event.EventOnline;
 import bubbles.springapibackend.domain.event.dto.EventResponseDTO;
 import bubbles.springapibackend.domain.event.dto.EventInPersonResponseDTO;
 import bubbles.springapibackend.domain.event.dto.EventOnlineResponseDTO;
+import bubbles.springapibackend.domain.event.dto.EventSimpleDTO;
 import bubbles.springapibackend.domain.user.mapper.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,9 @@ public class EventMapper {
     }
 
     private void mapAttributes(Event event, EventResponseDTO eventDTO) {
-        eventDTO.setId(event.getIdEvent());
+        eventDTO.setIdEvent(event.getIdEvent());
         eventDTO.setTitle(event.getTitle());
-        eventDTO.setDateTime(event.getMoment());
+        eventDTO.setMoment(event.getMoment());
         eventDTO.setDuration(event.getDuration());
         eventDTO.setOrganizer(userMapper.toUserInfoDTO(event.getOrganizer()));
         eventDTO.setIdBubble(event.getBubble().getIdBubble());
@@ -67,5 +68,18 @@ public class EventMapper {
         eventOnlineDTO.setLink(eventOnline.getLink());
 
         return eventOnlineDTO;
+    }
+
+    public EventSimpleDTO toEventSimpleDTO(Event event) {
+        if (event == null || event.getBubble() == null || event.getOrganizer() == null) {
+            throw new EntityNotFoundException("Evento, bolha ou organizador null");
+        }
+
+        EventSimpleDTO eventSimpleDTO = new EventSimpleDTO();
+        eventSimpleDTO.setMoment(event.getMoment());
+        eventSimpleDTO.setTitle(event.getTitle());
+        eventSimpleDTO.setBubbleName(event.getBubble().getTitle());
+
+        return eventSimpleDTO;
     }
 }

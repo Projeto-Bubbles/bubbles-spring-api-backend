@@ -32,7 +32,7 @@ public class EventController {
         if (events.isEmpty()) return ResponseEntity.noContent().build();
 
         List<EventResponseDTO> eventDTOS = events.stream()
-                .sorted(Comparator.comparing(EventResponseDTO::getId))
+                .sorted(Comparator.comparing(EventResponseDTO::getIdEvent))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(eventDTOS);
@@ -56,7 +56,7 @@ public class EventController {
         if (events.isEmpty()) return ResponseEntity.noContent().build();
 
         List<EventResponseDTO> eventDTOS = events.stream()
-                .sorted(Comparator.comparing(EventResponseDTO::getId))
+                .sorted(Comparator.comparing(EventResponseDTO::getIdEvent))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(eventDTOS);
@@ -83,7 +83,7 @@ public class EventController {
         if (events.isEmpty()) return ResponseEntity.noContent().build();
 
         List<EventResponseDTO> eventDTOS = events.stream()
-                .sorted(Comparator.comparing(EventResponseDTO::getId))
+                .sorted(Comparator.comparing(EventResponseDTO::getIdEvent))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(eventDTOS);

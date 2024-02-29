@@ -12,6 +12,7 @@ import bubbles.springapibackend.domain.user.User;
 import bubbles.springapibackend.service.bubble.BubbleService;
 import bubbles.springapibackend.service.user.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -98,7 +99,7 @@ public class EventService {
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
         existingEvent.setTitle(updatedEventInPersonDTO.getTitle());
-        existingEvent.setMoment(updatedEventInPersonDTO.getDateTime());
+        existingEvent.setMoment(updatedEventInPersonDTO.getMoment());
         existingEvent.setDuration(updatedEventInPersonDTO.getDuration());
 
         EventInPerson eventInPerson = (EventInPerson) existingEvent;
@@ -115,7 +116,7 @@ public class EventService {
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
         existingEvent.setTitle(updatedEventOnlineDTO.getTitle());
-        existingEvent.setMoment(updatedEventOnlineDTO.getDateTime());
+        existingEvent.setMoment(updatedEventOnlineDTO.getMoment());
         existingEvent.setDuration(updatedEventOnlineDTO.getDuration());
 
         EventOnline eventOnline = (EventOnline) existingEvent;

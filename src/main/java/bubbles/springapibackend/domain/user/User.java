@@ -53,7 +53,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
     private List<Member> members;
 
-    @OneToMany(mappedBy = "fkUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Participation> participants;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)

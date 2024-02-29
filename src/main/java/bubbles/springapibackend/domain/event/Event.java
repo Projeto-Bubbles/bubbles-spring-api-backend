@@ -39,7 +39,7 @@ public abstract class Event {
     @JoinColumn(name = "fk_bubble")
     private Bubble bubble;
 
-    @OneToMany(mappedBy = "fkEvent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Participation> participants;
 
     public Event(Integer idEvent, String title, LocalDateTime moment, Integer duration,

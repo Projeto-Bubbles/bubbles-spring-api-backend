@@ -1,6 +1,5 @@
 package bubbles.springapibackend.domain.participation;
 
-import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.user.User;
 import jakarta.persistence.*;
@@ -22,9 +21,9 @@ public class Participation {
 
     @ManyToOne
     @JoinColumn(name = "fk_user")
-    private User fkUser;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "fk_event")
-    private Event fkEvent;
+    private Event event;
 }
