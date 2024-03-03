@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public abstract class EventResponseDTO {
     private Integer idEvent;
     private String title;
-    private LocalDateTime moment;
+    private LocalDateTime dateTime;
     private Integer duration;
     private UserInfoDTO organizer;
     private Integer idBubble;

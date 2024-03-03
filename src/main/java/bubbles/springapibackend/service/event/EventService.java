@@ -99,7 +99,7 @@ public class EventService {
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
         existingEvent.setTitle(updatedEventInPersonDTO.getTitle());
-        existingEvent.setMoment(updatedEventInPersonDTO.getMoment());
+        existingEvent.setMoment(updatedEventInPersonDTO.getDateTime());
         existingEvent.setDuration(updatedEventInPersonDTO.getDuration());
 
         EventInPerson eventInPerson = (EventInPerson) existingEvent;
@@ -116,7 +116,7 @@ public class EventService {
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
         existingEvent.setTitle(updatedEventOnlineDTO.getTitle());
-        existingEvent.setMoment(updatedEventOnlineDTO.getMoment());
+        existingEvent.setMoment(updatedEventOnlineDTO.getDateTime());
         existingEvent.setDuration(updatedEventOnlineDTO.getDuration());
 
         EventOnline eventOnline = (EventOnline) existingEvent;
