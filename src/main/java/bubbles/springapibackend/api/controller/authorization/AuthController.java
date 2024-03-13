@@ -2,6 +2,7 @@ package bubbles.springapibackend.api.controller.authorization;
 
 import bubbles.springapibackend.service.authorization.AuthorizationService;
 import bubbles.springapibackend.service.authorization.dto.AuthetinticationDto;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid AuthetinticationDto authetinticationDto) {
-        return authorizationService.login(authetinticationDto);
+    public ResponseEntity<Object> login(@RequestBody @Valid AuthetinticationDto authetinticationDto, HttpServletResponse response) {
+        return authorizationService.login(authetinticationDto, response);
     }
 
     @PostMapping("/validate")
