@@ -1,5 +1,6 @@
 package bubbles.springapibackend.domain.event.mapper;
 
+import bubbles.springapibackend.domain.bubble.mapper.BubbleMapper;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.event.EventInPerson;
 import bubbles.springapibackend.domain.event.EventOnline;
@@ -15,10 +16,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventMapper {
     private final UserMapper userMapper;
+    private final BubbleMapper bubbleMapper;
 
     @Autowired
-    public EventMapper(UserMapper userMapper) {
+    public EventMapper(UserMapper userMapper, BubbleMapper bubbleMapper) {
         this.userMapper = userMapper;
+        this.bubbleMapper = bubbleMapper;
     }
 
     public EventResponseDTO toDTO(Event event) {
@@ -44,7 +47,7 @@ public class EventMapper {
         eventDTO.setDateTime(event.getMoment());
         eventDTO.setDuration(event.getDuration());
         eventDTO.setOrganizer(userMapper.toUserInfoDTO(event.getOrganizer()));
-        eventDTO.setIdBubble(event.getBubble().getIdBubble());
+        eventDTO.setBubble(bubbleMapper.toDTO(event.getBubble()));
     }
 
     private EventInPersonResponseDTO eventInPersonToDTO(EventInPerson eventInPerson) {
