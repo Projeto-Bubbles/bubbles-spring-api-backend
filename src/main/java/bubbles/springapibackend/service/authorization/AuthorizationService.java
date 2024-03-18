@@ -5,10 +5,13 @@ import bubbles.springapibackend.domain.user.User;
 import bubbles.springapibackend.domain.user.repository.UserRepository;
 import bubbles.springapibackend.service.authorization.dto.AuthetinticationDto;
 import bubbles.springapibackend.service.authorization.dto.LoginResponseDto;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,12 +38,20 @@ public class AuthorizationService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-    public ResponseEntity<Object> login(@RequestBody @Valid AuthetinticationDto data) {
+    public ResponseEntity<Object> login(@RequestBody @Valid AuthetinticationDto data, HttpServletResponse response) {
         AuthenticationManager authenticationManager = context.getBean(AuthenticationManager.class);
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((User) auth.getPrincipal());
+
+        ResponseCookie cookie = ResponseCookie.from("auth", token)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(60 * 60)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return ResponseEntity.ok(new LoginResponseDto(token));
     }
 
