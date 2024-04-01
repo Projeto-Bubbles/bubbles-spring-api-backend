@@ -1,6 +1,8 @@
 package bubbles.springapibackend.service.event;
 
 import bubbles.springapibackend.api.enums.Category;
+import bubbles.springapibackend.domain.address.Address;
+import bubbles.springapibackend.domain.address.AddressRepository;
 import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.event.EventInPerson;
@@ -28,6 +30,7 @@ public class EventService {
     private final EventMapper eventMapper;
     private final UserService userService;
     private final BubbleService bubbleService;
+    private final AddressRepository addressRepository;
 
     public List<EventResponseDTO> getAvailableEvents() {
         return eventRepository.findAll().stream()
@@ -58,6 +61,7 @@ public class EventService {
         if (newEventInPersonDTO.getIdCreator() == null) {
             throw new IllegalArgumentException("fkUser não pode ser nula");
         }
+
         User user = userService.getUserById(newEventInPersonDTO.getIdCreator());
         Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getIdBubble());
 
