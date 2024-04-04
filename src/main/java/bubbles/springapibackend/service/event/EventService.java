@@ -1,6 +1,7 @@
 package bubbles.springapibackend.service.event;
 
 import bubbles.springapibackend.api.enums.Category;
+import bubbles.springapibackend.domain.address.Address;
 import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.event.EventInPerson;
@@ -9,6 +10,7 @@ import bubbles.springapibackend.domain.event.dto.*;
 import bubbles.springapibackend.domain.event.mapper.EventMapper;
 import bubbles.springapibackend.domain.event.repository.EventRepository;
 import bubbles.springapibackend.domain.user.User;
+import bubbles.springapibackend.service.address.AddressService;
 import bubbles.springapibackend.service.bubble.BubbleService;
 import bubbles.springapibackend.service.user.UserService;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,7 @@ public class EventService {
     private final EventMapper eventMapper;
     private final UserService userService;
     private final BubbleService bubbleService;
+    private final AddressService addressService;
 
     public List<EventResponseDTO> getAvailableEvents() {
         return eventRepository.findAll().stream()
@@ -60,6 +63,7 @@ public class EventService {
         }
         User user = userService.getUserById(newEventInPersonDTO.getIdCreator());
         Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getIdBubble());
+        Address address = addressService.getUserByCep(newEventInPersonDTO.getAddress().getCep());
 
         EventInPerson newEventInPerson = new EventInPerson();
         newEventInPerson.setTitle(newEventInPersonDTO.getTitle());
@@ -69,7 +73,7 @@ public class EventService {
         newEventInPerson.setBubble(bubble);
         newEventInPerson.setPublicPlace(newEventInPersonDTO.isPublicPlace());
         newEventInPerson.setPeopleCapacity(newEventInPersonDTO.getPeopleCapacity());
-        newEventInPerson.setAddress(newEventInPersonDTO.getAddress());
+        newEventInPerson.setAddress(address);
 
         return eventMapper.toDTO(eventRepository.save(newEventInPerson));
     }
