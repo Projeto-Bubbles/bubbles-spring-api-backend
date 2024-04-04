@@ -63,7 +63,7 @@ public class EventService {
         }
         User user = userService.getUserById(newEventInPersonDTO.getIdCreator());
         Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getIdBubble());
-        Address address = addressService.getUserByCep(newEventInPersonDTO.getAddress().getCep());
+        Address address = addressService.registerAddress(newEventInPersonDTO.getAddress());
 
         EventInPerson newEventInPerson = new EventInPerson();
         newEventInPerson.setTitle(newEventInPersonDTO.getTitle());
