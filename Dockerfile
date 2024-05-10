@@ -1,17 +1,7 @@
-FROM maven:3-amazoncorretto-17 AS build
+FROM openjdk
 
 WORKDIR /app
 
-COPY . /app
+COPY ./target/spring-api-backend-0.0.1-SNAPSHOT.jar /app
 
-RUN mvn clean package -DskipTests
-
-FROM openjdk:17.0.1-slim
-
-WORKDIR /app
-
-COPY --from=build /app/target/*.jar /app/app.jar
-
-EXPOSE 3004
-
-ENTRYPOINT ["java","-jar","/app.jar"]
+CMD ["/bin/bash"]
