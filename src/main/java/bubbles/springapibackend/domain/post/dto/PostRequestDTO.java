@@ -1,13 +1,13 @@
 package bubbles.springapibackend.domain.post.dto;
 
-import bubbles.springapibackend.domain.user.User;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class PostRequestDTO {
-    private String content;
-    private Integer authorId;
-    private String bubble;
+    private LocalDateTime moment;
+    private String contents;
+    private Integer idAuthor;
+    private Integer idBubble;
 }
-
-

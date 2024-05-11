@@ -1,14 +1,14 @@
 package bubbles.springapibackend.domain.comment.dto;
 
-import bubbles.springapibackend.domain.user.User;
+import bubbles.springapibackend.domain.user.dto.UserInfoDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
 public class CommentResponseDTO {
-    private Integer id;
-    private User author;
-    private LocalDateTime dateTime;
-    private String content;
+    private Integer idComment;
+    private LocalDateTime moment;
+    private String contents;
+    private UserInfoDTO author;
 }
