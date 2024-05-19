@@ -2,7 +2,6 @@ package bubbles.springapibackend.service.event;
 
 import bubbles.springapibackend.api.enums.Category;
 import bubbles.springapibackend.domain.address.Address;
-import bubbles.springapibackend.domain.address.AddressRepository;
 import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.event.EventInPerson;
@@ -11,6 +10,7 @@ import bubbles.springapibackend.domain.event.dto.*;
 import bubbles.springapibackend.domain.event.mapper.EventMapper;
 import bubbles.springapibackend.domain.event.repository.EventRepository;
 import bubbles.springapibackend.domain.user.User;
+import bubbles.springapibackend.service.address.AddressService;
 import bubbles.springapibackend.service.bubble.BubbleService;
 import bubbles.springapibackend.service.user.UserService;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class EventService {
     private final EventMapper eventMapper;
     private final UserService userService;
     private final BubbleService bubbleService;
-    private final AddressRepository addressRepository;
+    private final AddressService addressService;
 
     public List<EventResponseDTO> getAvailableEvents() {
         return eventRepository.findAll().stream()
@@ -61,9 +61,9 @@ public class EventService {
         if (newEventInPersonDTO.getIdCreator() == null) {
             throw new IllegalArgumentException("fkUser não pode ser nula");
         }
-
         User user = userService.getUserById(newEventInPersonDTO.getIdCreator());
         Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getIdBubble());
+        Address address = addressService.registerAddress(newEventInPersonDTO.getAddress());
 
         EventInPerson newEventInPerson = new EventInPerson();
         newEventInPerson.setTitle(newEventInPersonDTO.getTitle());
@@ -73,7 +73,7 @@ public class EventService {
         newEventInPerson.setBubble(bubble);
         newEventInPerson.setPublicPlace(newEventInPersonDTO.isPublicPlace());
         newEventInPerson.setPeopleCapacity(newEventInPersonDTO.getPeopleCapacity());
-        newEventInPerson.setAddress(newEventInPersonDTO.getAddress());
+        newEventInPerson.setAddress(address);
 
         return eventMapper.toDTO(eventRepository.save(newEventInPerson));
     }
@@ -103,7 +103,7 @@ public class EventService {
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
         existingEvent.setTitle(updatedEventInPersonDTO.getTitle());
-        existingEvent.setMoment(updatedEventInPersonDTO.getDateTime());
+        existingEvent.setMoment(updatedEventInPersonDTO.getMoment());
         existingEvent.setDuration(updatedEventInPersonDTO.getDuration());
 
         EventInPerson eventInPerson = (EventInPerson) existingEvent;
@@ -120,7 +120,7 @@ public class EventService {
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
         existingEvent.setTitle(updatedEventOnlineDTO.getTitle());
-        existingEvent.setMoment(updatedEventOnlineDTO.getDateTime());
+        existingEvent.setMoment(updatedEventOnlineDTO.getMoment());
         existingEvent.setDuration(updatedEventOnlineDTO.getDuration());
 
         EventOnline eventOnline = (EventOnline) existingEvent;
