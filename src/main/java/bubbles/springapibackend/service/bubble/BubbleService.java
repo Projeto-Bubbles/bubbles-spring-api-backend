@@ -90,7 +90,6 @@ public class BubbleService {
                         HttpStatus.NOT_FOUND, "Bolha com ID: " + bubbleId + " não encontrado!"));
 
         updatedBubble.setTitle(updatedBubbleDTO.getTitle());
-        updatedBubble.setExplanation(updatedBubbleDTO.getExplanation());
 
         return bubbleMapper.toDTO(bubbleRepository.save(updatedBubble));
     }

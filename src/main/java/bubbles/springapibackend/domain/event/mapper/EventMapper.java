@@ -44,7 +44,7 @@ public class EventMapper {
     private void mapAttributes(Event event, EventResponseDTO eventDTO) {
         eventDTO.setIdEvent(event.getIdEvent());
         eventDTO.setTitle(event.getTitle());
-        eventDTO.setMoment(event.getMoment());
+        eventDTO.setDateTime(event.getMoment());
         eventDTO.setDuration(event.getDuration());
         eventDTO.setOrganizer(userMapper.toUserInfoDTO(event.getOrganizer()));
         eventDTO.setBubble(bubbleMapper.toDTO(event.getBubble()));
