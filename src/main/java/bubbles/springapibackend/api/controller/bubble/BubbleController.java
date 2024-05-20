@@ -120,7 +120,7 @@ public class BubbleController {
                 .collect(Collectors.toList());
         List<BubbleResponseDTO> bubbles = bubbleService.getAllBubblesByCategory(categoryEnums);
 
-        if (bubbles.isEmpty()) return ResponseEntity.notFound().build();
+        if (bubbles.isEmpty()) return getAllBubbles();
 
         List<BubbleResponseDTO> bubbleDTOS = bubbles.stream()
                 .sorted(Comparator.comparing(BubbleResponseDTO::getIdBubble))
@@ -165,8 +165,7 @@ public class BubbleController {
         return ResponseEntity.ok(bubbleDTOS);
     }
 
-    @Operation(summary = "Criar bolha",
-            description = "Cria uma nova bolha.")
+    @Operation(summary = "Criar bolha", description = "Cria uma nova bolha.")
     @PostMapping("/create")
     public ResponseEntity<BubbleResponseDTO> createNewBubble(
             @Validated @RequestBody BubbleRequestDTO newBubbleDTO) {

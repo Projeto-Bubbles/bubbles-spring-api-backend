@@ -43,6 +43,7 @@ public class SecurityConfigurations {
             new AntPathRequestMatcher("/events/**"),
             new AntPathRequestMatcher("/participation/**"),
             new AntPathRequestMatcher("/posts/**"),
+            new AntPathRequestMatcher("/api/**"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/error/**"),
     };

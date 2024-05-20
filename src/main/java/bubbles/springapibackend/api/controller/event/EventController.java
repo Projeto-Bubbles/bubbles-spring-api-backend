@@ -80,7 +80,7 @@ public class EventController {
         List<Category> categoryEnums = categories.stream().map(Category::valueOf).collect(Collectors.toList());
         List<EventResponseDTO> events = eventService.getFilteredEvents(categoryEnums);
 
-        if (events.isEmpty()) return ResponseEntity.noContent().build();
+        if (events.isEmpty()) return getAvailableEvents();
 
         List<EventResponseDTO> eventDTOS = events.stream()
                 .sorted(Comparator.comparing(EventResponseDTO::getIdEvent))

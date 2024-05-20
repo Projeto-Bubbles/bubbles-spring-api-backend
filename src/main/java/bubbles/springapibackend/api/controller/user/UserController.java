@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-
     private UserService userService;
     private UserMapper userMapper;
 
