@@ -1,15 +1,15 @@
 package bubbles.springapibackend.api.controller.participation;
 
 import bubbles.springapibackend.domain.participation.dto.ParticipationInfoDTO;
+import bubbles.springapibackend.domain.participation.dto.ParticipationRequestDTO;
 import bubbles.springapibackend.domain.participation.dto.ParticipationResponseDTO;
 import bubbles.springapibackend.service.participation.ParticipationService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.List;
@@ -51,5 +51,13 @@ public class ParticipationController {
                 .sorted(Comparator.comparing(ParticipationInfoDTO::getIdParticipation))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(participationResponseDTOS);
+    }
+
+    @Operation(summary = "Criar participação", description = "Cria uma nova participação.")
+    @PostMapping("/create")
+    public ResponseEntity<ParticipationResponseDTO> createNewParticipation(
+            @Validated @RequestBody ParticipationRequestDTO newParticipationDTO) {
+        ParticipationResponseDTO newParticipation = participationService.createNewParticipation(newParticipationDTO);
+        return new ResponseEntity<>(newParticipation, HttpStatus.CREATED);
     }
 }

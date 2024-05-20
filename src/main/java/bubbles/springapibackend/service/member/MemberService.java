@@ -34,8 +34,8 @@ public class MemberService {
     public List<BubbleResponseDTO> getBubblesForUser(Integer userId) {
         List<Member> members = memberRepository.findByFkUserIdUser(userId);
         return members.stream()
-                .map(member -> member.getFkBubble()) // Obtém a bolha diretamente do membro
-                .map(bubbleMapper::toDTO) // Mapeia a bolha para BubbleResponseDTO
+                .map(member -> member.getFkBubble())
+                .map(bubbleMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
