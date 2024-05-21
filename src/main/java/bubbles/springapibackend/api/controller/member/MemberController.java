@@ -1,4 +1,4 @@
-package bubbles.springapibackend.api.controller;
+package bubbles.springapibackend.api.controller.member;
 
 import bubbles.springapibackend.domain.bubble.dto.BubbleResponseDTO;
 import bubbles.springapibackend.service.member.MemberService;
