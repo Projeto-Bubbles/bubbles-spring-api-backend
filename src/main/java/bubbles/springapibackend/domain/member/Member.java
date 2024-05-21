@@ -21,6 +21,7 @@ public class Member {
 
     @ManyToOne
     @JoinColumn(name = "fk_user")
+    @Column(unique = true)
     private User fkUser;
 
     @ManyToOne

@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,5 +48,14 @@ public class ParticipationService {
         newParticipation.setEvent(event);
 
         return participationMapper.toDTO(participationRepository.save(newParticipation));
+    }
+
+    public boolean deleteParticipantById(Integer id) {
+        Optional<Participation> existingParticipantOpt = participationRepository.findById(id);
+        if (existingParticipantOpt.isPresent()) {
+            participationRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

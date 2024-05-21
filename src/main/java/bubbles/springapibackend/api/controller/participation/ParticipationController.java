@@ -5,6 +5,7 @@ import bubbles.springapibackend.domain.participation.dto.ParticipationRequestDTO
 import bubbles.springapibackend.domain.participation.dto.ParticipationResponseDTO;
 import bubbles.springapibackend.service.participation.ParticipationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,5 +60,15 @@ public class ParticipationController {
             @Validated @RequestBody ParticipationRequestDTO newParticipationDTO) {
         ParticipationResponseDTO newParticipation = participationService.createNewParticipation(newParticipationDTO);
         return new ResponseEntity<>(newParticipation, HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Delete Participant by ID",
+            description = "Delete an participant by its unique ID.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteParticipantById(
+            @Parameter(description = "Event ID") @PathVariable Integer id) {
+        boolean deleted = participationService.deleteParticipantById(id);
+        if (deleted) return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 }

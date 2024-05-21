@@ -21,6 +21,7 @@ public class Participation {
 
     @ManyToOne
     @JoinColumn(name = "fk_user")
+    @Column(unique = true)
     private User user;
 
     @ManyToOne

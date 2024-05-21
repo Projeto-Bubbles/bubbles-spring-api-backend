@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,5 +52,14 @@ public class MemberService {
         member.setFkBubble(bubble);
 
         memberRepository.save(member);
+    }
+
+    public boolean deleteMemberById(Integer id) {
+        Optional<Member> existingMemberOpt = memberRepository.findById(id);
+        if (existingMemberOpt.isPresent()) {
+            memberRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
