@@ -20,8 +20,7 @@ public class Participation {
     private Integer idParticipant;
 
     @ManyToOne
-    @JoinColumn(name = "fk_user")
-    @Column(unique = true)
+    @JoinColumn(name = "fk_user", unique = true)
     private User user;
 
     @ManyToOne
