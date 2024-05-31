@@ -26,16 +26,6 @@ public class PostController {
     private final PostService postService;
     private final PostMapper postMapper;
 
-    @Operation(summary = "Get Comments for a Post",
-            description = "Returns a list of comments for a specific post.")
-    @GetMapping("/{postId}/comments")
-    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(
-            @Parameter(description = "Unique post ID") @PathVariable Integer postId) {
-        List<CommentResponseDTO> comments = postService.getCommentsByPostId(postId);
-        if (comments.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(comments);
-    }
-
     @Operation(summary = "Get All Posts", description = "Returns a list of all posts.")
     @GetMapping()
     public ResponseEntity<List<PostResponseDTO>> getPosts() {
@@ -78,6 +68,16 @@ public class PostController {
         List<PostResponseDTO> posts = postService.getPostsByBubbleTitle(bubbleTitle);
         if (posts.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(posts);
+    }
+
+    @Operation(summary = "Get Comments for a Post",
+            description = "Returns a list of comments for a specific post.")
+    @GetMapping("/{postId}/comments")
+    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(
+            @Parameter(description = "Unique post ID") @PathVariable Integer postId) {
+        List<CommentResponseDTO> comments = postService.getCommentsByPostId(postId);
+        if (comments.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(comments);
     }
 
     @Operation(summary = "Create Post", description = "Create a new post.")
