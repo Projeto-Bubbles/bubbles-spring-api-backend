@@ -76,11 +76,12 @@ public class EventController {
     @Operation(summary = "Get Events by Category",
             description = "Returns events associated with a specific category.")
     public ResponseEntity<List<EventResponseDTO>> getEventsByCategory(
-            @Parameter(description = "Event categories") @RequestParam List<String> categories) {
+            @Parameter(description = "Event categories")
+            @RequestParam(required = false, defaultValue = "") List<String> categories) {
         List<Category> categoryEnums = categories.stream().map(Category::valueOf).collect(Collectors.toList());
         List<EventResponseDTO> events = eventService.getFilteredEvents(categoryEnums);
 
-        if (events.isEmpty()) return getAvailableEvents();
+        if (categories.isEmpty()) return getAvailableEvents();
 
         List<EventResponseDTO> eventDTOS = events.stream()
                 .sorted(Comparator.comparing(EventResponseDTO::getIdEvent))
@@ -112,7 +113,7 @@ public class EventController {
     public ResponseEntity<EventInPersonResponseDTO> editInPersonEvent(
             @Parameter(description = "Event ID") @PathVariable Integer id,
             @Parameter(description = "Patched in-person event JSON")
-            @Validated @RequestBody EventInPersonResponseDTO updatedEventInPersonDTO) {
+            @Validated @RequestBody EventInPersonRequestDTO updatedEventInPersonDTO) {
         EventInPersonResponseDTO editedEventInPersonDTO = eventService.editInPersonEvent(id, updatedEventInPersonDTO);
         return ResponseEntity.ok(editedEventInPersonDTO);
     }

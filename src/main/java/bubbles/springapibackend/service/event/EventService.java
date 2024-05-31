@@ -63,7 +63,7 @@ public class EventService {
         }
         User user = userService.getUserById(newEventInPersonDTO.getIdCreator());
         Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getIdBubble());
-        Address address = addressService.registerAddress(newEventInPersonDTO.getAddress());
+        Address address = addressService.getAddressById(newEventInPersonDTO.getAddressId());
 
         EventInPerson newEventInPerson = new EventInPerson();
         newEventInPerson.setTitle(newEventInPersonDTO.getTitle());
@@ -97,10 +97,15 @@ public class EventService {
         return eventMapper.toDTO(eventRepository.save(newEventOnline));
     }
 
-    public EventInPersonResponseDTO editInPersonEvent(Integer eventId, EventInPersonResponseDTO updatedEventInPersonDTO) {
+    public EventInPersonResponseDTO editInPersonEvent(Integer eventId, EventInPersonRequestDTO updatedEventInPersonDTO) {
         Event existingEvent = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
+
+        if (updatedEventInPersonDTO.getAddressId() == null) {
+            throw new IllegalArgumentException("Endereço não pode ser nulo");
+        }
+        Address address = addressService.getAddressById(updatedEventInPersonDTO.getAddressId());
 
         existingEvent.setTitle(updatedEventInPersonDTO.getTitle());
         existingEvent.setMoment(updatedEventInPersonDTO.getDateTime());
@@ -109,7 +114,7 @@ public class EventService {
         EventInPerson eventInPerson = (EventInPerson) existingEvent;
         eventInPerson.setPublicPlace(updatedEventInPersonDTO.isPublicPlace());
         eventInPerson.setPeopleCapacity(updatedEventInPersonDTO.getPeopleCapacity());
-        eventInPerson.setAddress(updatedEventInPersonDTO.getAddress());
+        eventInPerson.setAddress(address);
 
         return (EventInPersonResponseDTO) eventMapper.toDTO(eventRepository.save(eventInPerson));
     }

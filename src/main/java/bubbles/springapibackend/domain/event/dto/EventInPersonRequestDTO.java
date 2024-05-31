@@ -9,5 +9,5 @@ import lombok.EqualsAndHashCode;
 public class EventInPersonRequestDTO extends EventRequestDTO {
     private boolean publicPlace;
     private Integer peopleCapacity;
-    private Address address;
+    private Integer addressId;
 }
