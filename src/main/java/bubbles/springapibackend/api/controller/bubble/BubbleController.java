@@ -115,12 +115,12 @@ public class BubbleController {
     @GetMapping("/categories")
     public ResponseEntity<List<BubbleResponseDTO>> getAllBubblesByCategory(
             @Parameter(description = "Categorias de bolhas.")
-            @RequestParam List<String> bubbleCategories) {
+            @RequestParam(required = false, defaultValue = "") List<String> bubbleCategories) {
         List<Category> categoryEnums = bubbleCategories.stream().map(Category::valueOf)
                 .collect(Collectors.toList());
         List<BubbleResponseDTO> bubbles = bubbleService.getAllBubblesByCategory(categoryEnums);
 
-        if (bubbles.isEmpty()) return getAllBubbles();
+        if (bubbleCategories.isEmpty()) return getAllBubbles();
 
         List<BubbleResponseDTO> bubbleDTOS = bubbles.stream()
                 .sorted(Comparator.comparing(BubbleResponseDTO::getIdBubble))
