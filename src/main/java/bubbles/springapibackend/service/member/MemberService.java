@@ -54,10 +54,10 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public boolean deleteMemberById(Integer id) {
-        Optional<Member> existingMemberOpt = memberRepository.findById(id);
+    public boolean deleteMemberByUserIdAndBubbleId(Integer userId, Integer bubbleId) {
+        Optional<Member> existingMemberOpt = memberRepository.findByFkUserIdUserAndFkBubbleIdBubble(userId, bubbleId);
         if (existingMemberOpt.isPresent()) {
-            memberRepository.deleteById(id);
+            memberRepository.delete(existingMemberOpt.get());
             return true;
         }
         return false;

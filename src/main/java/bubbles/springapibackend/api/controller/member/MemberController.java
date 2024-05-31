@@ -29,13 +29,16 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Delete Member by ID",
-            description = "Delete an member by its unique ID.")
-    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete Member by User ID and Bubble ID",
+            description = "Delete a member by its user ID and bubble ID.")
+    @DeleteMapping("/{userId}/{bubbleId}")
     public ResponseEntity<Void> deleteMemberById(
-            @Parameter(description = "Event ID") @PathVariable Integer id) {
-        boolean deleted = memberService.deleteMemberById(id);
-        if (deleted) return ResponseEntity.noContent().build();
+            @Parameter(description = "User ID") @PathVariable Integer userId,
+            @Parameter(description = "Bubble ID") @PathVariable Integer bubbleId) {
+        boolean deleted = memberService.deleteMemberByUserIdAndBubbleId(userId, bubbleId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.notFound().build();
     }
 }
