@@ -1,5 +1,6 @@
 package bubbles.springapibackend.api.controller.participation;
 
+import bubbles.springapibackend.domain.event.dto.EventResponseDTO;
 import bubbles.springapibackend.domain.participation.dto.ParticipationInfoDTO;
 import bubbles.springapibackend.domain.participation.dto.ParticipationRequestDTO;
 import bubbles.springapibackend.domain.participation.dto.ParticipationResponseDTO;
@@ -40,6 +41,12 @@ public class ParticipationController {
         return ResponseEntity.ok(participationResponseDTOS);
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<EventResponseDTO>> getBubblesForUser(@PathVariable Integer userId) {
+        List<EventResponseDTO> participations = participationService.getEventsByIdUser(userId);
+        return ResponseEntity.ok(participations);
+    }
+
     @Operation(summary = "Mostrar os próximos 5 eventos de um usuário especifíco",
             description = "Mostra os próximos 5 eventos de um usuário específico")
     @GetMapping("/{participant}")
@@ -69,6 +76,19 @@ public class ParticipationController {
             @Parameter(description = "Event ID") @PathVariable Integer id) {
         boolean deleted = participationService.deleteParticipantById(id);
         if (deleted) return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Delete Partipant by User ID and event ID",
+            description = "Delete a Participant by its user ID and event ID.")
+    @DeleteMapping("/{userId}/{eventId}")
+    public ResponseEntity<Void> deleteParticpantById(
+            @Parameter(description = "User ID") @PathVariable Integer userId,
+            @Parameter(description = "Event ID") @PathVariable Integer eventId) {
+        boolean deleted = participationService.deleteParticipantByUserIdAndEventId(userId, eventId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.notFound().build();
     }
 }

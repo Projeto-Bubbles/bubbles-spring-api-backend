@@ -1,6 +1,8 @@
 package bubbles.springapibackend.service.participation;
 
 import bubbles.springapibackend.domain.event.Event;
+import bubbles.springapibackend.domain.event.dto.EventResponseDTO;
+import bubbles.springapibackend.domain.event.mapper.EventMapper;
 import bubbles.springapibackend.domain.participation.Participation;
 import bubbles.springapibackend.domain.participation.dto.ParticipationInfoDTO;
 import bubbles.springapibackend.domain.participation.dto.ParticipationRequestDTO;
@@ -24,10 +26,19 @@ public class ParticipationService {
     private final ParticipationMapper participationMapper;
     private final UserService userService;
     private final EventService eventService;
+    private final EventMapper eventMapper;
 
     public List<ParticipationResponseDTO> getAllParticipation() {
         return participationRepository.findAll().stream()
                 .map(participationMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<EventResponseDTO> getEventsByIdUser(Integer userId) {
+        List<Participation> participations = participationRepository.findByUserIdUser(userId);
+        return participations.stream()
+                .map(participation -> participation.getEvent())
+                .map(eventMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public List<ParticipationInfoDTO> getNext5EventsByIdUser(Integer idParticipant) {
@@ -54,6 +65,15 @@ public class ParticipationService {
         Optional<Participation> existingParticipantOpt = participationRepository.findById(id);
         if (existingParticipantOpt.isPresent()) {
             participationRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteParticipantByUserIdAndEventId(Integer userId, Integer eventId) {
+        Optional<Participation> existingParticipantOpt = participationRepository.findByUserIdUserAndEventIdEvent(userId, eventId);
+        if (existingParticipantOpt.isPresent()) {
+            participationRepository.delete(existingParticipantOpt.get());
             return true;
         }
         return false;

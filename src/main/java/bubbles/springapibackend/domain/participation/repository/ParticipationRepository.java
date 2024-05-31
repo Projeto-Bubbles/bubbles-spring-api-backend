@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -13,4 +14,8 @@ public interface ParticipationRepository extends JpaRepository<Participation, In
     @Query("SELECT p FROM Participation p WHERE p.user.idUser = :idUser " +
             "AND p.event.moment > CURRENT_TIMESTAMP ORDER BY p.event.moment ASC LIMIT 5")
     List<Participation> findNext5EventsByIdUser(Integer idUser);
+
+    List<Participation> findByUserIdUser(Integer idUser);
+
+    Optional<Participation> findByUserIdUserAndEventIdEvent(Integer userId, Integer eventId);
 }
