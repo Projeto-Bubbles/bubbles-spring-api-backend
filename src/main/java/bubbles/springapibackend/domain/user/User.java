@@ -46,6 +46,8 @@ public class User implements UserDetails {
     @Column(columnDefinition = "VARCHAR(60)")
     private String secretKey;
 
+    private String image;
+
     @OneToOne
     @JoinColumn(name = "fk_address")
     private Address address;

@@ -10,4 +10,5 @@ public class UserDTO {
     private String cpf;
     private String nickname;
     private String password;
+    private String image;
 }
