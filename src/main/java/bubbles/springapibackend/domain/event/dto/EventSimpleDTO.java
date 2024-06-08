@@ -9,4 +9,5 @@ public class EventSimpleDTO {
     private LocalDateTime moment;
     private String title;
     private String bubbleName;
+    private String image;
 }

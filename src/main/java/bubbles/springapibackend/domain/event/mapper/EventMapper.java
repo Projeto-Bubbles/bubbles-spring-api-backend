@@ -83,6 +83,7 @@ public class EventMapper {
         eventSimpleDTO.setMoment(event.getMoment());
         eventSimpleDTO.setTitle(event.getTitle());
         eventSimpleDTO.setBubbleName(event.getBubble().getTitle());
+        eventSimpleDTO.setImage(event.getImage());
 
         return eventSimpleDTO;
     }
