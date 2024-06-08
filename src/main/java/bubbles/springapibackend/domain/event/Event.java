@@ -31,6 +31,8 @@ public abstract class Event {
 
     private Integer duration;
 
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "fk_user")
     private User organizer;
@@ -42,12 +44,13 @@ public abstract class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Participation> participants;
 
-    public Event(Integer idEvent, String title, LocalDateTime moment, Integer duration,
+    public Event(Integer idEvent, String title, LocalDateTime moment, Integer duration, String image,
                  User organizer, Bubble bubble) {
         this.idEvent = idEvent;
         this.title = title;
         this.moment = moment;
         this.duration = duration;
+        this.image = image;
         this.organizer = organizer;
         this.bubble = bubble;
     }

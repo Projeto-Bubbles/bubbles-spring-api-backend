@@ -19,9 +19,9 @@ public class EventOnline extends Event{
     @Column(columnDefinition = "VARCHAR(300)")
     private String link;
 
-    public EventOnline(Integer id, String title, LocalDateTime date, Integer duration, User organizer,
+    public EventOnline(Integer id, String title, LocalDateTime date, Integer duration, String image, User organizer,
                        Bubble bubble, String platform, String url) {
-        super(id, title, date, duration, organizer, bubble);
+        super(id, title, date, duration, image, organizer, bubble);
         this.platform = platform;
         this.link = url;
     }

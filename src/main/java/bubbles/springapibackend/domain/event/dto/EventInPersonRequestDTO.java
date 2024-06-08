@@ -1,6 +1,6 @@
 package bubbles.springapibackend.domain.event.dto;
 
-import bubbles.springapibackend.domain.address.Address;
+import bubbles.springapibackend.domain.address.dto.AddressDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,5 +9,5 @@ import lombok.EqualsAndHashCode;
 public class EventInPersonRequestDTO extends EventRequestDTO {
     private boolean publicPlace;
     private Integer peopleCapacity;
-    private Integer addressId;
+    private AddressDTO address;
 }

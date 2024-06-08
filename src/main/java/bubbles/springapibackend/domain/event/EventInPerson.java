@@ -22,10 +22,10 @@ public class EventInPerson extends Event {
     @JoinColumn(name = "fk_address")
     private Address address;
 
-    public EventInPerson(Integer id, String title, LocalDateTime date, Integer duration, User organizer,
+    public EventInPerson(Integer id, String title, LocalDateTime date, Integer duration, String image, User organizer,
                          Bubble bubble, boolean publicPlace,
                          Integer peopleCapacity, Address address) {
-        super(id, title, date, duration, organizer, bubble);
+        super(id, title, date, duration, image, organizer, bubble);
         this.publicPlace = publicPlace;
         this.peopleCapacity = peopleCapacity;
         this.address = address;

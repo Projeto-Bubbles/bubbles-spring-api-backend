@@ -9,6 +9,7 @@ public class EventRequestDTO {
     private String title;
     private LocalDateTime dateTime;
     private Integer duration;
+    private String image;
     private Integer idCreator;
     private Integer idBubble;
 }

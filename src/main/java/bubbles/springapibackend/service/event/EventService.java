@@ -2,6 +2,7 @@ package bubbles.springapibackend.service.event;
 
 import bubbles.springapibackend.api.enums.Category;
 import bubbles.springapibackend.domain.address.Address;
+import bubbles.springapibackend.domain.address.mapper.AddressMapper;
 import bubbles.springapibackend.domain.bubble.Bubble;
 import bubbles.springapibackend.domain.event.Event;
 import bubbles.springapibackend.domain.event.EventInPerson;
@@ -14,7 +15,6 @@ import bubbles.springapibackend.service.address.AddressService;
 import bubbles.springapibackend.service.bubble.BubbleService;
 import bubbles.springapibackend.service.user.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,6 +31,7 @@ public class EventService {
     private final UserService userService;
     private final BubbleService bubbleService;
     private final AddressService addressService;
+    private final AddressMapper addressMapper;
 
     public List<EventResponseDTO> getAvailableEvents() {
         return eventRepository.findAll().stream()
@@ -63,12 +64,13 @@ public class EventService {
         }
         User user = userService.getUserById(newEventInPersonDTO.getIdCreator());
         Bubble bubble = bubbleService.getBubbleById(newEventInPersonDTO.getIdBubble());
-        Address address = addressService.getAddressById(newEventInPersonDTO.getAddressId());
+        Address address = addressService.registerAddress(addressMapper.toEntity(newEventInPersonDTO.getAddress()));
 
         EventInPerson newEventInPerson = new EventInPerson();
         newEventInPerson.setTitle(newEventInPersonDTO.getTitle());
         newEventInPerson.setMoment(newEventInPersonDTO.getDateTime());
         newEventInPerson.setDuration(newEventInPersonDTO.getDuration());
+        newEventInPerson.setImage(newEventInPersonDTO.getImage());
         newEventInPerson.setOrganizer(user);
         newEventInPerson.setBubble(bubble);
         newEventInPerson.setPublicPlace(newEventInPersonDTO.isPublicPlace());
@@ -89,6 +91,7 @@ public class EventService {
         newEventOnline.setTitle(newEventOnlineDTO.getTitle());
         newEventOnline.setMoment(newEventOnlineDTO.getDateTime());
         newEventOnline.setDuration(newEventOnlineDTO.getDuration());
+        newEventOnline.setImage(newEventOnlineDTO.getImage());
         newEventOnline.setOrganizer(user);
         newEventOnline.setBubble(bubble);
         newEventOnline.setPlatform(newEventOnlineDTO.getPlatform());
@@ -102,10 +105,10 @@ public class EventService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Evento com ID: " + eventId + " não encontrado!"));
 
-        if (updatedEventInPersonDTO.getAddressId() == null) {
+        if (updatedEventInPersonDTO.getAddress() == null) {
             throw new IllegalArgumentException("Endereço não pode ser nulo");
         }
-        Address address = addressService.getAddressById(updatedEventInPersonDTO.getAddressId());
+        Address address = addressService.registerAddress(addressMapper.toEntity(updatedEventInPersonDTO.getAddress()));
 
         existingEvent.setTitle(updatedEventInPersonDTO.getTitle());
         existingEvent.setMoment(updatedEventInPersonDTO.getDateTime());

@@ -12,6 +12,7 @@ public abstract class EventResponseDTO {
     private String title;
     private LocalDateTime dateTime;
     private Integer duration;
+    private String image;
     private UserInfoDTO organizer;
     private BubbleResponseDTO bubble;
 }

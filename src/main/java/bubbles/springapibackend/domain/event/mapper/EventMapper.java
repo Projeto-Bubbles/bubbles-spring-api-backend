@@ -46,6 +46,7 @@ public class EventMapper {
         eventDTO.setTitle(event.getTitle());
         eventDTO.setDateTime(event.getMoment());
         eventDTO.setDuration(event.getDuration());
+        eventDTO.setImage(event.getImage());
         eventDTO.setOrganizer(userMapper.toUserInfoDTO(event.getOrganizer()));
         eventDTO.setBubble(bubbleMapper.toDTO(event.getBubble()));
     }
