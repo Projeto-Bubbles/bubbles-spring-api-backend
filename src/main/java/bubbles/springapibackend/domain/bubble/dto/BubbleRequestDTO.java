@@ -9,4 +9,5 @@ public class BubbleRequestDTO {
     private String explanation;
     private Category category;
     private Integer creator;
+    private String image;
 }

@@ -28,6 +28,7 @@ public class BubbleMapper {
         bubbleDTO.setExplanation(bubble.getExplanation());
         bubbleDTO.setCreationDate(bubble.getCreationDate());
         bubbleDTO.setCategory(bubble.getCategory());
+        bubbleDTO.setImage(bubble.getImage());
         bubbleDTO.setCreator(userMapper.toUserInfoDTO(bubble.getCreator()));
 
         return bubbleDTO;

@@ -14,4 +14,5 @@ public class BubbleResponseDTO {
     private LocalDate creationDate;
     private Category category;
     private UserInfoDTO creator;
+    private String image;
 }

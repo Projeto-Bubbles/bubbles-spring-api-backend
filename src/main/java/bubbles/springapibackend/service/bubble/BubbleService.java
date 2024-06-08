@@ -79,6 +79,7 @@ public class BubbleService {
         newBubble.setExplanation(newBubbleDTO.getExplanation());
         newBubble.setCreationDate(LocalDate.now());
         newBubble.setCategory(newBubbleDTO.getCategory());
+        newBubble.setImage(newBubbleDTO.getImage());
         newBubble.setCreator(user);
 
         return bubbleMapper.toDTO(bubbleRepository.save(newBubble));

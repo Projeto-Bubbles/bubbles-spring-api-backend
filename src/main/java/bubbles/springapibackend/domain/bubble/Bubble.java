@@ -37,6 +37,8 @@ public class Bubble {
     @Column(columnDefinition = "VARCHAR(10)")
     private Category category;
 
+    private String image;
+
     @OneToOne
     @JoinColumn(name = "fk_user")
     private User creator;
