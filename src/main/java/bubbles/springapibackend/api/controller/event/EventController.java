@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +47,12 @@ public class EventController {
         return ResponseEntity.ok(eventDTO);
     }
 
+    @Operation(summary = "Pegar eventos após a data atual",
+            description = "Retorna todos os eventos após a data atual.")
+    @GetMapping("/date")
+    public List<EventResponseDTO> getFirst5EventsFromToday() {
+        return eventService.getFirst5EventsFromToday();
+    }
 
     @Operation(summary = "Get Events by Author", description = "Returns events authored by a specific user.")
     @GetMapping("/author")
@@ -95,8 +102,8 @@ public class EventController {
     @PostMapping("/inPerson")
     public ResponseEntity<EventResponseDTO> createInPersonEvent(
             @Validated @RequestBody EventInPersonRequestDTO newEventInPerson) {
-            EventResponseDTO savedEvent = eventService.createInPersonEvent(newEventInPerson);
-            return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
+        EventResponseDTO savedEvent = eventService.createInPersonEvent(newEventInPerson);
+        return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Create Online Event",

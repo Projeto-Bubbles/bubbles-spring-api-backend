@@ -15,10 +15,13 @@ import bubbles.springapibackend.service.address.AddressService;
 import bubbles.springapibackend.service.bubble.BubbleService;
 import bubbles.springapibackend.service.user.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,6 +44,11 @@ public class EventService {
     public Event getEventById(Integer eventId) {
         return eventRepository.findById(eventId).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Bolha com ID: " + eventId + " não encontrado!"));
+    }
+
+    public List<EventResponseDTO> getFirst5EventsFromToday() {
+        return eventRepository.findFirst5EventsFromToday().stream()
+                .map(eventMapper::toDTO).collect(Collectors.toList());
     }
 
     public List<EventResponseDTO> getEventsByUserNickname(String userNickname) {
