@@ -11,4 +11,5 @@ public class UserDTO {
     private String nickname;
     private String password;
     private String image;
+    private String userCover;
 }

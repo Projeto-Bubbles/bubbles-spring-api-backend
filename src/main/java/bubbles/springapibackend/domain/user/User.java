@@ -48,6 +48,8 @@ public class User implements UserDetails {
 
     private String image;
 
+    private String userCover;
+
     @OneToOne
     @JoinColumn(name = "fk_address")
     private Address address;

@@ -9,4 +9,5 @@ public class UserInfoDTO {
     private String nickname;
     private String email;
     private String image;
+    private String userCover;
 }

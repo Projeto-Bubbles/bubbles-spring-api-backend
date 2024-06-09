@@ -21,6 +21,7 @@ public class UserMapper {
         userDTO.setNickname(user.getNickname());
         userDTO.setPassword(user.getPassword());
         userDTO.setImage(user.getImage());
+        userDTO.setUserCover(user.getUserCover());
 
         return userDTO;
     }
@@ -32,6 +33,7 @@ public class UserMapper {
         userDto.setNickname(user.getNickname());
         userDto.setEmail(user.getEmail());
         userDto.setImage(user.getImage());
+        userDto.setUserCover(user.getUserCover());
 
         return userDto;
     }
@@ -48,6 +50,7 @@ public class UserMapper {
         user.setNickname(userDTO.getNickname());
         user.setSecretKey(userDTO.getPassword());
         user.setImage(userDTO.getImage());
+        user.setUserCover(userDTO.getUserCover());
 
         return user;
     }
