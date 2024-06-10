@@ -26,6 +26,7 @@ public class PostMapper {
         PostResponseDTO dto = new PostResponseDTO();
         dto.setIdPost(post.getIdPost());
         dto.setMoment(post.getMoment());
+        dto.setImage(post.getImage());
         dto.setContents(post.getContents());
         dto.setAuthor(userMapper.toUserInfoDTO(post.getAuthor()));
         dto.setBubble(bubbleMapper.toBubbleInfoDTO(post.getBubble()));

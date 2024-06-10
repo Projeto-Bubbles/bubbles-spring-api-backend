@@ -12,6 +12,7 @@ import java.util.List;
 public class PostResponseDTO {
     private Integer idPost;
     private LocalDateTime moment;
+    private String image;
     private String contents;
     private UserInfoDTO author;
     private BubbleInfoDTO bubble;

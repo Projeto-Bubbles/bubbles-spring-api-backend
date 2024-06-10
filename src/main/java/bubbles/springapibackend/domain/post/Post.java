@@ -26,6 +26,8 @@ public class Post {
 
     private LocalDateTime moment;
 
+    private String image;
+
     @Column(columnDefinition = "VARCHAR(650)")
     private String contents;
 

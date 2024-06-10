@@ -92,6 +92,7 @@ public class BubbleService {
 
         updatedBubble.setTitle(updatedBubbleDTO.getTitle());
         updatedBubble.setExplanation(updatedBubbleDTO.getExplanation());
+        updatedBubble.setImage(updatedBubbleDTO.getImage());
 
         return bubbleMapper.toDTO(bubbleRepository.save(updatedBubble));
     }

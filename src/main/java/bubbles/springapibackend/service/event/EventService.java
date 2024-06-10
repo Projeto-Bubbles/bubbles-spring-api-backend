@@ -121,6 +121,7 @@ public class EventService {
         existingEvent.setTitle(updatedEventInPersonDTO.getTitle());
         existingEvent.setMoment(updatedEventInPersonDTO.getDateTime());
         existingEvent.setDuration(updatedEventInPersonDTO.getDuration());
+        existingEvent.setImage(updatedEventInPersonDTO.getImage());
 
         EventInPerson eventInPerson = (EventInPerson) existingEvent;
         eventInPerson.setPublicPlace(updatedEventInPersonDTO.isPublicPlace());
@@ -138,6 +139,7 @@ public class EventService {
         existingEvent.setTitle(updatedEventOnlineDTO.getTitle());
         existingEvent.setMoment(updatedEventOnlineDTO.getDateTime());
         existingEvent.setDuration(updatedEventOnlineDTO.getDuration());
+        existingEvent.setImage(updatedEventOnlineDTO.getImage());
 
         EventOnline eventOnline = (EventOnline) existingEvent;
         eventOnline.setPlatform(updatedEventOnlineDTO.getPlatform());

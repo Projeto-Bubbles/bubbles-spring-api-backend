@@ -71,6 +71,7 @@ public class PostService {
 
         Post newPost = new Post();
         newPost.setMoment(LocalDateTime.now());
+        newPost.setImage(newPostDTO.getImage());
         newPost.setContents(newPostDTO.getContents());
         newPost.setAuthor(user);
         newPost.setBubble(bubble);
@@ -97,6 +98,7 @@ public class PostService {
                         HttpStatus.NOT_FOUND, "Bolha com ID: " + postId + " não encontrado!"));
 
         existingPost.setMoment(LocalDateTime.now());
+        existingPost.setImage(updatedPostDTO.getImage());
         existingPost.setContents(updatedPostDTO.getContents());
 
         return postMapper.toDTO(postRepository.save(existingPost));
